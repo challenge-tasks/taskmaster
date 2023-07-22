@@ -1,5 +1,24 @@
 .logo {
     width: 100px;
     height: 30px;
-    background-color: #050505;
+    border-radius: 5px;
+    background-color: #d1d1d1;
+}
+
+.section {
+    margin: 25px 0;
+
+    &__title {
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    &__subtitle {
+        font-size: 17px;
+        color: #a3a3a3;
+    }
+}
+
+.tm-container {
+    max-width: 1440px;
 }
