@@ -7,20 +7,15 @@
 
         <span class="dropdown__options">
             <span v-for="option in options" class="dropdown__option">
-                <label class="dropdown-checkbox">
-                    <input type="checkbox" :value="option.value" class="hidden">
-                    <span class="dropdown-checkbox__check">
-                        <Icon name="octicon:check-16" />
-                    </span>
-                    <span class="dropdown-checkbox__label">{{ option.label }}</span>
-                </label>
+                <Checkbox :value="options.value" :label="option.label" />
             </span>
         </span>
     </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+
+defineProps({
     icon: {
         type: Object,
         required: true

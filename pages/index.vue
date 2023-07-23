@@ -4,52 +4,31 @@
 
             <div class="mb-8 flex items-center justify-between">
                 <div class="flex flex-col">
-                    <h2 class="section__title">Таски</h2>
-                    <p class="section__subtitle">Выполняйте таски и получайте вознаграждение</p>
+                    <h2 class="section__title">Задания</h2>
                 </div>
 
                 <div class="flex items-center gap-5">
 
-                    <Dropdown :icon="{ name: 'octicon:sort-desc-24' }" label="Сортировать по" :options="sortOptions" />
-                    <Dropdown :icon="{ name: 'octicon:filter-24' }" label="Фильтровать по" :options="sortOptions" />
+                    <DropdownCheckbox :icon="{ name: 'octicon:sort-desc-24' }" label="Сортировать по" :options="sortOptions" />
+                    <DropdownRadio @radio-option-select="handleFilterSelect" :icon="{ name: 'octicon:filter-24' }" label="Фильтровать по" :options="filterOptions" />
 
                 </div>
 
             </div>
 
             <div class="tasks">
-
-                <NuxtLink to="https://t.me/aslbekkucharov" :data-card-id="card.id" v-for="card in cards" class="task-card">
-
-                    <span class="task-card__img">
-                        <img :src="card.image" :alt="card.description">
-                    </span>
-
-                    <span class="task-card__middle">
-
-                        <div class="mb-2 flex items-center justify-between gap-5">
-                            <h4 class="task-card__title">{{ card.name }}</h4>
-                            <span class="task-card__difficulty" :data-difficulty="getDifficulty(card.difficulty)">{{
-                                card.difficulty }}</span>
-                        </div>
-
-                        <p class="task-card__excerpt">{{ trimDescription(card.description) }}</p>
-                    </span>
-
-                    <span v-if="card.stacks" class="task-card__bottom">
-                        <span class="task-card__tags">
-                            <span v-for="stack in card.stacks" class="task-card__tag">#{{ stack }}</span>
-                        </span>
-                    </span>
-
+                <NuxtLink to="https://t.me/aslbekkucharov" v-for="card in cards" class="tasks__item">
+                    <TaskCard :data="card" />
                 </NuxtLink>
-
             </div>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
+
+const sortModel = ref(null)
+
 const cards = reactive([
     {
         id: 1,
@@ -148,21 +127,22 @@ const sortOptions = reactive([
     }
 ])
 
-function getDifficulty(difficulty: string) {
-    const difficultyEnum: Record<string, number> = {
-        'Junior': 1,
-        'Middle': 2,
-        'Senior': 3
+const filterOptions = reactive([
+    {
+        label: 'Junior',
+        value: 'junior'
+    },
+    {
+        label: 'Middle',
+        value: 'middle'
+    },
+    {
+        label: 'Senior',
+        value: 'senior'
     }
+])
 
-    return difficultyEnum[difficulty]
-}
-
-function trimDescription(description: string) {
-    if (description.length <= 150) {
-        return description
-    } else {
-        return description.slice(0, 150) + '...'
-    }
+function handleFilterSelect(payload: string) {
+    console.log(payload);
 }
 </script>

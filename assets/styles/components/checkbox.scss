@@ -1,0 +1,33 @@
+.checkbox {
+    display: flex;
+    padding: 8px;
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+
+    input[type="checkbox"]:checked~.checkbox__rect {
+        svg {
+            transform: scale(1);
+        }
+    }
+
+    &__rect {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+        border-radius: 3px;
+        align-items: center;
+        display: inline-flex;
+        border: 1.5px solid #000000;
+
+        svg {
+            transform: scale(0);
+            transition: transform 0.1s linear;
+        }
+    }
+
+    &__label {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+}
