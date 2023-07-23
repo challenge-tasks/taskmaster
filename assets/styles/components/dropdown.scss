@@ -1,0 +1,87 @@
+.dropdown {
+    position: relative;
+
+    &__placeholder {
+        gap: 0 10px;
+        display: flex;
+        padding: 8px;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 5px;
+        align-items: center;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    }
+
+    &__icon {
+        width: 22px;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    &__options {
+        display: flex;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        z-index: 1;
+        max-width: 300%;
+        overflow: hidden;
+        border-radius: 5px;
+        flex-direction: column;
+        background-color: #ffffff;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.15s linear, opacity 0.1s linear;
+    }
+
+    &__option {
+        &:hover {
+            background-color: #f2f2f2;
+        }
+    }
+
+    &--dropped {
+        .dropdown__options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0px);
+        }
+    }
+}
+
+.dropdown-checkbox {
+    display: flex;
+    padding: 8px;
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+
+    input[type="checkbox"]:checked ~ .dropdown-checkbox__check {
+        svg {
+            transform: scale(1);
+        }
+    }
+
+    &__check {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+        border-radius: 3px;
+        align-items: center;
+        display: inline-flex;
+        border: 1.5px solid #000000;
+
+        svg {
+            transform: scale(0);
+            transition: transform 0.1s linear;
+        }
+    }
+
+    &__label {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+}
