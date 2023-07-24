@@ -11,10 +11,16 @@
 
             </span>
 
+            <span class="burger">
+                <span class="burger-sousage"></span>
+                <span class="burger-sousage"></span>
+                <span class="burger-sousage"></span>
+            </span>
+
             <div class="menu">
                 <NuxtLink to="/" class="menu__item">Задания</NuxtLink>
                 <NuxtLink to="/about" class="menu__item">О проекте</NuxtLink>
-                <Button label="Войти" class="btn--primary"
+                <Button label="Войти" class="btn--primary menu__btn"
                     :icon="{ name: 'octicon:sign-in-16', class: 'btn__icon--right' }" />
             </div>
 
