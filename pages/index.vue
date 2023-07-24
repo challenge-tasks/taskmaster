@@ -8,10 +8,33 @@
                 </div>
 
                 <div class="flex items-center gap-5">
+                    <Dropdown :icon="{ name: 'octicon:sort-desc-24' }" label="Сортировать по">
+                        <template v-slot:options>
+                            <div v-for="group in sortOptions" class="dropdown__group">
+                                <span class="dropdown__options-group">{{ group.groupName }}</span>
+                                <Checkbox 
+                                    v-for="option in group.options" 
+                                    v-model="sortingCheckedValues"
+                                    :customValue="option.value" 
+                                    :label="option.label" 
+                                />
+                            </div>
+                        </template>
+                    </Dropdown>
 
-                    <DropdownCheckbox :icon="{ name: 'octicon:sort-desc-24' }" label="Сортировать по" :options="sortOptions" />
-                    <DropdownRadio @radio-option-select="handleFilterSelect" :icon="{ name: 'octicon:filter-24' }" label="Фильтровать по" :options="filterOptions" />
-
+                    <Dropdown :icon="{ name: 'octicon:filter-24' }" label="Сортировать по">
+                        <template v-slot:options>
+                            <div v-for="group in filterOptions" class="dropdown__group">
+                                <span class="dropdown__options-group">{{ group.groupName }}</span>
+                                <Radio 
+                                    v-for="option in group.options"
+                                    v-model="filterCheckedValue"
+                                    :customValue="option.value"
+                                    :label="option.label"
+                                />
+                            </div>
+                        </template>
+                    </Dropdown>
                 </div>
 
             </div>
@@ -27,7 +50,8 @@
 
 <script setup lang="ts">
 
-const sortModel = ref(null)
+const sortingCheckedValues = ref(['recent'])
+const filterCheckedValue = ref('all')
 
 const cards = reactive([
     {
@@ -114,35 +138,50 @@ const cards = reactive([
 
 const sortOptions = reactive([
     {
-        label: 'Самые новые',
-        value: 'recent'
-    },
-    {
-        label: 'Сложность (сложные первее)',
-        value: 'hard_first'
-    },
-    {
-        label: 'Сложность (легкие первее)',
-        value: 'easier_first'
+        groupName: 'Сложность: ',
+        options: [
+            {
+                label: 'Самые новые',
+                value: 'recent'
+            },
+            {
+                label: 'Сначала лёгкие',
+                value: 'easier_first'
+            },
+            {
+                label: 'Сначала сложные',
+                value: 'hard_first'
+            }
+        ]
     }
 ])
 
 const filterOptions = reactive([
     {
-        label: 'Junior',
-        value: 'junior'
-    },
-    {
-        label: 'Middle',
-        value: 'middle'
-    },
-    {
-        label: 'Senior',
-        value: 'senior'
+        radioGroupName: 'diffculty',
+        groupName: 'Уровень: ',
+        options: [
+            {
+                label: 'Все',
+                value: 'all'
+            },
+            {
+                label: 'Новичок',
+                value: 'newbie'
+            },
+            {
+                label: 'Junior',
+                value: 'junior'
+            },
+            {
+                label: 'Middle',
+                value: 'middle'
+            },
+            {
+                label: 'Senior',
+                value: 'senior'
+            }
+        ]
     }
 ])
-
-function handleFilterSelect(payload: string) {
-    console.log(payload);
-}
 </script>

@@ -38,10 +38,21 @@
         transition: all 0.15s linear, opacity 0.1s linear;
     }
 
-    &__option {
-        &:hover {
-            background-color: #f2f2f2;
+    &__group {
+
+        &:not(:last-child),
+        &:first-child {
+            padding-top: 8px;
+            padding-bottom: 4px;
         }
+    }
+
+    &__options-group {
+        padding: 0 8px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: inline-block;
     }
 
     &--button {

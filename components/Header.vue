@@ -13,7 +13,7 @@
 
             <div class="menu">
                 <NuxtLink to="/" class="menu__item">Задания</NuxtLink>
-                <NuxtLink to="/" class="menu__item">О проекте</NuxtLink>
+                <NuxtLink to="/about" class="menu__item">О проекте</NuxtLink>
                 <Button label="Войти" class="btn--primary"
                     :icon="{ name: 'octicon:sign-in-16', class: 'btn__icon--right' }" />
             </div>

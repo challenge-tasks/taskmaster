@@ -5,11 +5,9 @@
             <Icon :name="icon.name" class="dropdown__icon" :class="icon.class" />
         </span>
 
-        <span class="dropdown__options">
-            <span v-for="option in options" class="dropdown__option">
-                <Checkbox :value="options.value" :label="option.label" />
-            </span>
-        </span>
+        <div class="dropdown__options">
+            <slot name="options" />
+        </div>
     </div>
 </template>
 
@@ -20,10 +18,10 @@ defineProps({
         type: Object,
         required: true
     },
-    label: String,
-    options: {
-        type: Object,
-        required: true
+
+    label: {
+        type: String,
+        required: false
     }
 })
 
