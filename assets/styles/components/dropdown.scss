@@ -10,6 +10,10 @@
         border-radius: 5px;
         align-items: center;
         box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+
+        &:hover {
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px;
+        }
     }
 
     &__icon {
@@ -31,7 +35,7 @@
         border-radius: 5px;
         flex-direction: column;
         background-color: #ffffff;
-        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
         opacity: 0;
         visibility: hidden;
         transform: translateY(-10px);

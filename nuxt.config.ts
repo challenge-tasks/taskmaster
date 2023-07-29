@@ -1,7 +1,10 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
-  css: ['@/assets/styles/global.scss'],
+  css: [
+    'vue-final-modal/style.css',
+    '@/assets/styles/global.scss' 
+  ],
 
   modules: [
     'nuxt-icon',

@@ -1,0 +1,14 @@
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    width: 100%;
+    border: none;
+    max-width: 40%;
+    padding: 30px 20px;
+    border-radius: 5px;
+    background-color: #ffffff;
+}

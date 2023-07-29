@@ -3,6 +3,7 @@
         <div class="mx-auto tm-container">
 
             <div class="mb-8 flex items-center justify-between">
+
                 <div class="flex flex-col">
                     <h2 class="section__title">Задания</h2>
                 </div>
@@ -10,28 +11,20 @@
                 <div class="flex items-center gap-5">
                     <Dropdown :icon="{ name: 'octicon:sort-desc-24' }" label="Сортировать по">
                         <template v-slot:options>
-                            <div v-for="group in sortOptions" class="dropdown__group">
+                            <div v-for="group in sortingOptions" class="dropdown__group">
                                 <span class="dropdown__options-group">{{ group.groupName }}</span>
-                                <Checkbox 
-                                    v-for="option in group.options" 
-                                    v-model="sortingCheckedValues"
-                                    :customValue="option.value" 
-                                    :label="option.label" 
-                                />
+                                <Checkbox v-for="option in group.options" v-model="sortingCheckedValues"
+                                    :customValue="option.value" :label="option.label" />
                             </div>
                         </template>
                     </Dropdown>
 
                     <Dropdown :icon="{ name: 'octicon:filter-24' }" label="Сортировать по">
                         <template v-slot:options>
-                            <div v-for="group in filterOptions" class="dropdown__group">
+                            <div v-for="group in filteringOptions" class="dropdown__group">
                                 <span class="dropdown__options-group">{{ group.groupName }}</span>
-                                <Radio 
-                                    v-for="option in group.options"
-                                    v-model="filterCheckedValue"
-                                    :customValue="option.value"
-                                    :label="option.label"
-                                />
+                                <Radio v-for="option in group.options" v-model="filterCheckedValue"
+                                    :customValue="option.value" :label="option.label" />
                             </div>
                         </template>
                     </Dropdown>
@@ -46,9 +39,13 @@
             </div>
         </div>
     </section>
+
+    <SignInModal />
 </template>
 
 <script setup lang="ts">
+import { sortOptions } from '@/config/sortOptions'
+import { filterOptions } from '@/config/filterOptions'
 
 const sortingCheckedValues = ref(['recent'])
 const filterCheckedValue = ref('all')
@@ -136,52 +133,6 @@ const cards = reactive([
     }
 ])
 
-const sortOptions = reactive([
-    {
-        groupName: 'Сложность: ',
-        options: [
-            {
-                label: 'Самые новые',
-                value: 'recent'
-            },
-            {
-                label: 'Сначала лёгкие',
-                value: 'easier_first'
-            },
-            {
-                label: 'Сначала сложные',
-                value: 'hard_first'
-            }
-        ]
-    }
-])
-
-const filterOptions = reactive([
-    {
-        radioGroupName: 'diffculty',
-        groupName: 'Уровень: ',
-        options: [
-            {
-                label: 'Все',
-                value: 'all'
-            },
-            {
-                label: 'Новичок',
-                value: 'newbie'
-            },
-            {
-                label: 'Junior',
-                value: 'junior'
-            },
-            {
-                label: 'Middle',
-                value: 'middle'
-            },
-            {
-                label: 'Senior',
-                value: 'senior'
-            }
-        ]
-    }
-])
+const sortingOptions = reactive(sortOptions)
+const filteringOptions = reactive(filterOptions)
 </script>

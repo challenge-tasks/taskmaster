@@ -1,11 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
 @import './reset';
 @import './styles';
 
 // Components
+@import './components/form';
 @import './components/menu';
 @import './components/tasks';
+@import './components/modal';
+@import './components/radio';
 @import './components/header';
 @import './components/button';
 @import './components/dropdown';
 @import './components/checkbox';
-@import './components/radio';
