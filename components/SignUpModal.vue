@@ -1,46 +1,52 @@
 <template>
-    <VueFinalModal v-model="isSignUpModalVisible" class="modal" content-class="modal-content">
+    <VueFinalModal v-model="isSignUpModalVisible" overlayTransition="vfm-fade" contentTransition="vfm-fade" :lockScroll="true" class="modal" content-class="modal-content">
         <div class="mb-5 modal-content__header">
             <h2 class="mb-2 font-medium text-center text-xl text-black">Регистрация аккаунта</h2>
-            <p class="max-w-lg text-center mx-auto text-slate-500">Зарегистрируйтесь для того чтобы получить
-                больше возможностей!</p>
+            <p class="max-w-lg text-center mx-auto text-slate-500">Зарегистрируйтесь для того чтобы получить больше возможностей!</p>
         </div>
 
         <div class="mb-6 max-w-sm mx-auto modal-content__body">
-            <label class="form-field" :class="{ 'mb-3': $v.email.$error, 'mb-4': !$v.email.$error }">
+            <label class="mb-4 form-field">
                 <span class="form-label">E-mail</span>
-                <input 
-                    type="email"
-                    v-model="form.email"
-                    @blur="$v.email.$dirty"
-                    autocomplete="one-time-code"
-                    placeholder="Введите E-mail"
-                    class="form-input form-input--email"
-                    :class="{ 'form-input--error': $v.email.$error }"
-                />
-                <span v-if="$v.email.$invalid && $v.email.$error" class="text-red-600 text-xs">{{ $v.email}}</span>
+                    <input 
+                        type="email"
+                        v-model="form.email"
+                        @blur="$v.email.$touch"
+                        autocomplete="one-time-code"
+                        placeholder="Введите E-mail"
+                        class="form-input form-input--email"
+                        :class="{ 'form-input--error': $v.email.$error }"
+                    />
+                    <span v-if="$v.email.$error" class="inline-block mt-2 text-sm text-red-600">{{ $v.email.$errors[0].$message }}</span>
             </label>
 
             <label class="mb-4 form-field">
                 <span class="form-label">Пароль</span>
                 <input 
                     type="password" 
-                    v-model="form.password" 
+                    v-model="form.password"
+                    @blur="$v.password.$touch"
+                    @focus="$v.password.$touch"
                     autocomplete="one-time-code" 
                     placeholder="Введите пароль"
                     class="form-input form-input--password"
+                    :class="{ 'form-input--error': $v.password.$error }"
                 />
+                <span v-if="$v.password.$error" class="inline-block mt-2 text-sm text-red-600">{{ $v.password.$errors[0].$message }}</span>
             </label>
 
             <label class="mb-6 form-field">
                 <span class="form-label">Повторите пароль</span>
                 <input 
                     type="password" 
-                    v-model="form.confirmPassword" 
                     autocomplete="one-time-code"
                     placeholder="Повторите пароль" 
+                    v-model="form.confirmPassword" 
+                    @blur="$v.confirmPassword.$touch"
                     class="form-input form-input--password"
+                    :class="{ 'form-input--error': $v.password.$error }"
                 />
+                <span v-if="$v.confirmPassword.$error" class="inline-block mt-2 text-sm text-red-600">{{ $v.confirmPassword.$errors[0].$message }}</span>
             </label>
 
             <Button @click="authUser" label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{

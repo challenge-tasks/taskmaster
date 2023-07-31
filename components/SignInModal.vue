@@ -1,5 +1,5 @@
 <template>
-    <VueFinalModal v-model="isSignInModalVisible" class="modal" content-class="modal-content">
+    <VueFinalModal v-model="isSignInModalVisible" overlayTransition="vfm-fade" contentTransition="vfm-fade" :lockScroll="true" class="modal" content-class="modal-content">
         <div class="mb-5 modal-content__header">
             <h2 class="mb-2 font-medium text-center text-xl text-black">Вход в аккаунт</h2>
             <p class="max-w-lg text-center mx-auto text-slate-500">Войдите в свой аккаунт для того чтобы получить больше возможностей!</p>
