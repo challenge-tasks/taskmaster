@@ -3,12 +3,17 @@ export default defineNuxtConfig({
 
   css: [
     'vue-final-modal/style.css',
-    '@/assets/styles/global.scss' 
+    '@/assets/styles/global.scss'
   ],
+
+  imports: {
+    dirs: ['stores'],
+  },
 
   modules: [
     'nuxt-icon',
     '@vueuse/nuxt',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]
   ]
 })

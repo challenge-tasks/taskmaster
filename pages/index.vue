@@ -39,16 +39,15 @@
             </div>
         </div>
     </section>
-
-    <SignInModal />
 </template>
 
 <script setup lang="ts">
 import { sortOptions } from '@/config/sortOptions'
 import { filterOptions } from '@/config/filterOptions'
 
-const sortingCheckedValues = ref(['recent'])
+
 const filterCheckedValue = ref('all')
+const sortingCheckedValues = ref(['recent'])
 
 const cards = reactive([
     {

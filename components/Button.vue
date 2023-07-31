@@ -14,8 +14,7 @@ export default {
         },
 
         label: {
-            type: String,
-            required: true
+            type: String
         },
 
         icon: {
