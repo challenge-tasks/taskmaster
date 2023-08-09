@@ -1,0 +1,42 @@
+.socials {
+    gap: 0 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.socials-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s linear;
+
+    &:hover {
+        background-color: #f1f5f9;
+    }
+
+    &__icon {
+        width: 30px;
+        height: 30px;
+        color: #475569;
+        transition: color 0.2s linear;
+    }
+
+    &--telegram {
+        &:hover {
+            .socials-item__icon {
+                color: #259cd8;
+            }
+        }
+    }
+
+    &--discord {
+        &:hover {
+            .socials-item__icon {
+                color: #5562ea;
+            }
+        }
+    }
+}

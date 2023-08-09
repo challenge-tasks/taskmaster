@@ -32,18 +32,76 @@
     }
 }
 
+.burger {
+    width: 30px;
+    height: 20px;
+    display: none;
+    margin-left: auto;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    z-index: 11;
+
+    &__sausage {
+        left: 0;
+        width: 100%;
+        height: 2px;
+        position: absolute;
+        border-radius: 10px;
+        display: inline-block;
+        background-color: #000000;
+        transition: top 0.2s linear, transform 0.2s linear, width 0.2s linear, opacity 0.2s linear, visibility 0.2s linear;
+
+        &:nth-child(1) {
+            top: 0;
+        }
+
+        &:nth-child(3) {
+            bottom: 0;
+        }
+    }
+
+    &--active {
+        .burger__sausage {
+            &:nth-child(1) {
+                top: 50%;
+                transform: translateY(-50%) rotate(45deg);
+            }
+
+            &:nth-child(2) {
+                width: 0;
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            &:nth-child(3) {
+                bottom: 50%;
+                transform: translateY(50%) rotate(-45deg);
+            }
+        }
+    }
+}
+
 @media (max-width: 575px) {
+
+    .burger {
+        display: flex;
+    }
+
     .menu {
         position: fixed;
         top: 0;
-        right: 0;
-        width: 60%;
+        right: -100%;
+        z-index: 1;
+        width: 100%;
         height: 100%;
+        padding: 0 20px;
         align-items: center;
         flex-direction: column;
         justify-content: center;
-        z-index: 1;
         background: #ffffff;
+        transition: all 0.2s linear;
 
         &__item {
             width: 100%;
@@ -62,11 +120,11 @@
                 background-color: #333333;
                 transition: right 0.2s linear;
             }
-    
+
             &:hover {
                 color: #000000;
             }
-    
+
             &:hover::before {
                 right: 0;
             }
@@ -75,6 +133,10 @@
         &__btn {
             width: 50%;
             margin-top: 10px;
+        }
+
+        &--active {
+            right: 0;
         }
     }
 }
