@@ -13,9 +13,9 @@
             </span>
 
             <div class="menu">
-                <NuxtLink to="/" class="menu__item">Задания</NuxtLink>
+                <NuxtLink to="/tasks" class="menu__item">Задания</NuxtLink>
                 <NuxtLink to="/about" class="menu__item">О проекте</NuxtLink>
-                <Button @click="toggleSignInModal" label="Авторизация" class="btn--primary menu__btn" :icon="{ name: 'octicon:person-24', class: 'btn__icon--right' }" />
+                <Button @click="toggleSignInModal" label="Войти" class="btn--primary btn--rounded menu__btn" :icon="{ name: 'octicon:person-24', class: 'btn__icon--right' }" />
             </div>
 
         </div>

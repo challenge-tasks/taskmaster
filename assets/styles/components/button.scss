@@ -9,15 +9,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s linear;
-    background-color: transparent;
-
-    &:hover {
-        background-color: #6a62ff;
-    }
-
-    &:active {
-        background-color: #2f27cc;
-    }
+    // background-color: transparent;
 
     &__label {
         line-height: 1;
@@ -36,6 +28,14 @@
     &--primary {
         background-color: #4f46e5;
 
+        &:hover {
+            background-color: #6a62ff;
+        }
+    
+        &:active {
+            background-color: #2f27cc;
+        }
+
         .btn__label {
             color: #ffffff;
         }
@@ -48,7 +48,11 @@
     }
 
     &--rounded {
-        padding: 0;
-        border-radius: 50%;
+        border-radius: 30px;
+
+        .btn__icon {
+            width: 20px;
+            height: 20px;
+        }
     }
 }

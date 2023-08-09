@@ -1,40 +1,37 @@
 <template>
-    <section class="my-10">
-        <div class="mx-auto tm-container">
-            <div class="intro">
-
-                <div class="intro__info">
-                    <h1 class="mb-3 font-medium text-3xl">На пути к <span class="text-indigo-600">совершенствованию</span> навыков</h1>
-                    <p class="mb-4 text-lg text-slate-500">
-                        Платформа, где ваши навыки обретают новое измерение. Независимо от
-                        вашего уровня опыта, здесь вы найдете задачи на меру вашим амбициям. 
-                        <br />
-                        Прокачайте свои скиллы, решая задачи разной сложности, и идите к своим целям в мире разработки!
-                    </p>
-                    <Button @click="toggleSignUpModal" label="Зарегистрироваться" class="py-3 btn--rounded btn--primary" :icon="{ name: 'octicon:person-add-24', class: 'btn__icon--right' }" />
-                </div>
-
-                <div class="intro__img">
-                    <img src="~/assets/images/trophy-dynamic-premium.png" />
-                </div>
-
-            </div>
-        </div>
-    </section>
-
     <section class="section">
         <div class="mx-auto tm-container">
-            <div class="tasks relative">
-                <NuxtLink :to="'/task/' + card.id" v-for="card in cards" class="tasks__item">
-                    <TaskCard :data="card" />
-                </NuxtLink>
-                <div class="spoiler-block"></div>
+            <div class="mb-8 flex items-center justify-between">
+
+                <div class="flex flex-col">
+                    <h2 class="section__title">Задания</h2>
+                </div>
+
+                <div class="flex items-center gap-5">
+                    <Dropdown :icon="{ name: 'octicon:sort-desc-24' }" label="Сортировать по">
+                        <template v-slot:options>
+                            <div v-for="group in sortingOptions" class="dropdown__group">
+                                <span class="dropdown__options-group">{{ group.groupName }}</span>
+                                <Checkbox v-for="option in group.options" v-model="sortingCheckedValues" :customValue="option.value" :label="option.label" />
+                            </div>
+                        </template>
+                    </Dropdown>
+
+                    <Dropdown :icon="{ name: 'octicon:filter-24' }" label="Сортировать по">
+                        <template v-slot:options>
+                            <div v-for="group in filteringOptions" class="dropdown__group">
+                                <span class="dropdown__options-group">{{ group.groupName }}</span>
+                                <Radio v-for="option in group.options" v-model="filterCheckedValue" :customValue="option.value" :label="option.label" />
+                            </div>
+                        </template>
+                    </Dropdown>
+                </div>
+
             </div>
 
-            <div class="mt-5 flex justify-center">
-                <NuxtLink to="/tasks" class="d-block bg-green-300 py-3 btn btn--primary btn--rounded menu__btn">
-                    <span class="btn__label">Посмотреть все задания</span>
-                    <Icon name="octicon:tasklist-24" class="btn__icon btn__icon--right" />
+            <div class="tasks">
+                <NuxtLink to="https://t.me/aslbekkucharov" v-for="card in cards" class="tasks__item">
+                    <TaskCard :data="card" />
                 </NuxtLink>
             </div>
         </div>
@@ -42,6 +39,14 @@
 </template>
 
 <script setup lang="ts">
+import { sortOptions } from '@/config/sortOptions'
+import { filterOptions } from '@/config/filterOptions'
+
+const filterCheckedValue = ref('all')
+const sortingCheckedValues = ref(['recent'])
+const sortingOptions = reactive(sortOptions)
+const filteringOptions = reactive(filterOptions)
+
 const cards = reactive([
     {
         id: 1,
@@ -106,8 +111,22 @@ const cards = reactive([
         stacks: ["PHP", "Laravel", "MySQL"],
         difficulty: "Junior",
         image: "https://res.cloudinary.com/dz209s6jk/image/upload/f_auto,q_auto,w_475/Challenges/lpwvfibpdyycvjpukkec.jpg",
+    },
+    {
+        id: 9,
+        name: "Music Streaming Service",
+        description: "A music streaming platform with user playlists, song recommendations, and user interactions. It should have a music player and support for different genres.",
+        stacks: ["Java", "Spring Boot", "MongoDB"],
+        difficulty: "Middle",
+        image: "https://res.cloudinary.com/dz209s6jk/image/upload/f_auto,q_auto,w_475/Challenges/vxhhu11tdpmyw2srepdk.jpg",
+    },
+    {
+        id: 10,
+        name: "Task Manager",
+        description: "A task management application with priority levels and deadlines. Users can create, assign, and track tasks. It should have user authentication and notifications.",
+        stacks: ["Python", "Flask", "SQLite"],
+        difficulty: "Senior",
+        image: "https://res.cloudinary.com/dz209s6jk/image/upload/f_auto,q_auto,w_475/Challenges/abbzt6kmkawmpbj7evxx.jpg",
     }
 ])
-
-const { toggleSignUpModal } = useAuthentication()
 </script>
