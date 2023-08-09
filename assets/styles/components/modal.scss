@@ -18,3 +18,15 @@
         max-width: 30%;
     }
 }
+
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 70%;
+    }
+}
+
+@media (max-width: 575px) {
+    .modal-content {
+        max-width: 95%;
+    }
+}

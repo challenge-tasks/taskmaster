@@ -4,14 +4,15 @@
             <div class="intro">
 
                 <div class="intro__info">
-                    <h1 class="mb-3 font-medium text-3xl">На пути к <span class="text-indigo-600">совершенствованию</span> навыков</h1>
-                    <p class="mb-4 text-lg text-slate-500">
+                    <h1 class="mb-3 intro__title">На пути к <span class="text-indigo-600">совершенствованию</span> навыков</h1>
+                    <p class="mb-4 intro__text text-slate-500">
                         Платформа, где ваши навыки обретают новое измерение. Независимо от
-                        вашего уровня опыта, здесь вы найдете задачи на меру вашим амбициям. 
+                        вашего уровня опыта, здесь вы найдете задачи на меру вашим амбициям.
                         <br />
                         Прокачайте свои скиллы, решая задачи разной сложности, и идите к своим целям в мире разработки!
                     </p>
-                    <Button @click="toggleSignUpModal" label="Зарегистрироваться" class="py-3 btn--rounded btn--primary" :icon="{ name: 'octicon:person-add-24', class: 'btn__icon--right' }" />
+                    <Button @click="toggleSignUpModal" label="Зарегистрироваться" class="py-3 btn--rounded btn--primary"
+                        :icon="{ name: 'octicon:person-add-24', class: 'btn__icon--right' }" />
                 </div>
 
                 <div class="intro__img">
