@@ -15,7 +15,8 @@
             <div class="menu" :class="{ 'menu--active': isMenuActive }">
                 <NuxtLink to="/tasks" class="menu__item">Задания</NuxtLink>
                 <NuxtLink to="/about" class="menu__item">О проекте</NuxtLink>
-                <Button @click="toggleSignInModal" label="Войти" class="btn--primary btn--rounded menu__btn" :icon="{ name: 'octicon:person-24', class: 'btn__icon--right' }" />
+                <Button @click="toggleSignInModal" v-bind="signInModalToggleButtonConfig" />
+                <Socials />
             </div>
 
         </div>
@@ -25,6 +26,12 @@
 <script setup lang="ts">
 
 const isMenuActive = ref(false)
+
+const signInModalToggleButtonConfig = {
+    label: "Войти", 
+    class: "btn--primary btn--rounded menu__btn",
+    icon: { name: 'octicon:person-24', class: 'btn__icon--right' }
+}
 
 function toggleMenu() {
     isMenuActive.value = !isMenuActive.value

@@ -4,8 +4,6 @@
         <main>
             <slot />
         </main>
-        <Footer />
-        
         <SignInModal />
         <SignUpModal />
     </div>
