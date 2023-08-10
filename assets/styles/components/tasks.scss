@@ -77,28 +77,6 @@
         transition: color 0.2s linear;
     }
 
-    &__difficulty {
-        line-height: 1;
-        font-size: 12px;
-        padding: 4px 6px;
-        color: #ffffff;
-        font-weight: 500;
-        border-radius: 5px;
-        display: inline-block;
-
-        &[data-difficulty="1"] {
-            background-color: #4ade80;
-        }
-
-        &[data-difficulty="2"] {
-            background-color: #fcd34d;
-        }
-
-        &[data-difficulty="3"] {
-            background-color: #f87171;
-        }
-    }
-
     &__tags {
         gap: 8px;
         display: flex;
@@ -122,6 +100,32 @@
     &__bottom {
         display: block;
         padding: 10px 15px 20px;
+    }
+}
+
+.task-difficulty {
+    line-height: 1;
+    font-size: 12px;
+    padding: 4px 6px;
+    color: #ffffff;
+    font-weight: 500;
+    border-radius: 5px;
+    display: inline-block;
+
+    &--big {
+        font-size: 15px;
+    }
+
+    &[data-difficulty="1"] {
+        background-color: #4ade80;
+    }
+
+    &[data-difficulty="2"] {
+        background-color: #fcd34d;
+    }
+
+    &[data-difficulty="3"] {
+        background-color: #f87171;
     }
 }
 

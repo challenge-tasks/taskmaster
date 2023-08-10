@@ -8,8 +8,7 @@
 
             <div class="mb-2 flex items-center justify-between gap-5">
                 <h4 class="task-card__title">{{ data.name }}</h4>
-                <span class="task-card__difficulty" :data-difficulty="getDifficulty(data.difficulty)">{{ data.difficulty
-                }}</span>
+                <span class="task-difficulty" :data-difficulty="getDifficulty(data.difficulty)">{{ data.difficulty }}</span>
             </div>
 
             <p class="task-card__excerpt">{{ trimDescription(data.description) }}</p>

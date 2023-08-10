@@ -1,7 +1,6 @@
 <template>
     <footer class="footer">
         <div class="mx-auto tm-container">
-
             <div class="socials">
                 <a href="https://t.me/+sNukVGsJnzFjYzcy" class="socials-item socials-item--telegram">
                     <Icon name="akar-icons:telegram-fill" class="socials-item__icon" />

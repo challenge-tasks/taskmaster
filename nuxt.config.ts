@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-icon',
     '@nuxt/image',
+    'nuxt-swiper',
     '@vueuse/nuxt',
     '@nuxtjs/tailwindcss',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]

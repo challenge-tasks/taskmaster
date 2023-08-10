@@ -9,13 +9,15 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s linear;
-    // background-color: transparent;
 
     &__label {
         line-height: 1;
+        white-space: nowrap;
     }
 
     &__icon {
+        flex-shrink: 0;
+
         &--right {
             margin-left: 10px;
         }
