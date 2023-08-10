@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'nuxt-swiper',
     '@vueuse/nuxt',
+    '@vee-validate/nuxt',
     '@nuxtjs/tailwindcss',
     '@morev/vue-transitions/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]

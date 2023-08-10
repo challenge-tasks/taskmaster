@@ -1,5 +1,5 @@
 <template>
-    <VueFinalModal v-model="isSignInModalVisible" overlayTransition="vfm-fade" contentTransition="vfm-fade" :lockScroll="true" class="modal" content-class="modal-content">
+    <VueFinalModal v-model="isSignInModalVisible" overlayTransition="vfm-fade" contentTransition="vfm-fade" @closed="handleModalClose" :lockScroll="true" class="modal" content-class="modal-content">
         <div class="mb-5 modal-content__header">
             <h2 class="mb-2 font-medium text-center text-xl text-black">Вход в аккаунт</h2>
             <p class="max-w-lg text-center mx-auto text-slate-500">Войдите в свой аккаунт для того чтобы получить больше возможностей!</p>
@@ -55,9 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { useVuelidate } from '@vuelidate/core'
 import { VueFinalModal } from 'vue-final-modal'
-import { required, email, sameAs, minLength, helpers } from '@vuelidate/validators'
 
 const form = reactive({
     email: '',
@@ -66,18 +64,15 @@ const form = reactive({
 
 const rules = computed(() => {
     return {
-        email: { 
-            required: helpers.withMessage('Поле Email обязательна к заполнению', required), 
-            email: helpers.withMessage('Неправильный формат Email', email)
-        },
-        password: { 
-            required: helpers.withMessage('Поле пароля обязательна к заполнению', required), 
-            minLength: helpers.withMessage('Длина пароля должна быть больше 6 символов', minLength(6))
-        }
+        email: validationRules.email,
+        password: validationRules.password
     }
 })
 
-const $v = useVuelidate(rules, form)
+function handleModalClose() {
+    eraseFilledData(form)
+    $v.$reset()
+}
 
 const authStore = useAuthModals()
 const { isSignInModalVisible } = storeToRefs(authStore)
