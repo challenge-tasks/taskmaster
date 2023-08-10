@@ -6,53 +6,55 @@
         </div>
 
         <div class="mb-6 max-w-sm mx-auto modal-content__body">
-            <label class="mb-4 form-field">
+            <label class="mb-3 form-field">
                 <span class="form-label">E-mail</span>
                     <input 
                         type="email"
                         v-model="form.email"
-                        @blur="$v.email.$touch"
+                        @change="$v.email.$touch"
                         autocomplete="one-time-code"
                         placeholder="Введите E-mail"
                         class="form-input form-input--email"
                         :class="{ 'form-input--error': $v.email.$error }"
                     />
-                    <span v-if="$v.email.$error" class="inline-block mt-2 text-sm text-red-600">{{ $v.email.$errors[0].$message }}</span>
+                    <transition-fade easing="linear">
+                        <span  v-if="$v.email.$error" class="inline-block text-xs text-red-600">{{ $v.email.$errors[0].$message }}</span>
+                    </transition-fade>
             </label>
 
-            <label class="mb-4 form-field">
+            <label class="mb-3 form-field">
                 <span class="form-label">Пароль</span>
                 <input 
                     type="password" 
                     v-model="form.password"
-                    @blur="$v.password.$touch"
-                    @focus="$v.password.$touch"
+                    @change="$v.password.$touch"
                     autocomplete="one-time-code" 
                     placeholder="Введите пароль"
                     class="form-input form-input--password"
                     :class="{ 'form-input--error': $v.password.$error }"
                 />
-                <span v-if="$v.password.$error" class="inline-block mt-2 text-sm text-red-600">{{ $v.password.$errors[0].$message }}</span>
+                <transition-fade easing="linear">
+                    <span v-if="$v.password.$error" class="inline-block text-xs text-red-600">{{ $v.password.$errors[0].$message }}</span>
+                </transition-fade>
             </label>
 
-            <label class="mb-6 form-field">
+            <label class="mb-3 form-field">
                 <span class="form-label">Повторите пароль</span>
                 <input 
                     type="password" 
                     autocomplete="one-time-code"
                     placeholder="Повторите пароль" 
                     v-model="form.confirmPassword" 
-                    @blur="$v.confirmPassword.$touch"
+                    @change="$v.confirmPassword.$touch"
                     class="form-input form-input--password"
-                    :class="{ 'form-input--error': $v.password.$error }"
+                    :class="{ 'form-input--error': $v.confirmPassword.$error }"
                 />
-                <span v-if="$v.confirmPassword.$error" class="inline-block mt-2 text-sm text-red-600">{{ $v.confirmPassword.$errors[0].$message }}</span>
+                <transition-fade easing="linear">
+                    <span v-if="$v.confirmPassword.$error" class="inline-block text-xs text-red-600">{{ $v.confirmPassword.$errors[0].$message }}</span>
+                </transition-fade>
             </label>
 
-            <Button @click="authUser" label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{
-                class: 'btn__icon--right',
-                name: 'octicon:person-add-24'
-            }" />
+            <Button @click="authUser" label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{ class: 'btn__icon--right', name: 'octicon:person-add-24' }" />
         </div>
 
         <div class="flex justify-center">
@@ -92,7 +94,7 @@ const rules = computed(() => {
 
 const $v = useVuelidate(rules, form)
 
-const authStore = useAuthentication()
+const authStore = useAuthModals()
 const { isSignUpModalVisible } = storeToRefs(authStore)
 
 async function authUser() { }

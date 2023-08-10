@@ -1,4 +1,4 @@
-export const useAuthentication = defineStore('auth', () => {
+export const useAuthModals = defineStore('authModal', () => {
 
     let isSignInModalVisible = ref(false)
     let isSignUpModalVisible = ref(false)

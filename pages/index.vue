@@ -115,5 +115,5 @@ const cards = reactive([
     }
 ])
 
-const { toggleSignUpModal } = useAuthentication()
+const { toggleSignUpModal } = useAuthModals()
 </script>

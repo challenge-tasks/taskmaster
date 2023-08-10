@@ -9,16 +9,34 @@
             <div class="mb-4 form-field">
                 <label>
                     <span class="form-label">E-mail</span>
-                    <input type="email" v-model="form.email" autocomplete="one-time-code" placeholder="Введите E-mail"
-                        class="form-input form-input--email">
+                    <input 
+                        type="email" 
+                        v-model="form.email" 
+                        @change="$v.email.$touch"
+                        autocomplete="one-time-code" 
+                        placeholder="Введите E-mail"
+                        class="form-input form-input--email"
+                    />
+                    <transition-fade easing="linear">
+                        <span  v-if="$v.email.$error" class="inline-block text-xs text-red-600">{{ $v.email.$errors[0].$message }}</span>
+                    </transition-fade>
                 </label>
             </div>
            
             <div class="mb-2 form-field">
                 <label>
                     <span class="form-label">Пароль</span>
-                    <input type="password" v-model="form.password" autocomplete="one-time-code" placeholder="Введите пароль"
-                        class="form-input form-input--password">
+                    <input 
+                        type="password" 
+                        v-model="form.password"
+                        @change="$v.password.$touch"
+                        autocomplete="one-time-code" 
+                        placeholder="Введите пароль"
+                        class="form-input form-input--password"
+                    />
+                    <transition-fade easing="linear">
+                        <span v-if="$v.password.$error" class="inline-block text-xs text-red-600">{{ $v.password.$errors[0].$message }}</span>
+                    </transition-fade>
                 </label>
             </div>
 
@@ -26,15 +44,7 @@
                 <NuxtLink to="/" class="text-blue-700 text-sm">Забыли пароль?</NuxtLink>
             </div>
 
-            <Button 
-                @click="authUser" 
-                label="Войти"
-                class="py-3 w-full btn btn--primary"
-                :icon="{ 
-                    class: 'btn__icon--right',
-                    name: 'solar:login-2-outline' 
-                }"
-            />
+            <Button  @click="authUser"  label="Войти" class="py-3 w-full btn btn--primary" :icon="{  class: 'btn__icon--right', name: 'solar:login-2-outline' }" />
         </div>
 
         <div class="flex justify-center">
@@ -45,14 +55,31 @@
 </template>
 
 <script setup lang="ts">
+import { useVuelidate } from '@vuelidate/core'
 import { VueFinalModal } from 'vue-final-modal'
+import { required, email, sameAs, minLength, helpers } from '@vuelidate/validators'
 
 const form = reactive({
     email: '',
     password: ''
 })
 
-const authStore = useAuthentication()
+const rules = computed(() => {
+    return {
+        email: { 
+            required: helpers.withMessage('Поле Email обязательна к заполнению', required), 
+            email: helpers.withMessage('Неправильный формат Email', email)
+        },
+        password: { 
+            required: helpers.withMessage('Поле пароля обязательна к заполнению', required), 
+            minLength: helpers.withMessage('Длина пароля должна быть больше 6 символов', minLength(6))
+        }
+    }
+})
+
+const $v = useVuelidate(rules, form)
+
+const authStore = useAuthModals()
 const { isSignInModalVisible } = storeToRefs(authStore)
 
 async function authUser() {}

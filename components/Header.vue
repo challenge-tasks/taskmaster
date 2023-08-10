@@ -15,7 +15,11 @@
             <div class="menu" :class="{ 'menu--active': isMenuActive }">
                 <NuxtLink to="/tasks" class="menu__item">Задания</NuxtLink>
                 <NuxtLink to="/about" class="menu__item">О проекте</NuxtLink>
+                
                 <Button @click="toggleSignInModal" v-bind="signInModalToggleButtonConfig" />
+
+
+                
                 <Socials />
             </div>
 
@@ -43,6 +47,6 @@ function toggleMenu() {
     })
 }
 
-const { toggleSignInModal } = useAuthentication()
+const { toggleSignInModal } = useAuthModals()
 
 </script>

@@ -40,8 +40,8 @@
     }
 
     &--error {
-        border: 1px solid #fe8686;
-        box-shadow: 0 0 0 0.25rem rgba(253, 13, 13, 0.25);
+        border: 1px solid #fe8686 !important;
+        box-shadow: 0 0 0 0.25rem rgba(253, 13, 13, 0.25) !important;
     }
 
     &--email {

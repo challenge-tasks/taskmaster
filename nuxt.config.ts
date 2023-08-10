@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     'nuxt-swiper',
     '@vueuse/nuxt',
     '@nuxtjs/tailwindcss',
+    '@morev/vue-transitions/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]
   ]
 })
