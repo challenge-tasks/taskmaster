@@ -11,8 +11,7 @@
                         <br />
                         Прокачайте свои скиллы, решая задачи разной сложности, и идите к своим целям!
                     </p>
-                    <Button @click="toggleSignUpModal" label="Зарегистрироваться" class="py-3 btn--rounded btn--primary"
-                        :icon="{ name: 'octicon:person-add-24', class: 'btn__icon--right' }" />
+                    <Button @click="toggleSignUpModal" label="Зарегистрироваться" class="py-3 btn--rounded btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
                 </div>
 
                 <div class="intro__img">

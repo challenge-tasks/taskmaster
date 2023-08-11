@@ -34,7 +34,7 @@ const isMenuActive = ref(false)
 const signInModalToggleButtonConfig = {
     label: "Войти", 
     class: "btn--primary btn--rounded menu__btn",
-    icon: { name: 'octicon:person-24', class: 'btn__icon--right' }
+    icon: { name: 'octicon:person-24' }
 }
 
 function toggleMenu() {

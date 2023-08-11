@@ -7,6 +7,7 @@
     border-radius: 5px;
     display: inline-flex;
     align-items: center;
+    gap: 0 10px;
     justify-content: center;
     transition: all 0.2s linear;
 
@@ -18,13 +19,13 @@
     &__icon {
         flex-shrink: 0;
 
-        &--right {
-            margin-left: 10px;
-        }
+        // &--right {
+        //     margin-left: 10px;
+        // }
 
-        &--left {
-            margin-right: 10px;
-        }
+        // &--left {
+        //     margin-right: 10px;
+        // }
     }
 
     &--primary {

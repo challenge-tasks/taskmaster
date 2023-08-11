@@ -1,18 +1,9 @@
-import * as yup from "yup"
+import { string, ref, object } from "yup"
 
-export const validationRules = {
-    email: {
-        required: yup.string().required('Поле Email обязательно к заполнению'),
-        email: yup.string().email('Неправильный формат Email')
-    },
+export const validationRules = object().shape({
+    email: string().email('Неправильный формат Email').required('Поле Email обязательно к заполнению'),
 
-    password: {
-        required: yup.string().required('Поле пароля обязательно к заполнению'),
-        minLength: yup.string().min(6, 'Длина пароля должна быть больше 6 символов')
-    },
+    password: string().min(6, 'Длина пароля должна быть больше 6 символов').required('Поле пароля обязательно к заполнению'),
 
-    confirmPassword: {
-        required: yup.string().required('Поле повторного пароля обязательно к заполнению'),
-        sameAs: yup.string().oneOf([yup.ref('password')], 'Пароли не совпадают')
-    }
-}
+    confirmPassword: string().oneOf([ref('password')], 'Пароли не совпадают').required('Поле повторного пароля обязательно к заполнению')
+})
