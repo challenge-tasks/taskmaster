@@ -1,13 +1,13 @@
 <template>
     <section class="section">
         <div class="mx-auto tm-container">
-            <div class="mb-8 flex items-center justify-between">
+            <div class="mb-4 sm:mb-8 gap-5 flex flex-wrap items-center justify-between">
 
                 <div class="flex flex-col">
-                    <h2 class="section__title">Задания</h2>
+                    <h2 class="section__title">Все задания</h2>
                 </div>
 
-                <div class="flex items-center gap-5">
+                <div class="ml-auto sm:ml-0 flex items-center gap-5">
                     <Dropdown :icon="{ name: 'octicon:sort-desc-24' }" label="Сортировать по">
                         <template v-slot:options>
                             <div v-for="group in sortingOptions" class="dropdown__group">
@@ -41,6 +41,10 @@
 <script setup lang="ts">
 import { sortOptions } from '@/config/sortOptions'
 import { filterOptions } from '@/config/filterOptions'
+
+useHead({
+    title: 'Все задания'
+})
 
 const filterCheckedValue = ref('all')
 const sortingCheckedValues = ref(['recent'])

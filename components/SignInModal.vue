@@ -37,10 +37,13 @@
             <Button type="submit"  label="Войти" class="py-3 w-full btn btn--primary" :icon="{ name: 'solar:login-2-outline' }" />
         </Form>
 
-        <div class="flex justify-center">
+        <div class="mb-4 flex justify-center">
             <span class="mr-1 text-sm text-slate-500">Все ещё нет аккаунта?</span>
             <button @click="authStore.toggleSignUpModal" class="text-blue-700 text-sm">Зарегистрироваться</button>
         </div>
+
+        <AuthOptions />
+
     </VueFinalModal>
 </template>
 

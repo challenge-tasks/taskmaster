@@ -124,6 +124,21 @@
     }
 }
 
+.signin-option {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f5f9;
+
+    .icon {
+        width: 25px;
+        height: 25px;
+    }
+}
+
 @media (max-width: 1440px) {
     .tm-container {
         padding: 0 15px;
@@ -212,6 +227,12 @@
 
         &__text {
             font-size: 16px;
+        }
+    }
+
+    .section {
+        &__title {
+            font-size: 20px;
         }
     }
 

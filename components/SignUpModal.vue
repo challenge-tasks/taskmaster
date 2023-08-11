@@ -45,10 +45,12 @@
             <Button label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
         </Form>
 
-        <div class="flex justify-center">
+        <div class="mb-4 flex justify-center">
             <span class="mr-1 text-sm text-slate-500">Уже есть аккаунт?</span>
             <button @click="authModals.toggleSignInModal" class="text-blue-700 text-sm">Войти</button>
         </div>
+
+        <AuthOptions />
     </VueFinalModal>
 </template>
 
