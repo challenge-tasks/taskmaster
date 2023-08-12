@@ -18,3 +18,9 @@ export interface FilterOptions {
     groupName?: string,
     options: Array<FilterOption>
 }
+
+export interface AuthPayload {
+    username?: string
+    email: string
+    password: string
+}

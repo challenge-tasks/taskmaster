@@ -42,7 +42,7 @@
                 </transition-slide>
             </div>
 
-            <Button label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
+            <Button @click="handleSignupFormSubmit" label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
         </Form>
 
         <div class="mb-4 flex justify-center">
@@ -55,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, mixed } from 'yup'
 import { VueFinalModal } from 'vue-final-modal'
 
 const form = reactive({
@@ -67,10 +66,18 @@ const form = reactive({
 const rules = validationRules
 
 const authModals = useAuthModals()
+const { createUser } = useUserAuth()
+
 const { isSignUpModalVisible } = storeToRefs(authModals)
 
-async function handleSignupFormSubmit(values: object) {
-    console.log(values)
+async function handleSignupFormSubmit() {
+    const payload = {
+        email: form.email,
+        username: form.email, // Should be removed in future
+        password: form.password
+    }
+
+    createUser(payload)
 }
 
 </script>

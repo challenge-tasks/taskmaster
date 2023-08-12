@@ -14,6 +14,13 @@ export default defineNuxtConfig({
     dirs: ['stores'],
   },
 
+  runtimeConfig: {
+    public: {
+      baseUrl: process.env.BASE_URL,
+      apiBaseUrl: process.env.API_BASE_URL
+    }
+  },
+
   modules: [
     'nuxt-icon',
     '@nuxt/image',

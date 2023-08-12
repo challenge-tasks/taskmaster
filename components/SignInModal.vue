@@ -34,7 +34,7 @@
                 <NuxtLink to="/" class="text-blue-700 text-sm">Забыли пароль?</NuxtLink>
             </div>
 
-            <Button type="submit"  label="Войти" class="py-3 w-full btn btn--primary" :icon="{ name: 'solar:login-2-outline' }" />
+            <Button @click="handleSignInFormSubmit" label="Войти" class="py-3 w-full btn btn--primary" :icon="{ name: 'solar:login-2-outline' }" />
         </Form>
 
         <div class="mb-4 flex justify-center">
@@ -58,8 +58,12 @@ const form = reactive({
 const rules = validationRules
 
 const authStore = useAuthModals()
+const { signIn } = useUserAuth()
+
 const { isSignInModalVisible } = storeToRefs(authStore)
 
-async function handleSignInFormSubmit() {}
+async function handleSignInFormSubmit() {
+    signIn({ email: form.email, password: form.password })
+}
 
 </script>
