@@ -1,29 +1,62 @@
-import { AuthPayload } from "types"
+import { AuthPayload, AuthResponse } from "types"
 
 export const useUserAuth = defineStore('userAuth', () => {
 
+    const token = useCookie('token')
     const config = useRuntimeConfig()
+    const isAuthenticated = ref(false)
 
-    const signUpUrl = config.public.apiBaseUrl + '/register'
-    const signInUrl = config.public.apiBaseUrl + '/login'
-
-    function signUp(payload: AuthPayload) {
-        useFetch(signUpUrl, {
-            method: 'POST',
-            body: payload
-        })
+    if (token.value) {
+        isAuthenticated.value = true
     }
 
-    function signIn(payload: AuthPayload) {
-        useFetch(signInUrl, {
+    const { hideSignUpModal, hideSignInModal } = useAuthModals()
+
+    async function signUp(payload: AuthPayload) {
+
+        const response = await useFetch<AuthResponse>(config.public.apiBaseUrl + '/register', {
+            method: 'POST',
+            body: payload,
+            server: false
+        })
+
+        if (response.status.value === 'success') {
+            
+            const token = useCookie('token')
+            token.value = response.data.value?.data.token
+            isAuthenticated.value = true
+            
+            hideSignUpModal()
+        }
+
+        return response
+    }
+
+    async function signIn(payload: AuthPayload) {
+        
+        const response = useFetch<AuthResponse>(config.public.apiBaseUrl + '/login', {
             method: 'POST',
             body: payload
         })
+
+        console.log(response);
+
+        if (response.status.value === 'success') {
+            
+            const token = useCookie('token')
+            token.value = response.data.value?.data.token
+            isAuthenticated.value = true
+            
+            hideSignInModal()
+        }
+
+        return response
     }
 
     return {
         signUp,
-        signIn
+        signIn,
+        isAuthenticated
     }
 })
 

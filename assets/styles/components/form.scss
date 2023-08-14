@@ -50,6 +50,14 @@
         background-image: url('/assets/icons/email.svg');
     }
 
+    &--username {
+        padding-top: 0px;
+        padding-left: 35px;
+        background-size: 25px 22px;
+        background-position: 5px center;
+        background-image: url('/assets/icons/at.svg');
+    }
+
     &--password {
         padding-top: 0px;
         padding-left: 35px;

@@ -13,11 +13,21 @@ export const useAuthModals = defineStore('authModal', () => {
         isSignUpModalVisible.value = !isSignUpModalVisible.value
     }
 
+    function hideSignUpModal() {
+        isSignUpModalVisible.value = false
+    }
+    
+    function hideSignInModal() {
+        isSignUpModalVisible.value = false
+    }
+
     return { 
         isSignInModalVisible, 
         isSignUpModalVisible,
         toggleSignInModal, 
-        toggleSignUpModal 
+        toggleSignUpModal, 
+        hideSignUpModal,
+        hideSignInModal
     }
 })
 

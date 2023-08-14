@@ -5,5 +5,5 @@ export const validationRules = object().shape({
 
     password: string().min(6, 'Длина пароля должна быть больше 6 символов').required('Поле пароля обязательно к заполнению'),
 
-    confirmPassword: string().oneOf([ref('password')], 'Пароли не совпадают').required('Поле повторного пароля обязательно к заполнению')
+    username: string().min(5, 'Длина имени пользователя должно быть больше 5 символов').required('Имя пользователя обязательно')
 })

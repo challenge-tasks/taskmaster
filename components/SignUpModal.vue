@@ -19,6 +19,17 @@
             </div>
 
             <div class="mb-3">
+                <span class="form-label">Имя пользователя</span>
+                <Field v-model="form.username" v-slot="{ field, meta }" :rules="rules.fields.username" name="username">
+                    <input type="text" v-bind="field"  placeholder="Придумайте имя пользователя" class="form-input form-input--username" :class="{ 'form-input--error': meta.touched && !meta.valid }">
+                </Field>
+                
+                <transition-slide>
+                    <ErrorMessage name="username" class="text-xs text-red-500" />
+                </transition-slide>
+            </div>
+
+            <div class="mb-3">
                 <span class="form-label">Пароль</span>
                 
                 <Field v-model="form.password" v-slot="{ field, meta }" :rules="rules.fields.password" name="password">
@@ -30,17 +41,7 @@
                 </transition-slide>
             </div>
 
-            <div class="mb-5">
-                <span class="form-label">Повторите пароль</span>
-                
-                <Field v-model="form.confirmPassword" v-slot="{ field, meta }" :rules="rules.fields.confirmPassword" name="confirm-password">
-                    <input type="password" v-bind="field" placeholder="Повторите пароль" class="form-input form-input--password" :class="{ 'form-input--error': meta.touched && !meta.valid }" />
-                </Field>
-                
-                <transition-slide>
-                    <ErrorMessage name="confirm-password" class="text-xs text-red-500" />
-                </transition-slide>
-            </div>
+            <span class="text-xs text-red-500"></span>
 
             <Button @click="handleSignupFormSubmit" label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
         </Form>
@@ -55,29 +56,37 @@
 </template>
 
 <script setup lang="ts">
+import { AsyncData } from 'nuxt/app'
+import { AuthResponse } from 'types'
 import { VueFinalModal } from 'vue-final-modal'
 
 const form = reactive({
     email: '',
-    password: '',
-    confirmPassword: ''
+    username: '',
+    password: ''
 })
 
 const rules = validationRules
 
+const auth = reactive({
+    response: {} as AsyncData<AuthResponse, Error>
+})
+
+const { signUp } = useUserAuth()
 const authModals = useAuthModals()
-const { createUser } = useUserAuth()
 
 const { isSignUpModalVisible } = storeToRefs(authModals)
 
 async function handleSignupFormSubmit() {
     const payload = {
         email: form.email,
-        username: form.email, // Should be removed in future
+        username: form.username,
         password: form.password
     }
 
-    createUser(payload)
+    auth.response = await signUp(payload)
 }
 
+const hasServerAuthError = computed(() => !!auth.response.error)
+ 
 </script>

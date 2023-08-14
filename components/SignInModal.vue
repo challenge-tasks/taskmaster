@@ -57,13 +57,13 @@ const form = reactive({
 
 const rules = validationRules
 
-const authStore = useAuthModals()
 const { signIn } = useUserAuth()
+const authStore = useAuthModals()
 
 const { isSignInModalVisible } = storeToRefs(authStore)
 
 async function handleSignInFormSubmit() {
-    signIn({ email: form.email, password: form.password })
+    await signIn({ email: form.email, password: form.password })
 }
 
 </script>

@@ -24,3 +24,19 @@ export interface AuthPayload {
     email: string
     password: string
 }
+
+export interface User {
+    avatar: string
+    created_at: number
+    email: string
+    id: number
+    updated_at: number
+    username: string
+}
+
+export interface AuthResponse {
+    data: {
+        token: string
+        user: User
+    }
+}
