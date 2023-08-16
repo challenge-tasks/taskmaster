@@ -18,7 +18,9 @@ export const useAuthModals = defineStore('authModal', () => {
     }
     
     function hideSignInModal() {
-        isSignUpModalVisible.value = false
+        console.log('Sign in modal');
+        
+        isSignInModalVisible.value = false
     }
 
     return { 

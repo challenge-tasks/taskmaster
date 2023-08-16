@@ -8,7 +8,7 @@
                         <h2 class="mb-1 text-slate-700 text-2xl font-medium">E-commerce website</h2>
                         <span class="task-difficulty task-difficulty--big" :data-difficulty="1">Junior</span>
                     </div>
-                    <Button label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }" class="sm:py-4 py-3 btn--primary" />
+                    <Button @click="handleTaskStart" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }" class="sm:py-4 py-3 btn--primary" />
                 </div>
 
                 <div class="task-image-gallery">
@@ -93,12 +93,23 @@ useHead({
     title: 'E-commerce website'
 })
 
+const { toggleSignUpModal } = useAuthModals()
+const { isAuthenticated } = storeToRefs(useUserAuth())
+
 const swiperConfig = {
     modules: [SwiperNavigation],
     grabCursor: true,
     navigation: {
         prevEl: '.swiper-navigation__prev',
         nextEl: '.swiper-navigation__next'
+    }
+}
+
+function handleTaskStart() {
+    if (isAuthenticated.value) {
+        // some server operations
+    } else {
+        toggleSignUpModal()
     }
 }
 

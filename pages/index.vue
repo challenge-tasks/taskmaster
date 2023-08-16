@@ -5,7 +5,7 @@
 
                 <div class="intro__info">
                     <h1 class="mb-3 intro__title">На пути к <span class="text-indigo-600">совершенствованию</span> навыков</h1>
-                    <p class="mb-4 intro__text text-slate-500">
+                    <p :class="{ 'mb-4': !isAuthenticated }" class="intro__text text-slate-500">
                         Платформа, где ваши навыки обретают новое измерение. Независимо от
                         вашего уровня опыта, здесь вы найдете задачи на меру вашим амбициям.
                         <br />
@@ -47,7 +47,7 @@ useHead({
     title: 'Taskmaster - платформа для совершенствования свои навыков'
 })
 
-const { isAuthenticated } = useUserAuth()
+const { isAuthenticated } = storeToRefs(useUserAuth())
 
 const cards = reactive([
     {

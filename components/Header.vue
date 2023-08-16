@@ -27,7 +27,7 @@
 
 const isMenuActive = ref(false)
 
-const { isAuthenticated } = useUserAuth()
+const { isAuthenticated } = storeToRefs(useUserAuth())
 
 const signInModalToggleButtonConfig = {
     label: "Войти", 

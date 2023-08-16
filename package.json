@@ -27,6 +27,7 @@
     "@vee-validate/yup": "^4.11.1",
     "nuxt-swiper": "^1.2.0",
     "pinia": "^2.1.6",
+    "universal-cookie": "^5.0.0",
     "yup": "^1.2.0"
   }
 }
