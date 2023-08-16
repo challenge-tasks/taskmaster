@@ -4,6 +4,7 @@ export const useUserAuth = defineStore('userAuth', () => {
     const token = useCookie('token')
     const config = useRuntimeConfig()
     const isAuthenticated = ref(false)
+    const isFetching = ref(false)
 
     if (token.value) {
         isAuthenticated.value = true
@@ -13,49 +14,77 @@ export const useUserAuth = defineStore('userAuth', () => {
 
     async function signUp(payload: AuthPayload) {
 
-        const response = await useFetch<AuthResponse>(config.public.apiBaseUrl + '/register', {
-            method: 'POST',
-            body: payload,
-            server: false
-        })
+        try {
 
-        watch(() => response.status.value, (newValue) => {
+            isFetching.value = true
 
-            if (newValue === 'success') {
-
-                const token = useCookie('token')
-                token.value = response.data.value?.data.token
-                isAuthenticated.value = true
-
-                hideSignUpModal()
-            }
-        })
-
-        return response
+            const response = await useFetch<AuthResponse>(config.public.apiBaseUrl + '/register', {
+                method: 'POST',
+                body: payload,
+                server: false
+            })
+    
+            watch(() => response.status.value, (newValue) => {
+    
+                if (newValue === 'success') {
+    
+                    const token = useCookie('token')
+                    token.value = response.data.value?.data.token
+                    isAuthenticated.value = true
+    
+                    hideSignUpModal()
+                }
+            })
+            
+            return response
+            
+        } catch (error) {
+        
+            console.log(error)
+        
+        } finally {
+            isFetching.value = false   
+        }
     }
 
     async function signIn(payload: AuthPayload) {
 
-        const response = useFetch<AuthResponse>(config.public.apiBaseUrl + '/login', {
-            method: 'POST',
-            body: payload
-        })
+        try {
 
-        watch(() => response.status.value, (newValue) => {
-            if (newValue === 'success') {
-                const token = useCookie('token')
-                token.value = response.data.value?.data.token
-                isAuthenticated.value = true
-                hideSignInModal()
-            }
-        })
+            isFetching.value = true
 
-        return response
+            const response = useFetch<AuthResponse>(config.public.apiBaseUrl + '/login', {
+                method: 'POST',
+                body: payload
+            })
+    
+            watch(() => response.status.value, (newValue) => {
+                if (newValue === 'success') {
+                    const token = useCookie('token')
+                    token.value = response.data.value?.data.token
+                    isAuthenticated.value = true
+                    hideSignInModal()
+                }
+            })
+            
+    
+            return response
+
+        } catch (error) {
+
+            console.log(error)
+
+        } finally {
+
+            isFetching.value = false
+
+        }
     }
 
     return {
         signUp,
         signIn,
+        isFetching,
         isAuthenticated
     }
 })

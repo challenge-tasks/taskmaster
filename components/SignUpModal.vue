@@ -8,7 +8,7 @@
         <Form class="mb-6 max-w-sm mx-auto modal-content__body">
             
             <div class="mb-3">
-                <span class="form-label">E-mail</span>
+                <span class="form-label">E-mail <sup class="text-red-500">*</sup></span>
                 <Field v-model="form.email" v-slot="{ field, meta }" :rules="rules.fields.email" name="email">
                     <input type="email" v-bind="field"  placeholder="Введите электронную почту" class="form-input form-input--email" :class="{ 'form-input--error': meta.touched && !meta.valid }">
                 </Field>
@@ -19,7 +19,7 @@
             </div>
 
             <div class="mb-3">
-                <span class="form-label">Имя пользователя</span>
+                <span class="form-label">Имя пользователя <sup class="text-red-500">*</sup></span>
                 <Field v-model="form.username" v-slot="{ field, meta }" :rules="rules.fields.username" name="username">
                     <input type="text" v-bind="field"  placeholder="Придумайте имя пользователя" class="form-input form-input--username" :class="{ 'form-input--error': meta.touched && !meta.valid }">
                 </Field>
@@ -30,7 +30,7 @@
             </div>
 
             <div class="mb-3">
-                <span class="form-label">Пароль</span>
+                <span class="form-label">Пароль <sup class="text-red-500">*</sup></span>
                 
                 <Field v-model="form.password" v-slot="{ field, meta }" :rules="rules.fields.password" name="password">
                     <input type="password" v-bind="field" placeholder="Введите пароль" class="form-input form-input--password" :class="{ 'form-input--error': meta.touched && !meta.valid }" />
