@@ -10,6 +10,11 @@ export default defineNuxtConfig({
     format: ['webp']
   },
 
+  i18n: {
+    vueI18n: './i18n/i18n.config.ts',
+    defaultLocale: 'ru'
+  },
+
   imports: {
     dirs: ['stores'],
   },
@@ -25,6 +30,7 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@nuxt/image',
     'nuxt-swiper',
+    '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@vee-validate/nuxt',
     '@nuxtjs/tailwindcss',

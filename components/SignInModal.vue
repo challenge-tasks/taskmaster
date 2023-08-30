@@ -5,7 +5,7 @@
             <p class="max-w-lg text-center mx-auto text-slate-500">Войдите в свой аккаунт для того чтобы получить больше возможностей!</p>
         </div>
 
-        <Form class="mb-6 max-w-sm mx-auto modal-content__body">
+        <Form class="mb-4 max-w-sm mx-auto modal-content__body">
             <div class="mb-4 form-field">
                 <span class="form-label">E-mail <sup class="text-red-500">*</sup></span>
 
@@ -35,6 +35,12 @@
             </div>
 
             <Button @click="handleSignInFormSubmit" :loading="isFetching" label="Войти" class="py-3 w-full btn btn--primary" :icon="{ name: 'solar:login-2-outline' }" />
+            
+            <transition-fade>
+                <div v-if="errors.type" class="mt-4 flex justify-center">
+                    <span class="text-sm text-red-500 text-center">{{ $t(`authorization.${[errors.type]}`) }}</span>
+                </div>
+            </transition-fade>
         </Form>
 
         <div class="mb-4 flex justify-center">
@@ -48,13 +54,14 @@
 </template>
 
 <script setup lang="ts">
-import { object } from 'yup'
 import { VueFinalModal } from 'vue-final-modal'
 
 const form = reactive({
     email: '',
     password: ''
 })
+
+const errors = reactive({ type: '' })
 
 const rules = validationRules
 
@@ -64,10 +71,13 @@ const userAuthStore = useUserAuth()
 const { isFetching } = storeToRefs(userAuthStore)
 const { isSignInModalVisible } = storeToRefs(authStore)
 
-watch(isFetching, (newValue) => console.log(newValue))
-
 async function handleSignInFormSubmit() {
-    await userAuthStore.signIn({ email: form.email, password: form.password })
+    const res = await userAuthStore.signIn({ email: form.email, password: form.password })
+    errors.type = res?.error?.value?.data.type
+
+    setTimeout(() => {
+        errors.type = ''
+    }, 2500)
 }
 
 </script>
