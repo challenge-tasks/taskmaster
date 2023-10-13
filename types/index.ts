@@ -1,3 +1,5 @@
+import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData"
+
 export interface SortOptions {
     groupName?: string,
     options: Array<SortOption>
@@ -39,4 +41,38 @@ export interface AuthResponse {
         token: string
         user: User
     }
+}
+
+export interface SimplifiedUseFetchResponseType<DataT = {}, ErrorT = {}> {
+    data: DataT
+    pending: boolean
+    error: ErrorT | null
+    status: AsyncDataRequestStatus
+}
+
+export interface TaskType {
+    id: number
+    slug: string
+    name: string
+    image: string
+    summary: string
+    description?: string
+    difficulty: string
+    images?: Array<string>
+    stacks: Array<TechStackType>
+    tags: Array<TagType>
+    created_at: number
+    updated_at: number
+}
+
+export interface TagType {
+    id: number
+    slug: string
+    name: string
+}
+
+export interface TechStackType {
+    id: number
+    slug: string
+    name: string
 }

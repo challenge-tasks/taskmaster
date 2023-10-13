@@ -41,9 +41,13 @@
                 </transition-slide>
             </div>
 
-            <span class="text-xs text-red-500"></span>
-
             <Button @click="handleSignupFormSubmit" label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
+        
+            <transition-fade>
+                <div v-if="errors.type" class="mt-4 flex justify-center">
+                    <span class="text-sm text-red-500 text-center">{{ $t(`authorization.${[errors.type]}`) }}</span>
+                </div>
+            </transition-fade>
         </Form>
 
         <div class="mb-4 flex justify-center">
@@ -68,9 +72,7 @@ const form = reactive({
 
 const rules = validationRules
 
-const auth = reactive({
-    response: {} as AsyncData<AuthResponse, Error>
-})
+const errors = reactive({ type: '' })
 
 const { signUp } = useUserAuth()
 const authModals = useAuthModals()
@@ -84,9 +86,14 @@ async function handleSignupFormSubmit() {
         password: form.password
     }
 
-    auth.response = await signUp(payload)
-}
+    const res = await signUp(payload)
 
-const hasServerAuthError = computed(() => !!auth.response.error)
+    errors.type = res?.error?.value?.data.type
+
+    setTimeout(() => {
+        errors.type = ''
+    }, 2500)
+    
+}
  
 </script>

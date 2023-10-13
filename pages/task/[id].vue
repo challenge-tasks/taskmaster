@@ -5,38 +5,19 @@
 
                 <div class="flex justify-between items-start task__header">
                     <div class="mb-3 sm:mb-0 flex flex-col items-start">
-                        <h2 class="mb-1 text-slate-700 text-2xl font-medium">E-commerce website</h2>
-                        <span class="task-difficulty task-difficulty--big" :data-difficulty="1">Junior</span>
+                        <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.name }}</h2>
+                        <span class="task-difficulty task-difficulty--big" :data-difficulty="1">{{ task.difficulty }}</span>
                     </div>
                     <Button @click="handleTaskStart" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }" class="sm:py-4 py-3 btn--primary" />
                 </div>
 
                 <div class="task-image-gallery">
                     <Swiper v-bind="swiperConfig" class="task__images">
-                        <SwiperSlide>
+                        <SwiperSlide v-for="(image, key) in allImages" :key="key">
                             <div class="task-image">
-                                <img src="https://t.ly/wJD9g" alt="">
+                                <img :src="image" alt="">
                             </div>
                         </SwiperSlide>
-
-                        <SwiperSlide>
-                            <div class="task-image">
-                                <img src="https://t.ly/H-Iob" alt="">
-                            </div>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <div class="task-image">
-                                <img src="https://t.ly/tNGmt" alt="">
-                            </div>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <div class="task-image">
-                                <img src="https://t.ly/l5SFz" alt="">
-                            </div>
-                        </SwiperSlide>
-
                     </Swiper>
 
                     <div class="swiper-navigation">
@@ -57,24 +38,10 @@
                             <div class="task-tags__item">
                                 <span>HTML</span>
                             </div>
-                            <div class="task-tags__item">
-                                <span>Vue.js</span>
-                            </div>
-                            <div class="task-tags__item">
-                                <span>CSS</span>
-                            </div>
-                            <div class="task-tags__item">
-                                <span>Javascript</span>
-                            </div>
                         </div>
                     </div>
 
-                    <p class="mb-4 text-slate-500">
-                        In this project, you'll build a fully-functional link-sharing app for developers! You'll practice
-                        working with image uploads, repeater fields, drag-and-drop, and more! This challenge is designed to
-                        sharpen your JavaScript and form validation skills. Working with dates in JavaScript can be tricky,
-                        so this will be a nice test!
-                    </p>
+                    <p class="mb-4 text-slate-500" v-html="task.description"></p>
 
                 </div>
 
@@ -88,13 +55,30 @@
 </template>
 
 <script setup lang="ts">
+import { TaskType } from '@/types'
+
+const task = ref<TaskType>()
+const { params } = useRoute()
+const config = useRuntimeConfig()
+const { fetchTaskDetails } = useTasks()
+const { toggleSignUpModal } = useAuthModals()
+const { isAuthenticated } = storeToRefs(useUserAuth())
 
 useHead({
     title: 'E-commerce website'
 })
 
-const { toggleSignUpModal } = useAuthModals()
-const { isAuthenticated } = storeToRefs(useUserAuth())
+const response = await fetchTaskDetails(params.id)
+
+if (response.status === 'success') {
+    task.value = response?.data?.data
+}
+
+const allImages = computed(() => {
+    const imgsArray = [task.value.image, ...task.value.images]
+
+    return imgsArray.map(img => config.public.baseUrl + '/uploads/' + img)
+})
 
 const swiperConfig = {
     modules: [SwiperNavigation],
@@ -107,7 +91,7 @@ const swiperConfig = {
 
 function handleTaskStart() {
     if (isAuthenticated.value) {
-        // some server operations
+
     } else {
         toggleSignUpModal()
     }
