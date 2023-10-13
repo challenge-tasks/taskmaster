@@ -1,40 +1,47 @@
-import { TaskType } from "types"
+import { SimplifiedResponseType, TaskDetailsResponse, TaskListResponse, TaskType } from "types"
 
 export const useTasks = defineStore('tasks', () => {
 
     const config = useRuntimeConfig()
 
-    async function fetchTasks(options?: Record<string, any>) {
+    async function fetchTasks(options?: Record<string, any>): Promise<SimplifiedResponseType<TaskListResponse | null>> {
 
         try {
 
-            const response = await useFetch<Array<TaskType>>(config.public.apiBaseUrl + '/tasks', {
+            const response = await useFetch<TaskListResponse>(config.public.apiBaseUrl + '/tasks', {
                 method: 'GET',
-                body: options
+                ...options
             })
 
             return {
+                data: response.data.value,
                 error: response.error.value,
                 status: response.status.value,
                 pending: response.pending.value,
-                data: response.data.value?.data
             }
 
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
+
+            return {
+                data: null,
+                error: error,
+                pending: false,
+                status: 'error'
+            }
         }
 
     }
 
-    async function fetchTaskDetails(slug: string | string[]) {
-
-        if (!slug) {
-            throw new Error('Provide task slug to get task details')
-        }
+    async function fetchTaskDetails(slug: string | string[]): Promise<SimplifiedResponseType<TaskDetailsResponse | null>> {
 
         try {
 
-            const { data, error, status, pending } = await useFetch<TaskType>(config.public.apiBaseUrl + '/tasks/' + slug, {
+            if (!slug) {
+                throw new Error('Provide task slug to get task details')
+            }
+
+            const { data, error, status, pending } = await useFetch<TaskDetailsResponse>(config.public.apiBaseUrl + '/tasks/' + slug, {
                 method: 'GET'
             })
 
@@ -45,8 +52,16 @@ export const useTasks = defineStore('tasks', () => {
                 pending: pending.value
             }
 
-        } catch (error) {
+        } catch (error: any) {
+            
             console.log(error)
+
+            return {
+                data: null,
+                error: error,
+                pending: false,
+                status: 'error'
+            }
         }
     }
 

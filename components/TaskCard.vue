@@ -8,7 +8,7 @@
 
             <span class="mb-2 flex items-center justify-between gap-5">
                 <h4 class="task-card__title">{{ data.name }}</h4>
-                <span class="task-difficulty" :data-difficulty="getDifficulty(data.difficulty)">{{ data.difficulty }}</span>
+                <span class="task-difficulty" :data-difficulty="getDifficultyLevel(data.difficulty)">{{ data.difficulty }}</span>
             </span>
 
             <p class="task-card__excerpt">{{ trimDescription(data.summary) }}</p>
@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import { getDifficultyLevel } from '@/utils'
 
 const config = useRuntimeConfig()
 
@@ -35,17 +36,7 @@ const props = defineProps({
 
 const taskMainImage = computed(() => {
     return config.public.baseUrl + '/uploads/' + props.data.image
-}) 
-
-function getDifficulty(difficulty: string) {
-    const difficultyEnum: Record<string, number> = {
-        'Junior': 1,
-        'Middle': 2,
-        'Senior': 3
-    }
-
-    return difficultyEnum[difficulty]
-}
+})
 
 function trimDescription(summary: string) {
     if (summary.length <= 150) {

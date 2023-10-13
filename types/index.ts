@@ -1,5 +1,7 @@
 import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData"
 
+export type TasksListType = Array<TaskType> | undefined 
+
 export interface SortOptions {
     groupName?: string,
     options: Array<SortOption>
@@ -43,7 +45,7 @@ export interface AuthResponse {
     }
 }
 
-export interface SimplifiedUseFetchResponseType<DataT = {}, ErrorT = {}> {
+export interface SimplifiedResponseType<DataT = {}, ErrorT = {}> {
     data: DataT
     pending: boolean
     error: ErrorT | null
@@ -63,6 +65,16 @@ export interface TaskType {
     tags: Array<TagType>
     created_at: number
     updated_at: number
+}
+
+export interface TaskListResponse {
+    data: Array<TaskType>
+    links: object
+    meta: object
+}
+
+export interface TaskDetailsResponse {
+    data: TaskType
 }
 
 export interface TagType {

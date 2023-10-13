@@ -1,4 +1,8 @@
 <template>
+    <Head>
+        <Title>{{ task.name }}</Title>
+    </Head>
+
     <section class="section">
         <div class="mx-auto px-3 container">
             <div class="task">
@@ -6,9 +10,10 @@
                 <div class="flex justify-between items-start task__header">
                     <div class="mb-3 sm:mb-0 flex flex-col items-start">
                         <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.name }}</h2>
-                        <span class="task-difficulty task-difficulty--big" :data-difficulty="1">{{ task.difficulty }}</span>
+                        <span class="task-difficulty task-difficulty--big" :data-difficulty="getDifficultyLevel(task.difficulty)">{{ task.difficulty }}</span>
                     </div>
-                    <Button @click="handleTaskStart" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }" class="sm:py-4 py-3 btn--primary" />
+                    <Button @click="handleTaskStart" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }"
+                        class="sm:py-4 py-3 btn--primary" />
                 </div>
 
                 <div class="task-image-gallery">
@@ -35,8 +40,8 @@
                     <div class="mb-4">
                         <span class="inline-block mb-2 font-medium text-slate-600">Стек технологий: </span>
                         <div class="task-tags">
-                            <div class="task-tags__item">
-                                <span>HTML</span>
+                            <div v-for="stack in task.stacks" :key="stack.id" class="task-tags__item">
+                                <span>{{ stack.name }}</span>
                             </div>
                         </div>
                     </div>
@@ -56,28 +61,33 @@
 
 <script setup lang="ts">
 import { TaskType } from '@/types'
+import { getDifficultyLevel } from '@/utils'
 
-const task = ref<TaskType>()
+let task: TaskType = reactive({})
+
 const { params } = useRoute()
 const config = useRuntimeConfig()
 const { fetchTaskDetails } = useTasks()
 const { toggleSignUpModal } = useAuthModals()
 const { isAuthenticated } = storeToRefs(useUserAuth())
 
-useHead({
-    title: 'E-commerce website'
-})
-
 const response = await fetchTaskDetails(params.id)
 
 if (response.status === 'success') {
-    task.value = response?.data?.data
+    task = response.data?.data
 }
 
 const allImages = computed(() => {
-    const imgsArray = [task.value.image, ...task.value.images]
+    const result = [task?.image]
 
-    return imgsArray.map(img => config.public.baseUrl + '/uploads/' + img)
+
+    if (task?.images?.length) {
+        for (let i = 0; i < task?.images?.length; i++) {
+            result.push(task?.images[i])
+        }
+    }
+
+    return result.map(img => config.public.baseUrl + '/uploads/' + img)
 })
 
 const swiperConfig = {

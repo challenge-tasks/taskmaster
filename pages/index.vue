@@ -48,7 +48,7 @@ useHead({
     title: 'Taskmaster - платформа для совершенствования свои навыков'
 })
 
-let tasks = reactive({ list: Array<TasksListType> })
+let tasks = reactive({ list: [] as TasksListType })
 
 const { fetchTasks } = useTasks()
 
@@ -57,7 +57,7 @@ const { isAuthenticated } = storeToRefs(useUserAuth())
 const response = await fetchTasks()
 
 if (response.status === 'success') {
-    tasks.list = response.data.slice(0, 8)
+    tasks.list = response.data?.data.slice(0, 8)
 }
 
 const { toggleSignUpModal } = useAuthModals()

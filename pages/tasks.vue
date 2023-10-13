@@ -47,14 +47,14 @@ useHead({
     title: 'Все задания'
 })
 
-let tasks = reactive({ list: Array<TasksListType> })
+let tasks = reactive({ list: [] as TasksListType })
 
 const { fetchTasks } = useTasks()
 
 const response = await fetchTasks()
 
 if (response.status === 'success') {
-    tasks.list = response.data
+    tasks.list = response.data?.data
 }
 
 const filterCheckedValue = ref('all')
