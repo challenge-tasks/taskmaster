@@ -13,6 +13,7 @@
             </span>
 
             <div class="menu" :class="{ 'menu--active': isMenuActive }">
+                <NuxtLink v-if="isAuthenticated" :to="{ name: 'profile-id', params: { id: user.data.id } }" class="menu__item">Профиль</NuxtLink>
                 <NuxtLink to="/tasks" class="menu__item">Задания</NuxtLink>
                 <NuxtLink to="/about" class="menu__item">О проекте</NuxtLink>
                 <Button v-if="!isAuthenticated" @click="toggleSignInModal" v-bind="signInModalToggleButtonConfig" />
@@ -25,12 +26,14 @@
 
 <script setup lang="ts">
 
+const { user } = useUser()
+
 const isMenuActive = ref(false)
 
 const { isAuthenticated } = storeToRefs(useUserAuth())
 
 const signInModalToggleButtonConfig = {
-    label: "Войти", 
+    label: "Войти",
     class: "btn--primary btn--rounded menu__btn",
     icon: { name: 'octicon:person-24' }
 }

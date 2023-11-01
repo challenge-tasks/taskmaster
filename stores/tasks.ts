@@ -1,4 +1,4 @@
-import { SimplifiedResponseType, TaskDetailsResponse, TaskListResponse, TaskType } from "types"
+import { SimplifiedResponseType, TaskDetailsResponse, TaskListResponse } from "types"
 
 export const useTasks = defineStore('tasks', () => {
 

@@ -3,6 +3,7 @@ export default defineI18nConfig(() => ({
     messages: {
         ru: {
             authorization: {
+                password_not_confirmed: 'Пароль не подтвержден',
                 server_error: 'Ошибка на стороне сервера, пожалуйста попробуйте позже.',
                 validation_error: 'Ошибка валидации данных, проверьте правильность введенных данных.',
                 incorrect_password: 'Пароль введен неверно.',

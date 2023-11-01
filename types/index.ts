@@ -1,6 +1,6 @@
 import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData"
 
-export type TasksListType = Array<TaskType> | undefined 
+export type TasksListType = Array<TaskType> | undefined
 
 export interface SortOptions {
     groupName?: string,

@@ -8,3 +8,11 @@
         <SignUpModal />
     </div>
 </template>
+
+<script setup lang="ts">
+
+const { getUser } = useUser()
+
+await getUser()
+
+</script>

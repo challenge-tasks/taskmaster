@@ -1,13 +1,15 @@
 import { AuthPayload, AuthResponse } from "types"
 
 export const useUserAuth = defineStore('userAuth', () => {
+    const isFetching = ref(false)
     const token = useCookie('token')
     const config = useRuntimeConfig()
     const isAuthenticated = ref(false)
-    const isFetching = ref(false)
+    const hasToken = ref<boolean>(false)
 
     if (token.value) {
         isAuthenticated.value = true
+        hasToken.value = true
     }
 
     const { hideSignUpModal, hideSignInModal } = useAuthModals()
@@ -84,6 +86,7 @@ export const useUserAuth = defineStore('userAuth', () => {
     return {
         signUp,
         signIn,
+        hasToken,
         isFetching,
         isAuthenticated
     }

@@ -12,8 +12,7 @@
                         <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.name }}</h2>
                         <span class="task-difficulty task-difficulty--big" :data-difficulty="getDifficultyLevel(task.difficulty)">{{ task.difficulty }}</span>
                     </div>
-                    <Button @click="handleTaskStart" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }"
-                        class="sm:py-4 py-3 btn--primary" />
+                    <Button @click="handleTaskStart" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }" class="sm:py-4 btn--primary" />
                 </div>
 
                 <div class="task-image-gallery">
@@ -46,8 +45,9 @@
                         </div>
                     </div>
 
-                    <p class="mb-4 text-slate-500" v-html="task.description"></p>
-
+                    <client-only>
+                        <p class="mb-4 text-slate-500" v-html="task.description"></p>
+                    </client-only>
                 </div>
 
             </div>
