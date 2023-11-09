@@ -1,8 +1,9 @@
-import { User, UserTasksResponseInterface } from "types"
-import { useUserAuth } from './userAuth'
+import { AsyncData } from "nuxt/app"
+import { User, UserTasksInterface } from "types"
 
 export const useUser = defineStore('user', () => {
     const user = reactive({ data: {} as User })
+    const userTasks = ref<UserTasksInterface>({} as UserTasksInterface)
 
     const isFetching = ref(false)
     const config = useRuntimeConfig()
@@ -30,12 +31,14 @@ export const useUser = defineStore('user', () => {
 
             if (res.status.value === 'success') {
                 user.data = res.data.value?.data!
+                await getUserTasks(user.data.username)
                 return 0
             }
 
-            watch(() => res.status.value, (newVal) => {
+            watch(() => res.status.value, async (newVal) => {
                 if (newVal === 'success') {
                     user.data = res.data.value?.data!
+                    await getUserTasks(user.data.username)
                 }
             })
 
@@ -76,14 +79,8 @@ export const useUser = defineStore('user', () => {
         }
     }
 
-    async function getUserTasks(username: string) {
+    async function getUserTasks(username: string): Promise<AsyncData<UserTasksInterface | null, any | null> | undefined> {
 
-        const defaultResponse = ref<UserTasksResponseInterface>({
-            data: [],
-            meta: {},
-            links: {},
-        })
-        
         try {
 
             const { rToken } = useUserAuth()
@@ -91,14 +88,17 @@ export const useUser = defineStore('user', () => {
             if (rToken) {
                 isFetching.value = true
 
-                const res = await useFetch<UserTasksResponseInterface>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
+                const res = await useFetch<UserTasksInterface>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${rToken}`
                     }
                 })
+                
 
-                return res.data ?? defaultResponse
+                if (res.status.value === 'success') {
+                    userTasks.value = res.data.value
+                }
             }
 
         } catch (error) {
@@ -108,13 +108,13 @@ export const useUser = defineStore('user', () => {
         } finally {
             isFetching.value = false
         }
-
-        return defaultResponse
     }
 
     return {
         user,
         getUser,
+        userTasks,
+        isFetching,
         updateUser,
         getUserTasks
     }

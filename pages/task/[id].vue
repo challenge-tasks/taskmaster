@@ -12,7 +12,7 @@
                         <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.name }}</h2>
                         <span class="task-difficulty task-difficulty--big" :data-difficulty="getDifficultyLevel(task.difficulty)">{{ task.difficulty }}</span>
                     </div>
-                    <Button @click="handleTaskStart" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }" class="sm:py-4 btn--primary" />
+                    <Button @click="handleTaskStart(task.id)" :loading="isFetching" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }" class="sm:py-4 btn--primary" />
                 </div>
 
                 <div class="task-image-gallery">
@@ -51,10 +51,6 @@
                 </div>
 
             </div>
-
-            <div class="task-requirements">
-
-            </div>
         </div>
     </section>
 </template>
@@ -63,12 +59,26 @@
 import { TaskType } from '@/types'
 import { getDifficultyLevel } from '@/utils'
 
-let task: TaskType = reactive({})
+let task: TaskType | undefined = reactive({
+    id: 0,
+    slug: '',
+    name: '',
+    image: '',
+    summary: '',
+    difficulty: '',
+    stacks: [],
+    tags: [],
+    created_at: 0,
+    updated_at: 0
+})
 
 const { params } = useRoute()
 const config = useRuntimeConfig()
-const { fetchTaskDetails } = useTasks()
-const { toggleSignUpModal } = useAuthModals()
+
+const { user } = useUser()
+const { toggleSignInModal } = useAuthModals()
+const { isFetching } = storeToRefs(useTasks())
+const { fetchTaskDetails, startTask } = useTasks()
 const { isAuthenticated } = storeToRefs(useUserAuth())
 
 const response = await fetchTaskDetails(params.id)
@@ -99,11 +109,13 @@ const swiperConfig = {
     }
 }
 
-function handleTaskStart() {
+function handleTaskStart(taskId: number) {
     if (isAuthenticated.value) {
 
+        startTask(user.data.username, taskId)
+
     } else {
-        toggleSignUpModal()
+        toggleSignInModal()
     }
 }
 

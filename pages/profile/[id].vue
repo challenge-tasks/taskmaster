@@ -20,7 +20,7 @@
                         <input type="email" v-model="user.data.email"  placeholder="Введите электронную почту" class="form-input form-input--email" />
                     </div>
 
-                    <Button @click="updateProfile(userData)" label="Сохранить" class="mb-2 py-3 w-full btn btn--primary" />
+                    <Button @click="updateProfile(userData)" :loading="isFetching" label="Сохранить" class="mb-2 py-3 w-full btn btn--primary" />
                     <Button @click="logOut" label="Выйти из аккаунта" class="py-3 w-full btn btn--ghost" />
                 </div>
 
@@ -49,15 +49,15 @@
 </template>
 
 <script setup lang="ts">
-import { UserTasksResponseInterface } from '@/types'
 
 useHead({
     title: 'Профиль'
 })
 
 const { logOut } = useUserAuth()
-const { user, updateUser, getUserTasks } = useUser()
-const userTaks: Ref<UserTasksResponseInterface | null> = await getUserTasks(user.data.username)
+const { user, updateUser } = useUser()
+const { userTasks } = storeToRefs(useUser())
+const { isFetching } = storeToRefs(useUser())
 
 const userData = computed(() => {
     return {
@@ -66,10 +66,15 @@ const userData = computed(() => {
     }
 })
 
-const hasUserActiveTasks = computed(() => userTaks.value && userTaks.value.data?.length > 0)
+const hasUserActiveTasks = computed(() => userTasks.value.data?.length > 0)
+
+watch(userTasks, (newVal) => {
+    console.log(newVal)
+})
 
 function updateProfile(data: { username: string, email: string }) {
     return updateUser(data)
 }
+
 
 </script>

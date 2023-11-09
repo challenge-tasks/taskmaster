@@ -1,8 +1,10 @@
-import { SimplifiedResponseType, TaskDetailsResponse, TaskListResponse } from "types"
+import type { SimplifiedResponseType, TaskDetailsResponse, TaskListResponse } from "types"
 
 export const useTasks = defineStore('tasks', () => {
 
     const config = useRuntimeConfig()
+    const { rToken } = useUserAuth()
+    const isFetching = ref<boolean>(false)
 
     async function fetchTasks(options?: Record<string, any>): Promise<SimplifiedResponseType<TaskListResponse | null>> {
 
@@ -65,8 +67,44 @@ export const useTasks = defineStore('tasks', () => {
         }
     }
 
+    async function startTask(username: string, taskId: number) {
+        
+        try {
+
+            isFetching.value = true
+
+            if (!taskId) {
+                throw new Error('Provide task id to start this task')
+            }
+
+            const res = await useFetch<TaskDetailsResponse>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer ' + rToken
+                },
+                body: {
+                    task_id: taskId
+                }
+            })
+
+            console.log(res) 
+
+            return res.data
+            
+        } catch (error: any) {
+
+            console.log(error)
+            
+        } finally {
+            isFetching.value = false
+        }
+
+    }
+
     return {
+        startTask,
         fetchTasks,
+        isFetching,
         fetchTaskDetails
     }
 })

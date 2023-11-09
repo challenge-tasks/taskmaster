@@ -15,8 +15,9 @@
 
 <script setup lang="ts">
 
-const { getUser } = useUser()
-
-await getUser()
+onBeforeMount(() => {
+    const { getUser } = useUser()
+    getUser()
+})
 
 </script>

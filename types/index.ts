@@ -73,7 +73,7 @@ export interface TaskListResponse {
     meta: object
 }
 
-export interface UserTasksResponseInterface {
+export interface UserTasksInterface {
     meta: object
     links: object
     data: Array<object>
