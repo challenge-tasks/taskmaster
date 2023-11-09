@@ -1,19 +1,20 @@
 import { User } from "types"
+import { useUserAuth } from './userAuth'
 
 export const useUser = defineStore('user', () => {
-
-    const user = reactive({
-        data: {} as User
-    })
+    const user = reactive({ data: {} as User })
 
     const isFetching = ref(false)
-    const token = useCookie('token')
     const config = useRuntimeConfig()
 
     async function getUser() {
+
+        
         try {
 
-            if (Object.keys(user.data).length) {
+            const { rToken } = useUserAuth()
+            
+            if (!rToken) {
                 return false
             }
 
@@ -22,15 +23,42 @@ export const useUser = defineStore('user', () => {
             const res = await useFetch<{ data: User }>(config.public.apiBaseUrl + '/profile', {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${token.value}`
+                    Authorization: `Bearer ${rToken}`
                 },
                 server: false
             })
 
-            watch(() => res.status.value, (newValue) => {
-
-                if (newValue === 'success') {
+            watch(() => res.status.value, (newVal) => {
+                if (newVal === 'success') {
                     user.data = res.data.value?.data!
+                }
+            })
+
+        } catch (error) {
+
+            console.log(error)
+
+        } finally {
+            isFetching.value = false
+        }
+    }
+    
+    async function updateUser(data: User | { username: string, email: string }) {
+        try {
+
+            const { rToken } = useUserAuth()
+
+            if (!rToken) {
+                return false
+            }
+
+            isFetching.value = true
+
+            await useFetch<{ data: User }>(config.public.apiBaseUrl + '/profile', {
+                method: 'PUT',
+                body: data,
+                headers: {
+                    Authorization: `Bearer ${rToken}`
                 }
             })
 
@@ -45,7 +73,8 @@ export const useUser = defineStore('user', () => {
 
     return {
         user,
-        getUser
+        getUser,
+        updateUser
     }
 })
 

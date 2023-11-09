@@ -3,8 +3,11 @@
 @import './reset';
 @import './styles';
 
-// Components
+// Pages
 @import './pages/task';
+@import './pages/profile';
+
+// Components
 @import './components/form';
 @import './components/menu';
 @import './components/tasks';

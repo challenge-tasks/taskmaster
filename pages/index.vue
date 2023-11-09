@@ -42,13 +42,13 @@
 </template>
 
 <script setup lang="ts">
-import { TasksListType } from 'types'
+import type { TasksListResponse } from 'types'
 
 useHead({
     title: 'Taskmaster - платформа для совершенствования свои навыков'
 })
 
-let tasks = reactive({ list: [] as TasksListType })
+let tasks = reactive({ list: [] as TasksListResponse })
 
 const { fetchTasks } = useTasks()
 

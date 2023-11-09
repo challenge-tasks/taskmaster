@@ -60,8 +60,6 @@
 </template>
 
 <script setup lang="ts">
-import { AsyncData } from 'nuxt/app'
-import { AuthResponse } from 'types'
 import { VueFinalModal } from 'vue-final-modal'
 
 const form = reactive({

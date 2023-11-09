@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { TasksListType } from 'types'
+import type { TasksListResponse } from 'types'
 import { sortOptions } from '@/config/sortOptions'
 import { filterOptions } from '@/config/filterOptions'
 
@@ -47,7 +47,7 @@ useHead({
     title: 'Все задания'
 })
 
-let tasks = reactive({ list: [] as TasksListType })
+let tasks = reactive({ list: [] as TasksListResponse })
 
 const { fetchTasks } = useTasks()
 

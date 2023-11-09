@@ -58,6 +58,10 @@
             height: 20px;
         }
     }
+
+    &--ghost {
+        background-color: rgba(80, 72, 229, 0.1);
+    }
 }
 
 @media (max-width: 575px) {
