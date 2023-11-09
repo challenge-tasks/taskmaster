@@ -119,7 +119,6 @@ export const useUserAuth = defineStore('userAuth', () => {
         logOut,
         signUp,
         signIn,
-        token,
         rToken,
         hasToken,
         isFetching,

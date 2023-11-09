@@ -1,4 +1,4 @@
-import { User } from "types"
+import { User, UserTasksResponseInterface } from "types"
 import { useUserAuth } from './userAuth'
 
 export const useUser = defineStore('user', () => {
@@ -28,6 +28,11 @@ export const useUser = defineStore('user', () => {
                 server: false
             })
 
+            if (res.status.value === 'success') {
+                user.data = res.data.value?.data!
+                return 0
+            }
+
             watch(() => res.status.value, (newVal) => {
                 if (newVal === 'success') {
                     user.data = res.data.value?.data!
@@ -43,7 +48,7 @@ export const useUser = defineStore('user', () => {
         }
     }
     
-    async function updateUser(data: User | { username: string, email: string }) {
+    async function updateUser(data: { username: string, email: string }) {
         try {
 
             const { rToken } = useUserAuth()
@@ -71,10 +76,47 @@ export const useUser = defineStore('user', () => {
         }
     }
 
+    async function getUserTasks(username: string) {
+
+        const defaultResponse = ref<UserTasksResponseInterface>({
+            data: [],
+            meta: {},
+            links: {},
+        })
+        
+        try {
+
+            const { rToken } = useUserAuth()
+
+            if (rToken) {
+                isFetching.value = true
+
+                const res = await useFetch<UserTasksResponseInterface>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${rToken}`
+                    }
+                })
+
+                return res.data ?? defaultResponse
+            }
+
+        } catch (error) {
+
+            console.log(error)
+
+        } finally {
+            isFetching.value = false
+        }
+
+        return defaultResponse
+    }
+
     return {
         user,
         getUser,
-        updateUser
+        updateUser,
+        getUserTasks
     }
 })
 

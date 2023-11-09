@@ -61,6 +61,14 @@
 
     &--ghost {
         background-color: rgba(80, 72, 229, 0.1);
+
+        &:hover {
+            background-color: rgba(80, 72, 229, 0.2);
+        }
+    
+        &:active {
+            background-color: rgba(80, 72, 229, 0.3);
+        }
     }
 }
 

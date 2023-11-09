@@ -20,15 +20,25 @@
                         <input type="email" v-model="user.data.email"  placeholder="Введите электронную почту" class="form-input form-input--email" />
                     </div>
 
-                    <Button @click="updateProfile(user.data)" label="Сохранить" class="mb-2 py-3 w-full btn btn--primary" />
+                    <Button @click="updateProfile(userData)" label="Сохранить" class="mb-2 py-3 w-full btn btn--primary" />
                     <Button @click="logOut" label="Выйти из аккаунта" class="py-3 w-full btn btn--ghost" />
                 </div>
 
 
                 <div class="div">
-                    <h2 class="text-2xl text-slate-600">Задачи пользователя</h2>
+                    <h2 class="mb-4 font-medium text-2xl text-slate-600">Задачи пользователя</h2>
 
-                    
+                    <div class="user-tasks">
+                        
+                        <div v-show="!hasUserActiveTasks" class="flex flex-col items-center justify-center">
+                            <div class="w-40 h-40">
+                                <img src="../../assets/images/no-data.gif" alt="">
+                            </div>
+                            <h4 class="mb-2 text-xl text-slate-600">У вас еще нет задач :(</h4>
+                            <p class="max-w-md text-center text-slate-400">У вас еще нет ни одной задачи на выполнении, перейдите на страницу всех задач и возьмите на выполнение задачу...</p>
+                        </div>
+
+                    </div>
 
                 </div>
                 
@@ -39,18 +49,27 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from 'types';
-
-
-const { user, updateUser } = useUser()
-const { logOut } = useUserAuth()
+import { UserTasksResponseInterface } from '@/types'
 
 useHead({
     title: 'Профиль'
 })
 
-async function updateProfile(data: User | { username: string, email: string }) {
-    return await updateUser(data)
+const { logOut } = useUserAuth()
+const { user, updateUser, getUserTasks } = useUser()
+const userTaks: Ref<UserTasksResponseInterface | null> = await getUserTasks(user.data.username)
+
+const userData = computed(() => {
+    return {
+        email: user.data.email,
+        username: user.data.username
+    }
+})
+
+const hasUserActiveTasks = computed(() => userTaks.value && userTaks.value.data?.length > 0)
+
+function updateProfile(data: { username: string, email: string }) {
+    return updateUser(data)
 }
 
 </script>
