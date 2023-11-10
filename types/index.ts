@@ -76,7 +76,7 @@ export interface TaskListResponse {
 export interface UserTasksInterface {
     meta: object
     links: object
-    data: Array<object>
+    data: Array<TaskType>
 }
 
 export interface TaskDetailsResponse {

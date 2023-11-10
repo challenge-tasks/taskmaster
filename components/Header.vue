@@ -45,7 +45,7 @@ const signInModalToggleButtonConfig = {
 }
 
 const userProfileLink = computed(() => {
-    return { name: 'profile-id', params: { id: user.data.id } }
+    return { name: 'profile-id', params: { id: user.data.username } }
 })
 
 function toggleMenu() {

@@ -11,7 +11,7 @@
                 <span class="task-difficulty" :data-difficulty="getDifficultyLevel(data.difficulty)">{{ data.difficulty }}</span>
             </span>
 
-            <p class="task-card__excerpt">{{ trimDescription(data.summary) }}</p>
+            <p class="task-card__excerpt">{{ trimText(data.summary, 150) }}</p>
         </span>
 
         <span v-if="data.stacks" class="task-card__bottom">
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { getDifficultyLevel } from '@/utils'
+import { getDifficultyLevel, trimText } from '@/utils'
 
 const config = useRuntimeConfig()
 
@@ -37,13 +37,5 @@ const props = defineProps({
 const taskMainImage = computed(() => {
     return config.public.baseUrl + '/uploads/' + props.data.image
 })
-
-function trimDescription(summary: string) {
-    if (summary.length <= 150) {
-        return summary
-    } else {
-        return summary.slice(0, 150) + '...'
-    }
-}
 
 </script>

@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import type { TasksListResponse } from 'types'
+import type { TaskListResponse } from 'types'
 import { sortOptions } from '@/config/sortOptions'
 import { filterOptions } from '@/config/filterOptions'
 
@@ -47,14 +47,14 @@ useHead({
     title: 'Все задания'
 })
 
-let tasks = reactive({ list: [] as TasksListResponse })
+let tasks = reactive({ list: [] as TaskListResponse })
 
 const { fetchTasks } = useTasks()
 
 const response = await fetchTasks()
 
-if (response.status === 'success') {
-    tasks.list = response.data?.data
+if (response.data && response.status === 'success') {
+    tasks.list = response.data.data
 }
 
 const filterCheckedValue = ref('all')

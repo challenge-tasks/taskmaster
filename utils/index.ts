@@ -19,3 +19,11 @@ export function getDifficultyLevel(difficulty: string) {
 
     return difficultyEnum[difficulty]
 }
+
+export function trimText(summary: string, maxLength: number) {
+    if (summary.length <= maxLength) {
+        return summary
+    } else {
+        return summary.slice(0, maxLength).trim() + '...'
+    }
+}

@@ -77,6 +77,10 @@ export const useTasks = defineStore('tasks', () => {
                 throw new Error('Provide task id to start this task')
             }
 
+            if (!username) {
+                throw new Error('Provide username to start this task')
+            }
+
             const res = await useFetch<TaskDetailsResponse>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
                 method: 'POST',
                 headers: {
@@ -85,9 +89,7 @@ export const useTasks = defineStore('tasks', () => {
                 body: {
                     task_id: taskId
                 }
-            })
-
-            console.log(res) 
+            }) 
 
             return res.data
             
