@@ -6,14 +6,15 @@ export const useTasks = defineStore('tasks', () => {
     const { rToken } = useUserAuth()
     const isFetching = ref<boolean>(false)
 
-    async function fetchTasks(options?: Record<string, any>): Promise<SimplifiedResponseType<TaskListResponse | null>> {
+    async function fetchTasks(options: object = {}): Promise<SimplifiedResponseType<TaskListResponse | null>> {
 
         try {
 
             const response = await useFetch<TaskListResponse>(config.public.apiBaseUrl + '/tasks', {
                 method: 'GET',
-                ...options
+                ...options,
             })
+            
 
             return {
                 data: response.data.value,

@@ -8,7 +8,7 @@
                 </div>
 
                 <div class="ml-auto sm:ml-0 flex items-center gap-5">
-                    <Dropdown :icon="{ name: 'octicon:sort-desc-24' }" label="Сортировать по">
+                    <Dropdown :icon="{ name: 'octicon:sort-desc-24' }" label="Фильтровать по">
                         <template v-slot:options>
                             <div v-for="group in sortingOptions" class="dropdown__group">
                                 <span class="dropdown__options-group">{{ group.groupName }}</span>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import type { TaskListResponse } from 'types'
+import type { TaskType } from 'types'
 import { sortOptions } from '@/config/sortOptions'
 import { filterOptions } from '@/config/filterOptions'
 
@@ -47,7 +47,7 @@ useHead({
     title: 'Все задания'
 })
 
-let tasks = reactive({ list: [] as TaskListResponse })
+let tasks = reactive({ list: [] as Array<TaskType> })
 
 const { fetchTasks } = useTasks()
 
@@ -58,7 +58,19 @@ if (response.data && response.status === 'success') {
 }
 
 const filterCheckedValue = ref('all')
-const sortingCheckedValues = ref(['recent'])
+const sortingCheckedValues = ref(["1"])
 const sortingOptions = reactive(sortOptions)
 const filteringOptions = reactive(filterOptions)
+
+watch(() => sortingCheckedValues.value, async (newVal) => {
+    const options = {
+        query: {
+            filter: {
+                difficulty: newVal
+            }
+        }
+    }
+
+    await fetchTasks(options)
+})
 </script>
