@@ -1,9 +1,14 @@
 * {
     margin: 0;
-    padding: 0;
     text-decoration: none;
-    list-style-type: none;
     box-sizing: border-box;
+}
+
+ul  {
+    list-style: disc;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 html, body {

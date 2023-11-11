@@ -6,15 +6,15 @@ export const sortOptions: Array<SortOptions> = [
         options: [
             {
                 label: 'Самые новые',
-                value: 'recent'
+                value: '1'
             },
             {
                 label: 'Сначала лёгкие',
-                value: 'easier_first'
+                value: '2'
             },
             {
                 label: 'Сначала сложные',
-                value: 'hard_first'
+                value: '3'
             }
         ]
     }

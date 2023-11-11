@@ -3,6 +3,7 @@ export default defineI18nConfig(() => ({
     messages: {
         ru: {
             authorization: {
+                password_not_confirmed: 'Пароль не подтвержден',
                 server_error: 'Ошибка на стороне сервера, пожалуйста попробуйте позже.',
                 validation_error: 'Ошибка валидации данных, проверьте правильность введенных данных.',
                 incorrect_password: 'Пароль введен неверно.',
@@ -14,6 +15,20 @@ export default defineI18nConfig(() => ({
                 password_max_one_hundred: 'Максимальная длина пароля 100 символов.',
                 username_required: 'Имя пользователя обязательно к заполнению.',
                 username_exists: 'Пользователь с таким именем пользователя уже существует.',
+            },
+
+            task: {
+               status: {
+                todo: 'Надо сделать',
+                in_development: 'В разработке',
+                reviewing: 'Проверяется',
+                done: 'Завершено'
+               } 
+            },
+
+            upload: {
+                file_required: 'Загрузите файл для проверки',
+                file_must_be_rar_or_zip: 'Файл проверки должен быть одного из следующих типов: .zip или .rar'
             },
 
             server_error: 'Ошибка на стороне сервера, попробуйте позже.',

@@ -1,6 +1,6 @@
 <template>
     <Head>
-        <Title>{{ task.name }}</Title>
+        <Title>{{ task.data.name }}</Title>
     </Head>
 
     <section class="section">
@@ -9,11 +9,24 @@
 
                 <div class="flex justify-between items-start task__header">
                     <div class="mb-3 sm:mb-0 flex flex-col items-start">
-                        <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.name }}</h2>
-                        <span class="task-difficulty task-difficulty--big" :data-difficulty="getDifficultyLevel(task.difficulty)">{{ task.difficulty }}</span>
+                        <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.data.name }}</h2>
+                        <span class="task-difficulty task-difficulty--big" :data-difficulty="getDifficultyLevel(task.data.difficulty)">{{ task.data.difficulty }}</span>
                     </div>
-                    <Button @click="handleTaskStart" label="Выполнить задание" :icon="{ name: 'octicon:checklist-24' }"
-                        class="sm:py-4 py-3 btn--primary" />
+                    
+                    <Button 
+                        v-if="!isTaskDoing"
+                        @click="handleTaskStart" 
+                        class="sm:py-4 btn--primary" 
+                        :loading="isFetching" 
+                        :label="taskButtonLabel" 
+                        :icon="{ name: 'octicon:checklist-24' }" 
+                    />
+
+                    <div v-else class="flex items-center gap-2 bg-emerald-400 rounded-md px-3 py-2">
+                        <span class="text-white">{{ taskButtonLabel }}</span>
+                        <Icon name="octicon:zap-16" class="text-white" />
+                    </div>
+                
                 </div>
 
                 <div class="task-image-gallery">
@@ -40,19 +53,16 @@
                     <div class="mb-4">
                         <span class="inline-block mb-2 font-medium text-slate-600">Стек технологий: </span>
                         <div class="task-tags">
-                            <div v-for="stack in task.stacks" :key="stack.id" class="task-tags__item">
+                            <div v-for="stack in task.data.stacks" :key="stack.id" class="task-tags__item">
                                 <span>{{ stack.name }}</span>
                             </div>
                         </div>
                     </div>
 
-                    <p class="mb-4 text-slate-500" v-html="task.description"></p>
-
+                    <client-only>
+                        <p class="mb-4 text-slate-500" v-html="task.data.description"></p>
+                    </client-only>
                 </div>
-
-            </div>
-
-            <div class="task-requirements">
 
             </div>
         </div>
@@ -63,27 +73,45 @@
 import { TaskType } from '@/types'
 import { getDifficultyLevel } from '@/utils'
 
-let task: TaskType = reactive({})
+let task = reactive({
+    data: {} as TaskType
+})
 
 const { params } = useRoute()
 const config = useRuntimeConfig()
-const { fetchTaskDetails } = useTasks()
-const { toggleSignUpModal } = useAuthModals()
+
+const { user, getUserTasks } = useUser()
+const { userTasks } = storeToRefs(useUser())
+const { toggleSignInModal } = useAuthModals()
+const { isFetching } = storeToRefs(useTasks())
+const { fetchTaskDetails, startTask } = useTasks()
 const { isAuthenticated } = storeToRefs(useUserAuth())
 
 const response = await fetchTaskDetails(params.id)
 
-if (response.status === 'success') {
-    task = response.data?.data
+const isTaskDoing = computed(() => {
+    return userTasks.value.data && userTasks.value.data.some((tsk: TaskType) => tsk.id === task.data.id)
+})
+
+watch(isTaskDoing, (newVal) => {
+    console.log(newVal)
+})
+
+const taskButtonLabel = computed(() => {
+    return isTaskDoing.value ? 'На выполнении' : 'Выполнить задание'
+})
+
+if (response.data && response.status === 'success') {
+    task.data = response.data.data
 }
 
 const allImages = computed(() => {
-    const result = [task?.image]
+    const result = [task.data.image]
 
 
-    if (task?.images?.length) {
-        for (let i = 0; i < task?.images?.length; i++) {
-            result.push(task?.images[i])
+    if (task.data.images?.length) {
+        for (let i = 0; i < task.data.images?.length; i++) {
+            result.push(task.data.images[i])
         }
     }
 
@@ -99,11 +127,14 @@ const swiperConfig = {
     }
 }
 
-function handleTaskStart() {
+async function handleTaskStart() {
     if (isAuthenticated.value) {
 
+        await startTask(user.data.username, task.data.id)
+        await getUserTasks(user.data.username)
+
     } else {
-        toggleSignUpModal()
+        toggleSignInModal()
     }
 }
 

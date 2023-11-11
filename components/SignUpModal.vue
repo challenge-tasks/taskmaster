@@ -41,7 +41,7 @@
                 </transition-slide>
             </div>
 
-            <Button @click="handleSignupFormSubmit" label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
+            <Button @click="handleSignupFormSubmit" :loading="isFetching" label="Зарегистрироваться" class="py-3 w-full btn btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
         
             <transition-fade>
                 <div v-if="errors.type" class="mt-4 flex justify-center">
@@ -60,8 +60,6 @@
 </template>
 
 <script setup lang="ts">
-import { AsyncData } from 'nuxt/app'
-import { AuthResponse } from 'types'
 import { VueFinalModal } from 'vue-final-modal'
 
 const form = reactive({
@@ -77,6 +75,7 @@ const errors = reactive({ type: '' })
 const { signUp } = useUserAuth()
 const authModals = useAuthModals()
 
+const { isFetching } = storeToRefs(useUserAuth())
 const { isSignUpModalVisible } = storeToRefs(authModals)
 
 async function handleSignupFormSubmit() {
