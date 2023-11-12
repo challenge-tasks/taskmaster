@@ -93,10 +93,6 @@ const isTaskDoing = computed(() => {
     return userTasks.value.data && userTasks.value.data.some((tsk: TaskType) => tsk.id === task.data.id)
 })
 
-watch(isTaskDoing, (newVal) => {
-    console.log(newVal)
-})
-
 const taskButtonLabel = computed(() => {
     return isTaskDoing.value ? 'На выполнении' : 'Выполнить задание'
 })

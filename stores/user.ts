@@ -5,11 +5,12 @@ export const useUser = defineStore('user', () => {
     const user = reactive({ data: {} as User })
     const userTasks = ref({} as UserTasksInterface)
 
-    const isFetching = ref(false)
     const config = useRuntimeConfig()
-    const isTasksFetching = ref(false)
+    const isFetching = ref<boolean>(false)
+    const isTasksFetching = ref<boolean>(false)
+    const isSolutionUploading = ref<boolean>(false)
 
-    async function getUser() {
+    async function getUser(): Promise<void> {
         
         try {
 
@@ -51,7 +52,7 @@ export const useUser = defineStore('user', () => {
         }
     }
     
-    async function updateUser(data: { username: string, email: string }) {
+    async function updateUser(data: { username: string, email: string }): Promise<void> {
         try {
 
             const { rToken } = useUserAuth()
@@ -114,13 +115,13 @@ export const useUser = defineStore('user', () => {
         }
     }
 
-    async function removeUserTask(username: string, taskSlug: string) {
+    async function removeUserTask(username: string, taskSlug: string): Promise<AsyncData<string | null, any | null> | undefined> {
         try {
 
             const { rToken } = useUserAuth()
 
             if (rToken) {
-                const res = await useFetch(config.public.apiBaseUrl + `/users/${username}/tasks/${taskSlug}`, {
+                const res = await useFetch<string>(config.public.apiBaseUrl + `/users/${username}/tasks/${taskSlug}`, {
                     method: 'DELETE',
                     headers: {
                         Authorization: `Bearer ${rToken}`
@@ -141,6 +142,36 @@ export const useUser = defineStore('user', () => {
         }
     }
 
+    async function uploadTaskSolution(taskSlug: string, options: object = {}): Promise<Ref<{ success: boolean } | null> | undefined> {
+        try {
+
+            isSolutionUploading.value = true
+
+            const { rToken } = useUserAuth()
+            const username = user.data.username
+
+            if (rToken) {
+                const res = await useFetch<{ success: boolean }>(config.public.apiBaseUrl + `/users/${username}/tasks/${taskSlug}/solutions`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${rToken}`
+                    },
+                    ...options,
+                    server: false
+                })
+
+                return res.data
+            }
+
+        } catch (error) {
+
+            console.log(error)
+
+        } finally {
+            isSolutionUploading.value = false
+        }
+    }
+
     return {
         user,
         getUser,
@@ -149,7 +180,9 @@ export const useUser = defineStore('user', () => {
         updateUser,
         getUserTasks,
         removeUserTask,
-        isTasksFetching
+        isTasksFetching,
+        uploadTaskSolution,
+        isSolutionUploading
     }
 })
 
