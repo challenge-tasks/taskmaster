@@ -7,7 +7,7 @@
         <div class="mx-auto px-3 container">
             <div class="task">
 
-                <div class="flex justify-between items-start task__header">
+                <div class="flex justify-between items-center task__header">
                     <div class="mb-3 sm:mb-0 flex flex-col items-start">
                         <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.data.name }}</h2>
                         <span class="task-difficulty task-difficulty--big" :data-difficulty="getDifficultyLevel(task.data.difficulty)">{{ task.data.difficulty }}</span>
@@ -18,13 +18,19 @@
                         @click="handleTaskStart" 
                         class="sm:py-4 btn--primary" 
                         :loading="isFetching" 
-                        :label="taskButtonLabel" 
+                        :label="taskButtonLabel"
                         :icon="{ name: 'octicon:checklist-24' }" 
                     />
 
-                    <div v-else class="flex items-center gap-2 bg-emerald-400 rounded-md px-3 py-2">
-                        <span class="text-white">{{ taskButtonLabel }}</span>
-                        <Icon name="octicon:zap-16" class="text-white" />
+                    <div v-else class="flex gap-2">
+                        <div class="flex items-center gap-2 bg-emerald-400 rounded-md px-3 py-3">
+                            <span class="text-white">{{ taskButtonLabel }}</span>
+                            <Icon name="octicon:zap-16" class="text-lg text-white" />
+                        </div>
+
+                    <div @click="handleTaskSolutionUpload" class="flex items-center gap-2 px-4 py-3 bg-primary hover:opacity-75 active:hover:opacity-100 rounded-md cursor-pointer" title="Загрузить решение">
+                            <Icon name="octicon:upload-16" class="text-xl text-white" />
+                        </div>
                     </div>
                 
                 </div>
@@ -67,39 +73,45 @@
             </div>
         </div>
     </section>
+
+    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="task.data.slug" />
 </template>
 
 <script setup lang="ts">
 import { TaskType } from '@/types'
 import { getDifficultyLevel } from '@/utils'
+import UploadSolutionModal from '@/components/modals/UploadSolutionModal.vue'
 
 let task = reactive({
     data: {} as TaskType
 })
 
 const { params } = useRoute()
-const config = useRuntimeConfig()
+const appConfig = useRuntimeConfig()
 
-const { user, getUserTasks } = useUser()
-const { userTasks } = storeToRefs(useUser())
+const { getUserTasks } = useTasks()
 const { toggleSignInModal } = useAuthModals()
-const { isFetching } = storeToRefs(useTasks())
 const { fetchTaskDetails, startTask } = useTasks()
+
+const { user } = useUser()
+const { userTasks } = storeToRefs(useTasks())
+const { isFetching } = storeToRefs(useTasks())
 const { isAuthenticated } = storeToRefs(useUserAuth())
 
-const response = await fetchTaskDetails(params.id)
+const isSolutionUploadModalVisible = ref<boolean>(false)
+
+const taskDetailsResponse = await fetchTaskDetails(params.id)
+if (taskDetailsResponse.data && taskDetailsResponse.status === 'success') {
+    task.data = taskDetailsResponse.data.data
+}
 
 const isTaskDoing = computed(() => {
     return userTasks.value.data && userTasks.value.data.some((tsk: TaskType) => tsk.id === task.data.id)
 })
 
 const taskButtonLabel = computed(() => {
-    return isTaskDoing.value ? 'На выполнении' : 'Выполнить задание'
+    return isTaskDoing.value ? 'Выполняется' : 'Выполнить задание'
 })
-
-if (response.data && response.status === 'success') {
-    task.data = response.data.data
-}
 
 const allImages = computed(() => {
     const result = [task.data.image]
@@ -111,7 +123,7 @@ const allImages = computed(() => {
         }
     }
 
-    return result.map(img => config.public.baseUrl + '/uploads/' + img)
+    return result.map(img => appConfig.public.baseUrl + '/uploads/' + img)
 })
 
 const swiperConfig = {
@@ -121,6 +133,10 @@ const swiperConfig = {
         prevEl: '.swiper-navigation__prev',
         nextEl: '.swiper-navigation__next'
     }
+}
+
+function handleTaskSolutionUpload() {
+    isSolutionUploadModalVisible.value = true
 }
 
 async function handleTaskStart() {

@@ -49,7 +49,7 @@
                             </div>
 
                             <div v-else class="flex flex-col gap-3 p-3">
-                                <UserTask :task="task" v-for="task in userTasks.data" :key="task.id" />
+                                <UserTask :task="task" v-for="task in userTasks.data" :key="task.id" @solution-upload="onSolutionUpload" />
                             </div>
 
                         </ClientOnly>
@@ -63,34 +63,50 @@
         </div>
     </section>
 
-    <UploadSolutionModal />
+    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="uploadingTaskSlug" @closed="onSolutionUploadModalClose" />
 </template>
 
 <script setup lang="ts">
 import UserTask from '@/components/tasks/UserTask.vue'
 import UploadSolutionModal from '@/components/modals/UploadSolutionModal.vue'
 
-useHead({
-    title: 'Профиль'
-})
+useHead({ title: 'Профиль' })
+
+interface UserDataInterface { 
+    email: string 
+    username: string 
+}
 
 const { logOut } = useUserAuth()
-const { userTasks } = storeToRefs(useUser())
+const { getUserTasks } = useTasks()
+const { user, updateUser } = useUser()
+const { userTasks } = storeToRefs(useTasks())
 const { isFetching } = storeToRefs(useUser())
-const { isTasksFetching } = storeToRefs(useUser())
-const { user, getUserTasks,  updateUser } = useUser()
+const { isTasksFetching } = storeToRefs(useTasks())
 
-const userData = computed(() => {
+const uploadingTaskSlug = ref<string>('')
+const isSolutionUploadModalVisible = ref<boolean>(false)
+
+const userData = computed<UserDataInterface>(() => {
     return {
         email: user.data.email,
         username: user.data.username
     }
 })
 
-const hasUserActiveTasks = computed(() => userTasks.value.data?.length > 0)
+const hasUserActiveTasks = computed<boolean>(() => userTasks.value.data?.length > 0)
 
-function updateProfile(data: { username: string, email: string }) {
+function updateProfile(data: UserDataInterface) {
     return updateUser(data)
+}
+
+function onSolutionUpload(taskSlug: string) {
+    uploadingTaskSlug.value = taskSlug
+    isSolutionUploadModalVisible.value = true
+}
+
+function onSolutionUploadModalClose() {
+    uploadingTaskSlug.value = ''
 }
 
 onMounted(() => {

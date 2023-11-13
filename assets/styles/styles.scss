@@ -114,7 +114,7 @@
             filter: grayscale(1);
         }
     }
-    
+
     &__prev {
         left: 0;
     }
@@ -137,6 +137,10 @@
         width: 25px;
         height: 25px;
     }
+}
+
+.bg-primary {
+    background-color: #4f46e5;
 }
 
 @media (max-width: 1440px) {
@@ -243,7 +247,8 @@
         align-items: center;
         justify-content: center;
 
-        &__prev, &__next {
+        &__prev,
+        &__next {
             position: static;
             transform: translateY(0);
         }

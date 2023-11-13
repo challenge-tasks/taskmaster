@@ -1,5 +1,5 @@
 <template>
-    <VueFinalModal v-model="isVisible" @closed="eraseFilledData(form)" v-bind="modalConfig">
+    <VueFinalModal v-model="isModalVisible" v-bind="modalConfig">
 
         <div class="mb-4 transition linear delay-150 w-full h-56 flex items-center justify-center relative rounded-md border-2 hover:border-gray-700 border-gray-400 border-dashed">
             <div class="flex flex-col items-center justify-center">
@@ -10,7 +10,7 @@
                 </ClientOnly>
                 <span class="max-w-md text-center text-slate-400">Выберите zip или rar файл где содержится решение по заданию и загрузите его для проверки</span>
             </div>
-            <input type="file" accept=".zip,.rar,.7z,.gz" maxlength="1" ref="fileInput" @change="uploadFile" class="opacity-0 absolute top-0 left-0 right-0 bottom-0">
+            <input type="file" accept=".zip,.rar,.7z,.gz" maxlength="1" ref="fileInput" @change="handleFile" class="opacity-0 absolute top-0 left-0 right-0 bottom-0">
         </div>
 
         <div v-if="form.file" class="flex justify-between gap-2 mb-4 bg-slate-50 py-3 px-2 rounded-md">
@@ -20,7 +20,7 @@
 
         <div class="flex justify-end gap-2">
             <Button @click="cancelUpload" label="Отменить" class="py-3 btn btn--ghost" />
-            <Button @click="uploadFileToServer" :loading="isSolutionUploading" label="Загрузить" class="py-3 btn btn--primary" />
+            <Button @click="uploadFileToServer" :loading="isSolutionUploading" label="Загрузить решение" class="py-3 btn btn--primary" />
         </div>
 
     </VueFinalModal>
@@ -29,8 +29,16 @@
 <script setup lang="ts">
 import { VueFinalModal } from 'vue-final-modal'
 
-const { uploadTaskSolution } = useUser()
-const { isSolutionUploading } = storeToRefs(useUser())
+interface PropsInterface {
+    taskSlug: string
+    modelValue: boolean
+}
+
+const { uploadTaskSolution } = useTasks()
+const { isSolutionUploading } = storeToRefs(useTasks())
+
+const props = defineProps<PropsInterface>()
+const emit = defineEmits<{ (e: 'update:modelValue', id: boolean): void }>()
 
 const modalConfig = ref({
     class: "modal",
@@ -42,8 +50,6 @@ const modalConfig = ref({
 
 const fileInput = ref<HTMLFormElement>()
 const form = reactive({ file: null } as { file: File | null })
-
-const isVisible = ref<boolean>(true)
 
 const fileSize = computed(() => {
     if (form.file) {
@@ -62,7 +68,17 @@ const fileSize = computed(() => {
     }
 })
 
-function uploadFile($event: Event) {
+const isModalVisible = computed({
+    get() {
+        return props.modelValue
+    },
+
+    set(newVal) {
+        return emit('update:modelValue', newVal)
+    }
+})
+
+function handleFile($event: Event) {
     if ($event.target) {
         const target = $event.target as HTMLInputElement
         
@@ -70,14 +86,14 @@ function uploadFile($event: Event) {
             const [ _file ] = target.files as FileList
             form.file = _file
         }
-    }   
+    }
 }
 
 function cancelUpload() {
-    isVisible.value = false
+    isModalVisible.value = false
 }
 
-function uploadFileToServer() {
+async function uploadFileToServer() {
 
     if (!form.file) {
         return false
@@ -86,9 +102,17 @@ function uploadFileToServer() {
     const body = new FormData()
     body.append('file', form.file, form.file.name)
 
-    uploadTaskSolution('notifications-page', {
-        body
-    })
+    const res = await uploadTaskSolution(props.taskSlug, { body })
+
+    if (res && res.value && res.value.success) {
+        isModalVisible.value = false
+    }
 }
+
+watch(() => props.modelValue, (newVal) => {
+    if (!newVal) {
+        form.file = null
+    }
+})
 
 </script>
