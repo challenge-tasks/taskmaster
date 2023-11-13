@@ -1,6 +1,11 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
+  components: [{
+      path: '~/components',
+      pathPrefix: false
+  }],
+
   css: [
     'vue-final-modal/style.css',
     '@/assets/styles/global.scss'

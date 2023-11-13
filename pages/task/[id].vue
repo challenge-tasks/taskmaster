@@ -80,7 +80,6 @@
 <script setup lang="ts">
 import { TaskType } from '@/types'
 import { getDifficultyLevel } from '@/utils'
-import UploadSolutionModal from '@/components/modals/UploadSolutionModal.vue'
 
 let task = reactive({
     data: {} as TaskType

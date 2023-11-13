@@ -67,8 +67,6 @@
 </template>
 
 <script setup lang="ts">
-import UserTask from '@/components/tasks/UserTask.vue'
-import UploadSolutionModal from '@/components/modals/UploadSolutionModal.vue'
 
 useHead({ title: 'Профиль' })
 
