@@ -20,7 +20,7 @@ export default defineI18nConfig(() => ({
             task: {
                status: {
                 todo: 'Надо сделать',
-                in_development: 'В разработке',
+                in_development: 'Выполняется',
                 reviewing: 'Проверяется',
                 done: 'Завершено'
                } 

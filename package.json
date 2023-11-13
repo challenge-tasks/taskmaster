@@ -26,6 +26,7 @@
     "@morev/vue-transitions": "^2.3.6",
     "@vee-validate/nuxt": "^4.11.1",
     "@vee-validate/yup": "^4.11.1",
+    "floating-vue": "^2.0.0-beta.24",
     "nuxt-swiper": "^1.2.0",
     "pinia": "^2.1.6",
     "universal-cookie": "^5.0.0",

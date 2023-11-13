@@ -143,6 +143,12 @@
     background-color: #4f46e5;
 }
 
+.v-popper--theme-tooltip {
+    .v-popper__inner {
+        font-size: 12px;
+    }
+}
+
 @media (max-width: 1440px) {
     .tm-container {
         padding: 0 15px;

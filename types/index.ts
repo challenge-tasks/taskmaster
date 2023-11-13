@@ -60,7 +60,9 @@ export interface TaskType {
     summary: string
     description?: string
     difficulty: string
-    status?: string,
+    status?: string
+    rating?: number
+    comment?: string | null
     images?: Array<string>
     stacks: Array<TechStackType>
     tags: Array<TagType>

@@ -10,15 +10,18 @@
             <p class="text-slate-500 max-w-lg">{{ trimText(task.summary, 135) }}</p>
         </span>
 
-        <span class="sm:ml-auto w-full sm:w-auto flex flex-col justify-between p-2">
-            <span class="inline-flex items-center bg-blue-400 py-1 px-2 rounded-md">
+        <span class="sm:ml-auto w-full sm:w-auto flex flex-col items-start justify-between p-2">
+            <span class="inline-flex items-center bg-blue-400 ml-auto py-1 px-2 rounded-md">
                 <span class="text-white font-medium text-xs leading-none">{{ $t(`task.status.${[task.status]}`) }}</span>
             </span>
             <span class="flex self-end gap-2">
-                <span @click="emitUploadTask" title="Загрузить решение" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
+                <span v-if="hasRateAndComment" @click="onRateInfoRequest" v-tooltip="rateInfoTooltipContent" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
+                    <Icon name="octicon:info-16" class="btn__icon text-slate-500" />
+                </span>
+                <span @click="emitUploadTask" v-tooltip="uploadTooltipContent" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
                     <Icon name="octicon:upload-16" class="btn__icon text-slate-500" />
                 </span>
-                <span @click="deleteTask" title="Удалить задание" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
+                <span @click="deleteTask" v-tooltip="deleteTooltipContent" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
                     <Icon name="octicon:trash-16" class="btn__icon text-slate-500" />
                 </span>
             </span>
@@ -42,9 +45,38 @@ const props = defineProps({
     }
 })
 
+const uploadTooltipContent = computed(() => {
+    return { 
+        content: 'Загрузите свою работу для проверки', 
+        placement: 'bottom' 
+    }
+})
+
+const deleteTooltipContent = computed(() => {
+    return { 
+        content: 'Удалить задачу', 
+        placement: 'bottom' 
+    }
+})
+
+const rateInfoTooltipContent = computed(() => {
+    return { 
+        content: 'Посмотреть оценку и замечания', 
+        placement: 'bottom' 
+    }
+})
+
+const hasRateAndComment = computed(() => {
+    return props.task.comment && props.task.rating
+})
+
 const taskImage = computed(() => {
     return config.public.baseUrl + '/uploads/' + props.task.image
 })
+
+function onRateInfoRequest() {
+
+}
 
 async function deleteTask() {
     const username = user.data.username

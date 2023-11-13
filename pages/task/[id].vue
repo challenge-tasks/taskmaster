@@ -28,7 +28,7 @@
                             <Icon name="octicon:zap-16" class="text-lg text-white" />
                         </div>
 
-                    <div @click="handleTaskSolutionUpload" class="flex items-center gap-2 px-4 py-3 bg-primary hover:opacity-75 active:hover:opacity-100 rounded-md cursor-pointer" title="Загрузить решение">
+                    <div @click="handleTaskSolutionUpload" v-tooltip="'Загрузите свою работу для проверки'" class="flex items-center gap-2 px-4 py-3 bg-primary hover:opacity-75 active:hover:opacity-100 rounded-md cursor-pointer" title="Загрузить решение">
                             <Icon name="octicon:upload-16" class="text-xl text-white" />
                         </div>
                     </div>
@@ -85,6 +85,8 @@ let task = reactive({
     data: {} as TaskType
 })
 
+const { t } = useI18n()
+
 const { params } = useRoute()
 const appConfig = useRuntimeConfig()
 
@@ -109,7 +111,10 @@ const isTaskDoing = computed(() => {
 })
 
 const taskButtonLabel = computed(() => {
-    return isTaskDoing.value ? 'Выполняется' : 'Выполнить задание'
+    console.log(task.data);
+    
+    const status = task.data.status
+    return isTaskDoing.value ? t(`task.status.${status}`) : 'Выполнить задание'
 })
 
 const allImages = computed(() => {
