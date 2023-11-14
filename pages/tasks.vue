@@ -43,18 +43,18 @@ import type { TaskType } from 'types'
 import { sortOptions } from '@/config/sortOptions'
 import { filterOptions } from '@/config/filterOptions'
 
+const { $api } = useNuxtApp()
+
 useHead({
     title: 'Все задания'
 })
 
 let tasks = reactive({ list: [] as Array<TaskType> })
 
-const { fetchTasks } = useTasks()
+const response = await $api.tasks.getTasks()
 
-const response = await fetchTasks()
-
-if (response.data && response.status === 'success') {
-    tasks.list = response.data.data
+if (response.data.value && response.status.value === 'success') {
+    tasks.list = response.data.value.data
 }
 
 const filterCheckedValue = ref('all')
@@ -71,6 +71,6 @@ watch(() => sortingCheckedValues.value, async (newVal) => {
         }
     }
 
-    await fetchTasks(options)
+    await $api.tasks.getTasks(options)
 })
 </script>

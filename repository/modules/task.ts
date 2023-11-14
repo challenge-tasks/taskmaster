@@ -11,13 +11,14 @@ class TasksModule extends FetchFactory {
      * @param asyncDataOptions options for `useAsyncData`
      * @returns
      */
-    async getTasks(asyncDataOptions?: AsyncDataOptions<ITasksList>): Promise<AsyncData<ITasksList | null, any | null>> {
+    async getTasks(asyncDataOptions?: AsyncDataOptions<ITasksList>): Promise<AsyncData<ITasksList | null, Error | null>> {
 
         return useAsyncData<ITasksList>(() => {
             const fetchOptions: FetchOptions<'json'> = {}
 
-            return this.call<ITasksList>('GET', `${this.RESOURCE}`, {}, fetchOptions)
+            return this.call<ITasksList>('GET', '/tasks', null, fetchOptions)
         }, asyncDataOptions)
+
     }
 }
 

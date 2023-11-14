@@ -20,7 +20,7 @@ class FetchFactory {
      * @param fetchOptions fetch options
      * @returns 
      */
-    async call<T>(method: string, url: string, data?: object, fetchOptions?: FetchOptions<'json'>): Promise<T> {
+    async call<T>(method: string, url: string, data?: object | null, fetchOptions?: FetchOptions<'json'>): Promise<T> {
         return this.$fetch<T>(url, {
             method,
             body: data,
