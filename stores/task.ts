@@ -1,5 +1,5 @@
 import type { AsyncData } from "nuxt/app"
-import type { SimplifiedResponseType, TaskDetailsResponse, ITasksList, ITasksList } from "types"
+import type { SimplifiedResponseType, TaskDetailsResponse, ITasksList } from "types"
 
 export const useTasks = defineStore('tasks', () => {
 

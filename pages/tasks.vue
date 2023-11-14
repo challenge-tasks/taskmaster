@@ -57,20 +57,38 @@ if (response.data.value && response.status.value === 'success') {
     tasks.list = response.data.value.data
 }
 
+const sortingCheckedValues = ref([])
 const filterCheckedValue = ref('all')
-const sortingCheckedValues = ref(["1"])
 const sortingOptions = reactive(sortOptions)
 const filteringOptions = reactive(filterOptions)
 
 watch(() => sortingCheckedValues.value, async (newVal) => {
     const options = {
         query: {
-            filter: {
-                difficulty: newVal
-            }
+            difficulty: newVal.join(',')
         }
     }
 
-    await $api.tasks.getTasks(options)
+    const res = await $api.tasks.getTasks({}, options)
+
+    if (res.data.value && res.status.value === 'success') {
+        tasks.list = res.data.value.data
+    }
+
+})
+
+watch(() => filterCheckedValue.value, async (newVal) => {
+    const options = {
+        query: {
+            sort: newVal
+        }
+    }
+
+    const res = await $api.tasks.getTasks({}, options)
+
+    if (res.data.value && res.status.value === 'success') {
+        tasks.list = res.data.value.data
+    }
+
 })
 </script>
