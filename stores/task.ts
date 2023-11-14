@@ -1,5 +1,5 @@
 import type { AsyncData } from "nuxt/app"
-import type { SimplifiedResponseType, TaskDetailsResponse, TaskListResponse, UserTasksInterface } from "types"
+import type { SimplifiedResponseType, TaskDetailsResponse, ITasksList, ITasksList } from "types"
 
 export const useTasks = defineStore('tasks', () => {
 
@@ -10,13 +10,13 @@ export const useTasks = defineStore('tasks', () => {
     const isTasksFetching = ref<boolean>(false)
     const isSolutionUploading = ref<boolean>(false)
     
-    const userTasks = ref({} as UserTasksInterface)
+    const userTasks = ref({} as ITasksList)
 
-    async function fetchTasks(options: object = {}): Promise<SimplifiedResponseType<TaskListResponse | null>> {
+    async function fetchTasks(options: object = {}): Promise<SimplifiedResponseType<ITasksList | null>> {
 
         try {
 
-            const response = await useFetch<TaskListResponse>(config.public.apiBaseUrl + '/tasks', {
+            const response = await useFetch<ITasksList>(config.public.apiBaseUrl + '/tasks', {
                 method: 'GET',
                 ...options,
             })
@@ -45,13 +45,20 @@ export const useTasks = defineStore('tasks', () => {
     async function fetchTaskDetails(slug: string | string[]): Promise<SimplifiedResponseType<TaskDetailsResponse | null>> {
 
         try {
+            
+            const headers: any = {}
+
+            if (rToken) {
+                headers.Authorization = `Bearer ${rToken}`
+            }
 
             if (!slug) {
                 throw new Error('Provide task slug to get task details')
             }
 
             const { data, error, status, pending } = await useFetch<TaskDetailsResponse>(config.public.apiBaseUrl + '/tasks/' + slug, {
-                method: 'GET'
+                method: 'GET',
+                headers
             })
 
             return {
@@ -88,10 +95,12 @@ export const useTasks = defineStore('tasks', () => {
                 throw new Error('Provide username to start this task')
             }
 
+            console.log(rToken)
+
             const res = await useFetch<TaskDetailsResponse>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
                 method: 'POST',
                 headers: {
-                    Authorization: 'Bearer ' + rToken
+                    Authorization: `Bearer ${rToken}`
                 },
                 body: {
                     task_id: taskId
@@ -110,7 +119,7 @@ export const useTasks = defineStore('tasks', () => {
 
     }
 
-    async function getUserTasks(username: string): Promise<AsyncData<UserTasksInterface | null, any | null> | undefined> {
+    async function getUserTasks(username: string): Promise<AsyncData<ITasksList | null, any | null> | undefined> {
 
         try {
 
@@ -119,7 +128,7 @@ export const useTasks = defineStore('tasks', () => {
             if (rToken) {
                 isTasksFetching.value = true
 
-                const res = await useFetch<UserTasksInterface>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
+                const res = await useFetch<ITasksList>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${rToken}`

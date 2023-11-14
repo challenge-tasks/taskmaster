@@ -8,7 +8,6 @@
                     <div class="profile-img mx-auto sm:mx-0 mb-4">
                         <img :src="user.data.avatar">
                     </div>
-
                     
                     <div class="mb-4 form-field">
                         <span class="form-label">Имя пользователя</span>
@@ -28,7 +27,7 @@
                 <div class="div">
                     <h2 class="mb-4 font-medium text-2xl text-slate-600">Задачи пользователя</h2>
 
-                    <div class="user-tasks relative">
+                    <div class="user-tasks relative" :style="tasksContainerStyle">
                        
                         <ClientOnly>
 
@@ -49,7 +48,13 @@
                             </div>
 
                             <div v-else class="flex flex-col gap-3 p-3">
-                                <UserTask :task="task" v-for="task in userTasks.data" :key="task.id" @solution-upload="onSolutionUpload" />
+                                <UserTask 
+                                    :task="task" 
+                                    :key="task.id"
+                                    v-for="task in userTasks.data" 
+                                    @review-request="onReviewRequest"
+                                    @solution-upload="onSolutionUpload" 
+                                />
                             </div>
 
                         </ClientOnly>
@@ -63,6 +68,7 @@
         </div>
     </section>
 
+    <SolutionReviewModal v-model="isSolutionReviewModalVisible" :task-review="taskReviewData" />
     <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="uploadingTaskSlug" @closed="onSolutionUploadModalClose" />
 </template>
 
@@ -75,6 +81,11 @@ interface UserDataInterface {
     username: string 
 }
 
+interface TaskReviewInterface {
+    comment: string
+    rating: number
+}
+
 const { logOut } = useUserAuth()
 const { getUserTasks } = useTasks()
 const { user, updateUser } = useUser()
@@ -83,6 +94,8 @@ const { isFetching } = storeToRefs(useUser())
 const { isTasksFetching } = storeToRefs(useTasks())
 
 const uploadingTaskSlug = ref<string>('')
+const taskReviewData = ref({} as TaskReviewInterface)
+const isSolutionReviewModalVisible = ref<boolean>(false)
 const isSolutionUploadModalVisible = ref<boolean>(false)
 
 const userData = computed<UserDataInterface>(() => {
@@ -90,6 +103,10 @@ const userData = computed<UserDataInterface>(() => {
         email: user.data.email,
         username: user.data.username
     }
+})
+
+const tasksContainerStyle = computed(() => {
+    return isTasksFetching.value ? { minHeight: '200px' } : ''
 })
 
 const hasUserActiveTasks = computed<boolean>(() => userTasks.value.data?.length > 0)
@@ -105,6 +122,11 @@ function onSolutionUpload(taskSlug: string) {
 
 function onSolutionUploadModalClose() {
     uploadingTaskSlug.value = ''
+}
+
+function onReviewRequest(payload: TaskReviewInterface) {
+    taskReviewData.value = payload
+    isSolutionReviewModalVisible.value = true
 }
 
 onMounted(() => {

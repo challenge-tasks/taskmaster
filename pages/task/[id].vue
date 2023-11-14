@@ -74,7 +74,7 @@
         </div>
     </section>
 
-    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="task.data.slug" />
+    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="task.data.slug ?? '' " />
 </template>
 
 <script setup lang="ts">
@@ -111,10 +111,8 @@ const isTaskDoing = computed(() => {
 })
 
 const taskButtonLabel = computed(() => {
-    console.log(task.data);
-    
-    const status = task.data.status
-    return isTaskDoing.value ? t(`task.status.${status}`) : 'Выполнить задание'
+    const name = task.data.status
+    return isTaskDoing.value ? t(`task.status.${name}`) : 'Выполнить задание'
 })
 
 const allImages = computed(() => {

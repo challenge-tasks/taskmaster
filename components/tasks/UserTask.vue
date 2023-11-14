@@ -18,7 +18,7 @@
                 <span v-if="hasRateAndComment" @click="onRateInfoRequest" v-tooltip="rateInfoTooltipContent" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
                     <Icon name="octicon:info-16" class="btn__icon text-slate-500" />
                 </span>
-                <span @click="emitUploadTask" v-tooltip="uploadTooltipContent" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
+                <span @click="emitUploadTask" v-tooltip="uploadTooltipContent" :class="uploadTaskDynamicStyles" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 rounded bg-slate-50">
                     <Icon name="octicon:upload-16" class="btn__icon text-slate-500" />
                 </span>
                 <span @click="deleteTask" v-tooltip="deleteTooltipContent" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
@@ -36,7 +36,11 @@ import { trimText } from '@/utils'
 const { user } = useUser()
 const config = useRuntimeConfig()
 const { removeUserTask } = useTasks()
-const emit = defineEmits<{ (e: 'solution-upload', taskSlug: string): void }>()
+
+const emit = defineEmits<{ 
+    // 'solution-upload': [slug: string]
+    'review-request': [{ comment: string, rating: number }] 
+}>()
 
 const props = defineProps({
     task: {
@@ -46,9 +50,31 @@ const props = defineProps({
 })
 
 const uploadTooltipContent = computed(() => {
+    
+    if (hasRateAndComment.value) {
+        return { 
+            content: 'Вы уже получили обратную связь для своего решения',
+            placement: 'bottom' 
+        }
+    }
+    
     return { 
         content: 'Загрузите свою работу для проверки', 
         placement: 'bottom' 
+    }
+})
+
+const uploadTaskDynamicStyles = computed(() => {
+    if (hasRateAndComment.value) {
+        return {
+            'opacity-40': true,
+            'cursor-not-allowed': true
+        } 
+    }
+
+    return {
+        'cursor-pointer': true,
+        'hover:bg-slate-200': true
     }
 })
 
@@ -75,7 +101,7 @@ const taskImage = computed(() => {
 })
 
 function onRateInfoRequest() {
-
+    emit('review-request', { comment: props.task.comment!, rating: props.task.rating! })
 }
 
 async function deleteTask() {
@@ -84,7 +110,9 @@ async function deleteTask() {
 }
 
 async function emitUploadTask() {
-    emit('solution-upload', props.task.slug)
+    if (!hasRateAndComment.value) {
+        emit('solution-upload', props.task.slug)
+    }
 }
 
 </script>

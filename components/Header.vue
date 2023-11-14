@@ -3,7 +3,7 @@
         <div class="header__inner">
 
             <NuxtLink to="/">
-                <img src="../assets/icons/logo.svg" alt="Logotype">
+                <img src="@/assets/icons/logo.svg" alt="Logotype">
             </NuxtLink>
 
             <span @click="toggleMenu" class="burger" :class="{ 'burger--active': isMenuActive }">

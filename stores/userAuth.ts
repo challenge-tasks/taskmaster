@@ -4,21 +4,20 @@ export const useUserAuth = defineStore('userAuth', () => {
     const token = useCookie('token')
     const rToken = ref(token.value)
     const config = useRuntimeConfig()
-    const hasToken = ref<boolean>(false)
     const isFetching = ref<boolean>(false)
     const isAuthenticated = ref<boolean>(false)
 
     if (token.value) {
-        hasToken.value = true
         isAuthenticated.value = true
     }
 
-    const { getUser } = useUser()
     const { hideSignUpModal, hideSignInModal } = useAuthModals()
 
     async function signUp(payload: AuthPayload) {
 
         try {
+
+            const { getUser } = useUser()
 
             isFetching.value = true
 
@@ -33,8 +32,6 @@ export const useUserAuth = defineStore('userAuth', () => {
 
                 token.value = response.data.value?.data.token
                 rToken.value = response.data.value?.data.token
-                
-                hasToken.value = true
                 
                 hideSignUpModal()
 
@@ -56,6 +53,8 @@ export const useUserAuth = defineStore('userAuth', () => {
 
         try {
 
+            const { getUser } = useUser()
+
             isFetching.value = true
 
             const response = await useFetch<AuthResponse>(config.public.apiBaseUrl + '/login', {
@@ -68,8 +67,7 @@ export const useUserAuth = defineStore('userAuth', () => {
                 
                 token.value = response.data.value?.data.token
                 rToken.value = response.data.value?.data.token
-                
-                hasToken.value = true
+
                 isAuthenticated.value = true
                 
                 hideSignInModal()
@@ -108,7 +106,6 @@ export const useUserAuth = defineStore('userAuth', () => {
             token.value = null
             rToken.value = null
             user.data = {} as User
-            hasToken.value = false
             isAuthenticated.value = false   
         }
     
@@ -120,7 +117,6 @@ export const useUserAuth = defineStore('userAuth', () => {
         signUp,
         signIn,
         rToken,
-        hasToken,
         isFetching,
         isAuthenticated
     }

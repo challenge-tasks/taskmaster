@@ -70,16 +70,10 @@ export interface TaskType {
     updated_at: number
 }
 
-export interface TaskListResponse {
+export interface ITasksList {
     data: Array<TaskType>
     links: object
     meta: object
-}
-
-export interface UserTasksInterface {
-    meta: object
-    links: object
-    data: Array<TaskType>
 }
 
 export interface TaskDetailsResponse {
