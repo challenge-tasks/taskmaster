@@ -2,10 +2,10 @@
     <VueFinalModal v-model="isModalVisible" v-bind="modalConfig">
 
         <div class="mb-4 transition linear delay-150 w-full h-56 flex items-center justify-center relative rounded-md border-2 hover:border-gray-700 border-gray-400 border-dashed">
-            <div class="flex flex-col items-center justify-center">
+            <div class="flex flex-col gap-2 items-center justify-center">
                 <ClientOnly>
                     <span class="flex items-center mb-2">
-                        <Icon name="ant-design:cloud-upload-outlined" class="mr-1 text-slate-400" width="40" height="40" />
+                        <UIcon name="i-ant-design-cloud-upload-outlined" class="text-slate-400 w-10 h-10" />
                     </span>
                 </ClientOnly>
                 <span class="max-w-md text-center text-slate-400">Выберите zip или rar файл где содержится решение по заданию и загрузите его для проверки</span>
@@ -19,8 +19,12 @@
         </div>
 
         <div class="flex justify-end gap-2">
-            <Button @click="cancelUpload" label="Отменить" class="py-3 btn btn--ghost" />
-            <Button @click="uploadFileToServer" :loading="isSolutionUploading" label="Загрузить решение" class="py-3 btn btn--primary" />
+            <UButton @click="cancelUpload" variant="soft" class="py-3 btn">
+                Отменить
+            </UButton>
+            <UButton @click="uploadFileToServer" trailing :disabled="!form.file" :loading="isSolutionUploading" class="py-3 btn btn--primary">
+                {{ isSolutionUploading ? 'Загружаем' : 'Загрузить решение' }}
+            </UButton>
         </div>
 
     </VueFinalModal>

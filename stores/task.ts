@@ -81,7 +81,7 @@ export const useTasks = defineStore('tasks', () => {
         }
     }
 
-    async function startTask(username: string, taskId: number) {
+    async function startTask(username: string, taskId: number): Promise<{ data: { status: string } } | null | undefined> {
         
         try {
 
@@ -95,9 +95,7 @@ export const useTasks = defineStore('tasks', () => {
                 throw new Error('Provide username to start this task')
             }
 
-            console.log(rToken)
-
-            const res = await useFetch<TaskDetailsResponse>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
+            const res = await useFetch<{ data: { status: string } } | null>(config.public.apiBaseUrl + `/users/${username}/tasks`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${rToken}`
@@ -107,7 +105,7 @@ export const useTasks = defineStore('tasks', () => {
                 }
             }) 
 
-            return res.data
+            return res.data.value
             
         } catch (error: any) {
 
@@ -200,7 +198,7 @@ export const useTasks = defineStore('tasks', () => {
                     server: false
                 })
 
-                getUserTasks(username)
+                await getUserTasks(username)
 
                 return res.data
             }

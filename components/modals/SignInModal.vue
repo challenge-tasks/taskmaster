@@ -10,7 +10,14 @@
                 <span class="form-label">E-mail <sup class="text-red-500">*</sup></span>
 
                 <Field v-model="form.email" v-slot="{ field, meta }" :rules="rules.fields.email" name="email">
-                    <input type="email" v-bind="field"  placeholder="Введите электронную почту" class="form-input form-input--email" :class="{ 'form-input--error': meta.touched && !meta.valid }">
+                    <UInput
+                        size="lg"
+                        type="email"
+                        v-bind="field"
+                        icon="i-octicon-mail-24"
+                        placeholder="Введите электронную почту"
+                        :color="meta.touched && !meta.valid ? 'red' : 'white'"
+                    />
                 </Field>
                 
                 <transition-slide>
@@ -22,7 +29,14 @@
                 <span class="form-label">Пароль <sup class="text-red-500">*</sup></span>
                     
                 <Field v-model="form.password" v-slot="{ field, meta }" :rules="rules.fields.password" name="password">
-                    <input type="password" v-bind="field" placeholder="Введите пароль" class="form-input form-input--password" :class="{ 'form-input--error': meta.touched && !meta.valid }" />
+                    <UInput
+                        size="lg"
+                        v-bind="field"
+                        type="password"
+                        icon="i-octicon-lock-24"
+                        placeholder="Введите пароль"
+                        :color="meta.touched && !meta.valid ? 'red' : 'white'"
+                    />
                 </Field>
                 
                 <transition-slide>
@@ -34,8 +48,10 @@
                 <NuxtLink to="/" class="text-blue-700 text-sm">Забыли пароль?</NuxtLink>
             </div>
 
-            <Button @click="handleSignInFormSubmit" :loading="isFetching" label="Войти" class="py-3 w-full btn btn--primary" :icon="{ name: 'solar:login-2-outline' }" />
-            
+            <UButton @click="handleSignInFormSubmit" block trailing :loading="isFetching" size="lg" class="btn" icon="i-octicon-person-24">
+                Войти
+            </UButton>
+
             <transition-fade>
                 <div v-if="errors.type" class="mt-4 flex justify-center">
                     <span class="text-sm text-red-500 text-center">{{ $t(`authorization.${[errors.type]}`) }}</span>

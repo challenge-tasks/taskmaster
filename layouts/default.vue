@@ -9,7 +9,7 @@
 
         <SignInModal />
         <SignUpModal />
-    
+        <UNotifications />
     </div>
 </template>
 

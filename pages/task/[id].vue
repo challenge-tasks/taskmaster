@@ -10,29 +10,23 @@
                 <div class="flex justify-between items-center task__header">
                     <div class="mb-3 sm:mb-0 flex flex-col items-start">
                         <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.data.name }}</h2>
-                        <span class="task-difficulty task-difficulty--big" :data-difficulty="getDifficultyLevel(task.data.difficulty)">{{ task.data.difficulty }}</span>
+                        <span class="task-difficulty task-difficulty--big"
+                            :data-difficulty="getDifficultyLevel(task.data.difficulty)">{{ task.data.difficulty }}</span>
                     </div>
-                    
-                    <Button 
-                        v-if="!isTaskDoing"
-                        @click="handleTaskStart" 
-                        class="sm:py-4 btn--primary" 
-                        :loading="isFetching" 
-                        :label="taskButtonLabel"
-                        :icon="{ name: 'octicon:checklist-24' }" 
-                    />
+
+                    <UButton v-if="!isTaskDoing" @click="handleTaskStart" :loading="isFetching" trailing icon="i-octicon-checklist-24" class="py-3 px-5 rounded-lg">
+                        {{ taskButtonLabel }}
+                    </UButton>
 
                     <div v-else class="flex gap-2">
-                        <div class="flex items-center gap-2 bg-emerald-400 rounded-md px-3 py-3">
-                            <span class="text-white">{{ taskButtonLabel }}</span>
-                            <Icon name="octicon:zap-16" class="text-lg text-white" />
-                        </div>
+                        <UBadge color="gray" variant="solid" class="py-3">
+                            <span class="text-sm font-medium px-2">{{ taskButtonLabel }}</span>
+                            <UIcon name="i-octicon-zap-16" class="text-lg text-gray-700" />
+                        </UBadge>
 
-                    <div @click="handleTaskSolutionUpload" v-tooltip="'Загрузите свою работу для проверки'" class="flex items-center gap-2 px-4 py-3 bg-primary hover:opacity-75 active:hover:opacity-100 rounded-md cursor-pointer" title="Загрузить решение">
-                            <Icon name="octicon:upload-16" class="text-xl text-white" />
-                        </div>
+                        <UButton v-if="!isTaskDone" :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="btn rounded-lg" />
                     </div>
-                
+
                 </div>
 
                 <div class="task-image-gallery">
@@ -46,10 +40,10 @@
 
                     <div class="swiper-navigation">
                         <button class="swiper-navigation__prev">
-                            <Icon name="octicon:arrow-left-24" />
+                            <UIcon name="i-octicon-arrow-left-24" />
                         </button>
                         <button class="swiper-navigation__next">
-                            <Icon name="octicon:arrow-right-24" />
+                            <UIcon name="i-octicon-arrow-right-24" />
                         </button>
                     </div>
                 </div>
@@ -74,7 +68,7 @@
         </div>
     </section>
 
-    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="task.data.slug ?? '' " />
+    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="task.data.slug ?? ''" />
 </template>
 
 <script setup lang="ts">
@@ -110,6 +104,14 @@ const isTaskDoing = computed(() => {
     return userTasks.value.data && userTasks.value.data.some((tsk: TaskType) => tsk.id === task.data.id)
 })
 
+const isTaskDone =  computed(() => {
+    return task.data.status === 'done'
+})
+
+const isTaskInReview =  computed(() => {
+    return task.data.status === 'reviewing'
+})
+
 const taskButtonLabel = computed(() => {
     const name = task.data.status
     return isTaskDoing.value ? t(`task.status.${name}`) : 'Выполнить задание'
@@ -138,13 +140,20 @@ const swiperConfig = {
 }
 
 function handleTaskSolutionUpload() {
-    isSolutionUploadModalVisible.value = true
+    if (!isTaskInReview.value) {
+        isSolutionUploadModalVisible.value = true
+    }
 }
 
 async function handleTaskStart() {
     if (isAuthenticated.value) {
 
-        await startTask(user.data.username, task.data.id)
+        const res = await startTask(user.data.username, task.data.id)
+
+        if (res) {
+            task.data.status = res.data.status
+        }
+
         await getUserTasks(user.data.username)
 
     } else {

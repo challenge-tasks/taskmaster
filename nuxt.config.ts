@@ -2,9 +2,17 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   components: [{
-      path: '~/components',
-      pathPrefix: false
+    path: '~/components',
+    pathPrefix: false
   }],
+
+  ui: {
+    icons: ['ion', 'octicon', 'ant-design', 'bxl']
+  },
+
+  colorMode: {
+    preference: 'light'
+  },
 
   css: [
     'vue-final-modal/style.css',
@@ -32,13 +40,12 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    'nuxt-icon',
+    '@nuxt/ui',
     '@nuxt/image',
     'nuxt-swiper',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@vee-validate/nuxt',
-    '@nuxtjs/tailwindcss',
     '@morev/vue-transitions/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]
   ]

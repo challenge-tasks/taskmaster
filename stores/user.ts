@@ -1,3 +1,4 @@
+import { AsyncData } from "nuxt/app"
 import { User } from "types"
 
 export const useUser = defineStore('user', () => {
@@ -49,7 +50,7 @@ export const useUser = defineStore('user', () => {
         }
     }
     
-    async function updateUser(data: { username: string, email: string }): Promise<void | boolean> {
+    async function updateUser(data: { username: string, email: string }): Promise< string | boolean> {
         try {
 
             const { rToken } = useUserAuth()
@@ -60,7 +61,7 @@ export const useUser = defineStore('user', () => {
 
             isFetching.value = true
 
-            await useFetch<{ data: User }>(appConfig.public.apiBaseUrl + '/profile', {
+            const res = await useFetch<{ data: User }>(appConfig.public.apiBaseUrl + '/profile', {
                 method: 'PUT',
                 body: data,
                 headers: {
@@ -68,6 +69,8 @@ export const useUser = defineStore('user', () => {
                 },
                 server: false
             })
+
+            return res.status.value
 
         } catch (error) {
 

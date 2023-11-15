@@ -1,4 +1,4 @@
-import { string, ref, object } from "yup"
+import { string, object } from "yup"
 
 export const validationRules = object().shape({
     email: string().email('Неправильный формат Email').required('Поле Email обязательно к заполнению'),

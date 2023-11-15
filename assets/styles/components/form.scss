@@ -21,48 +21,7 @@
     padding-right: 10px;
     font-family: sans-serif;
     background-size: 18px 18px;
-    border: 1px solid #d1d5db;
+    transition: all 0.2s linear;
     background-repeat: no-repeat;
     background-position: 10px center;
-    transition: border 0.2s linear, box-shadow 0.2s linear;
-
-    &:focus,
-    &:active {
-        border: 1px solid #86b7fe;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25);
-    }
-
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-        -webkit-box-shadow: 0 0 0 30px white inset !important;
-    }
-
-    &--error {
-        border: 1px solid #fe8686 !important;
-        box-shadow: 0 0 0 0.25rem rgba(253, 13, 13, 0.25) !important;
-    }
-
-    &--email {
-        padding-top: 0px;
-        padding-left: 35px;
-        background-image: url('/assets/icons/email.svg');
-    }
-
-    &--username {
-        padding-top: 0px;
-        padding-left: 35px;
-        background-size: 25px 22px;
-        background-position: 5px center;
-        background-image: url('/assets/icons/at.svg');
-    }
-
-    &--password {
-        padding-top: 0px;
-        padding-left: 35px;
-        background-size: 35px 22px;
-        background-position: 2px center;
-        background-image: url('/assets/icons/lock.svg');
-    }
 }

@@ -20,7 +20,9 @@
                 
                 <NuxtLink to="/about" class="menu__item">О проекте</NuxtLink>
                 
-                <Button v-if="!isAuthenticated" @click="toggleSignInModal" v-bind="signInModalToggleButtonConfig" />
+                <UButton v-if="!isAuthenticated" @click="toggleSignInModal" size="lg" icon="i-octicon-person-24" trailing class="menu__btn btn btn--rounded">
+                    Войти
+                </UButton>
                 
                 <Socials />
             
@@ -37,12 +39,6 @@ const { user } = useUser()
 const isMenuActive = ref(false)
 
 const { isAuthenticated } = storeToRefs(useUserAuth())
-
-const signInModalToggleButtonConfig = {
-    label: "Войти",
-    class: "btn--primary btn--rounded menu__btn",
-    icon: { name: 'octicon:person-24' }
-}
 
 const userProfileLink = computed(() => {
     return { name: 'profile-id', params: { id: user.data.username } }

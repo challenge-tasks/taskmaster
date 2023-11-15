@@ -5,13 +5,17 @@
 
                 <div class="intro__info">
                     <h1 class="mb-3 intro__title">На пути к <span class="text-indigo-600">совершенствованию</span> навыков</h1>
+                    
                     <p :class="{ 'mb-4': !isAuthenticated }" class="intro__text text-slate-500">
                         Платформа, где ваши навыки обретают новое измерение. Независимо от
                         вашего уровня опыта, здесь вы найдете задачи на меру вашим амбициям.
                         <br />
                         Прокачайте свои скиллы, решая задачи разной сложности, и идите к своим целям!
                     </p>
-                    <Button v-if="!isAuthenticated" @click="toggleSignUpModal" label="Зарегистрироваться" class="py-3 btn--rounded btn--primary" :icon="{ name: 'octicon:person-add-24' }" />
+
+                    <UButton v-if="!isAuthenticated" @click="toggleSignUpModal" size="lg" icon="i-octicon-person-add-24" trailing class="py-3 px-5 btn">
+                        Зарегистрироваться
+                    </UButton>
                 </div>
 
                 <div class="intro__img">
@@ -32,9 +36,9 @@
             </div>
 
             <div class="mt-5 flex justify-center">
-                <NuxtLink to="/tasks" class="d-block bg-green-300 py-3 btn btn--primary btn--rounded menu__btn">
+                <NuxtLink to="/tasks" class="flex bg-green-300 gap-2 py-3 btn btn--primary btn--rounded menu__btn">
                     <span class="btn__label">Посмотреть все задания</span>
-                    <Icon name="octicon:tasklist-24" class="btn__icon btn__icon--right" />
+                    <UIcon name="i-octicon-tasklist-24" class="btn__icon" />
                 </NuxtLink>
             </div>
         </div>

@@ -11,16 +11,40 @@
                     
                     <div class="mb-4 form-field">
                         <span class="form-label">Имя пользователя</span>
-                        <input type="text" v-model="user.data.username"  placeholder="Введите электронную почту" class="form-input form-input--username" />
+                        <UInput
+                            size="lg"
+                            type="text"
+                            color="white"
+                            icon="i-octicon-link-24"
+                            placeholder="Введите имя пользователя"
+                            v-model:model-value="user.data.username"
+                        />
                     </div>
 
                     <div class="mb-4 form-field">
                         <span class="form-label">E-mail</span>
-                        <input type="email" v-model="user.data.email"  placeholder="Введите электронную почту" class="form-input form-input--email" />
+                        <UInput
+                            size="lg"
+                            type="email"
+                            color="white"
+                            icon="i-octicon-link-24"
+                            placeholder="Введите электронную почту"
+                            v-model:model-value="user.data.email"
+                        />
                     </div>
 
-                    <Button @click="updateProfile(userData)" :loading="isFetching" label="Сохранить" class="mb-2 py-3 w-full btn btn--primary" />
-                    <Button @click="logOut" label="Выйти из аккаунта" class="py-3 w-full btn btn--ghost" />
+                    <ClientOnly>
+                        <div class="flex flex-col gap-2">
+                            <UButton @click="updateProfile(userData)" trailing block :loading="isFetching" size="lg" class="btn rounded-lg">
+                                Сохранить
+                            </UButton>
+
+                            <UButton @click="logOut" block variant="soft" size="lg" class="btn rounded-lg">
+                                Выйти из аккаунта
+                            </UButton>
+                        </div>
+                    </ClientOnly>
+
                 </div>
 
 
@@ -31,7 +55,7 @@
                        
                         <ClientOnly>
 
-                            <div v-show="isTasksFetching" class="py-7 flex flex-col items-center justify-center" :class="{ 'absolute h-full w-full bg-white': hasUserActiveTasks }">
+                            <div v-show="isTasksFetching" class="py-7 flex flex-col items-center justify-center" :class="{ 'absolute z-50 h-full w-full bg-white': hasUserActiveTasks }">
                                 <div class="w-20 h-20">
                                     <img src="../../assets/images/search.gif" alt="">
                                 </div>
@@ -76,6 +100,8 @@
 
 useHead({ title: 'Профиль' })
 
+const toast = useToast()
+
 interface UserDataInterface { 
     email: string 
     username: string 
@@ -111,8 +137,13 @@ const tasksContainerStyle = computed(() => {
 
 const hasUserActiveTasks = computed<boolean>(() => userTasks.value.data?.length > 0)
 
-function updateProfile(data: UserDataInterface) {
-    return updateUser(data)
+async function updateProfile(data: UserDataInterface): Promise<void> {
+    const status = await updateUser(data)
+
+    if (status === 'success') {
+        toast.add({ title: 'Пользовательские данные успешно обновлены' })
+    }
+    
 }
 
 function onSolutionUpload(taskSlug: string) {

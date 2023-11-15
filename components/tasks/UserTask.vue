@@ -11,20 +11,23 @@
         </span>
 
         <span class="sm:ml-auto w-full sm:w-auto flex flex-col items-start justify-between p-2">
-            <span class="inline-flex items-center bg-blue-400 ml-auto py-1 px-2 rounded-md">
-                <span class="text-white font-medium text-xs leading-none">{{ $t(`task.status.${[task.status]}`) }}</span>
-            </span>
+            
+            <UBadge class="ml-auto rounded-full">{{ $t(`task.status.${[task.status]}`) }}</UBadge>
+            
             <span class="flex self-end gap-2">
-                <span v-if="hasRateAndComment" @click="onRateInfoRequest" v-tooltip="rateInfoTooltipContent" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
-                    <Icon name="octicon:info-16" class="btn__icon text-slate-500" />
-                </span>
-                <span @click="emitUploadTask" v-tooltip="uploadTooltipContent" :class="uploadTaskDynamicStyles" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 rounded bg-slate-50">
-                    <Icon name="octicon:upload-16" class="btn__icon text-slate-500" />
-                </span>
-                <span @click="deleteTask" v-tooltip="deleteTooltipContent" class="flex justify-center sm:inline-block py-2 sm:px-2 sm:py-1 cursor-pointer rounded bg-slate-50 hover:bg-slate-200">
-                    <Icon name="octicon:trash-16" class="btn__icon text-slate-500" />
-                </span>
+                <UTooltip v-if="hasRateAndComment" :text="rateInfoTooltipContent.text" :popper="{ arrow: true, placement: 'top' }">
+                    <UButton @click="onRateInfoRequest" size="xs" variant="soft" icon="i-octicon-info-16" class="rounded-md" />
+                </UTooltip>
+                
+                <UTooltip :text="uploadTooltipContent.text" :popper="{ arrow: true, placement: 'top' }">
+                    <UButton @click="emitUploadTask" :disabled="isTaskReviewing || isTaskDone" size="xs" variant="soft" icon="i-octicon-upload-16" class="rounded-md" />
+                </UTooltip>
+
+                <UTooltip :text="deleteTooltipContent.text" :popper="{ arrow: true, placement: 'top' }">
+                    <UButton @click="deleteTask" size="xs" variant="soft" icon="i-octicon-trash-16" class="rounded-md" />
+                </UTooltip>
             </span>
+            
         </span>
     </span>
 </template>
@@ -33,12 +36,13 @@
 import { TaskType } from 'types'
 import { trimText } from '@/utils'
 
+const toast = useToast()
 const { user } = useUser()
 const config = useRuntimeConfig()
 const { removeUserTask } = useTasks()
 
 const emit = defineEmits<{ 
-    // 'solution-upload': [slug: string]
+    'solution-upload': [slug: string]
     'review-request': [{ comment: string, rating: number }] 
 }>()
 
@@ -51,49 +55,50 @@ const props = defineProps({
 
 const uploadTooltipContent = computed(() => {
     
-    if (hasRateAndComment.value) {
+    if (isTaskReviewing.value) {
         return { 
-            content: 'Вы уже получили обратную связь для своего решения',
+            text: 'Ваше решение находится на проверке',
+            placement: 'bottom' 
+        }
+    }
+
+    if (isTaskDone.value) {
+        return { 
+            text: 'Вы уже получили обратную связь для своего решения',
             placement: 'bottom' 
         }
     }
     
     return { 
-        content: 'Загрузите свою работу для проверки', 
+        text: 'Загрузите свою работу для проверки', 
         placement: 'bottom' 
-    }
-})
-
-const uploadTaskDynamicStyles = computed(() => {
-    if (hasRateAndComment.value) {
-        return {
-            'opacity-40': true,
-            'cursor-not-allowed': true
-        } 
-    }
-
-    return {
-        'cursor-pointer': true,
-        'hover:bg-slate-200': true
     }
 })
 
 const deleteTooltipContent = computed(() => {
     return { 
-        content: 'Удалить задачу', 
+        text: 'Удалить задачу', 
         placement: 'bottom' 
     }
 })
 
 const rateInfoTooltipContent = computed(() => {
-    return { 
-        content: 'Посмотреть оценку и замечания', 
-        placement: 'bottom' 
+    return {
+        text: 'Посмотреть оценку и замечания',
+        placement: 'bottom'
     }
 })
 
 const hasRateAndComment = computed(() => {
     return props.task.comment && props.task.rating
+})
+
+const isTaskReviewing = computed(() => {
+    return props.task.status === 'reviewing'
+})
+
+const isTaskDone = computed(() => {
+    return props.task.status === 'done'
 })
 
 const taskImage = computed(() => {
@@ -106,11 +111,16 @@ function onRateInfoRequest() {
 
 async function deleteTask() {
     const username = user.data.username
-    await removeUserTask(username, props.task.slug)
+    const res = await removeUserTask(username, props.task.slug)
+
+    if (!res?.error.value && res?.status.value === 'success') {
+        toast.add({ title: 'Задача успешно удалена из профиля пользователя' })
+    }
+
 }
 
 async function emitUploadTask() {
-    if (!hasRateAndComment.value) {
+    if (!isTaskReviewing.value || isTaskDone.value) {
         emit('solution-upload', props.task.slug)
     }
 }
