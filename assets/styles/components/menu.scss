@@ -6,7 +6,6 @@
 
     &__item {
         font-weight: 500;
-        color: #333333;
         overflow: hidden;
         position: relative;
 
@@ -18,12 +17,12 @@
             bottom: 0px;
             position: absolute;
             display: inline-block;
-            background-color: #333333;
+            background-color: #1e293b;
             transition: left 0.2s linear;
         }
 
-        &:hover {
-            color: #000000;
+        &.text-royalBlue-500::after {
+            background-color: #4F46E5;
         }
 
         &:hover::after {

@@ -13,19 +13,21 @@
             </span>
 
             <div class="menu" :class="{ 'menu--active': isMenuActive }">
-                
-                <NuxtLink v-if="isAuthenticated && user.data.id" :to="userProfileLink" class="menu__item">Профиль</NuxtLink>
-                
-                <NuxtLink to="/tasks" class="menu__item">Задания</NuxtLink>
-                
-                <NuxtLink to="/about" class="menu__item">О проекте</NuxtLink>
-                
+
+                <ULink v-if="isAuthenticated && user.data.id" :to="userProfileLink" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">
+                    Профиль
+                </ULink>
+
+                <ULink to="/tasks" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">Задания</ULink>
+
+                <ULink to="/about" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">О проекте</ULink>
+
                 <UButton v-if="!isAuthenticated" @click="toggleSignInModal" size="lg" icon="i-octicon-person-24" trailing class="menu__btn btn btn--rounded">
                     Войти
                 </UButton>
-                
+
                 <Socials />
-            
+
             </div>
 
         </div>
