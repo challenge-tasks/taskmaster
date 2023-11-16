@@ -37,13 +37,13 @@ import { ITaskType } from 'types'
 import { trimText } from '@/utils'
 
 const toast = useToast()
-const { user } = useUser()
 const config = useRuntimeConfig()
 const { removeUserTask } = useTasks()
+const { user } = storeToRefs(useUserStore())
 
 const emit = defineEmits<{ 
-    'solution-upload': [slug: string]
-    'review-request': [{ comment: string, rating: number }] 
+    'solution-upload': any
+    'review-request': any
 }>()
 
 const props = defineProps({
@@ -105,10 +105,10 @@ function onRateInfoRequest() {
 }
 
 async function deleteTask() {
-    const username = user.data.username
-    const res = await removeUserTask(username, props.task.slug)
+    const username = user.value.username
+    const res = await removeUserTask({ customParams: { username, taskSlug: props.task.slug } })
 
-    if (!res?.error.value && res?.status.value === 'success') {
+    if (!res.error.value && res.status.value === 'success') {
         toast.add({ title: 'Задача успешно удалена из профиля пользователя' })
     }
 

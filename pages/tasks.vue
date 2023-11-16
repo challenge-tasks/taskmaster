@@ -25,7 +25,7 @@
                 <div class="w-20 h-20">
                     <img src="@/assets/images/moving-eye.gif" />
                 </div>
-                <span class="block mb-2 font-medium text-slate-600">По вашему запросу задачи не найдены...</span>
+                <span class="block mb-2 font-bold text-slate-600">По вашему запросу задачи не найдены...</span>
                 <p class="max-w-md text-center text-slate-400">Не удалось найти задачи по вашему запросу, попробуйте изменить свой запрос и попробовать заново</p>
             </div>
 

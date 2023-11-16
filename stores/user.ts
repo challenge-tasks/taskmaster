@@ -1,9 +1,11 @@
-import { IUser } from "types"
+import { ITaskType, IUser } from "types"
 
 export const useUserStore = defineStore('user-store', () => {
 
     const user = ref({} as IUser)
     const userToken = useCookie<string>('token')
+    
+    const isUserUpdating = ref<boolean>(false)
 
     function setUser(payload: IUser) {
         user.value = payload
@@ -11,6 +13,10 @@ export const useUserStore = defineStore('user-store', () => {
 
     function setUserToken(payload: string) {
         userToken.value = payload
+    }
+
+    function setUserUpdatingStatus(payload: boolean) {
+        isUserUpdating.value = payload
     }
 
     function logOutUser() {
@@ -23,7 +29,9 @@ export const useUserStore = defineStore('user-store', () => {
         setUser,
         userToken,
         logOutUser,
-        setUserToken
+        setUserToken,
+        isUserUpdating,
+        setUserUpdatingStatus
     }
 
 })

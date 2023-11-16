@@ -6,36 +6,22 @@
 
                 <div class="div">
                     <div class="profile-img mx-auto sm:mx-0 mb-4">
-                        <img :src="user.data.avatar">
+                        <img :src="user.avatar">
                     </div>
-                    
+
                     <div class="mb-4 form-field">
                         <span class="form-label">Имя пользователя</span>
-                        <UInput
-                            size="lg"
-                            type="text"
-                            color="white"
-                            icon="i-octicon-link-24"
-                            placeholder="Введите имя пользователя"
-                            v-model:model-value="user.data.username"
-                        />
+                        <UInput size="lg" type="text" color="white" icon="i-octicon-link-24" placeholder="Введите имя пользователя" v-model:model-value="user.username" />
                     </div>
 
                     <div class="mb-4 form-field">
                         <span class="form-label">E-mail</span>
-                        <UInput
-                            size="lg"
-                            type="email"
-                            color="white"
-                            icon="i-octicon-mail-24"
-                            placeholder="Введите электронную почту"
-                            v-model:model-value="user.data.email"
-                        />
+                        <UInput size="lg" type="email" color="white" icon="i-octicon-mail-24" placeholder="Введите электронную почту" v-model:model-value="user.email" />
                     </div>
 
                     <ClientOnly>
                         <div class="flex flex-col gap-2">
-                            <UButton @click="updateProfile(userData)" trailing block :loading="isFetching" size="lg" class="btn rounded-lg">
+                            <UButton @click="updateProfile(userData)" trailing block :loading="isUserUpdating" size="lg" class="btn rounded-lg">
                                 Сохранить
                             </UButton>
 
@@ -52,10 +38,10 @@
                     <h2 class="mb-4 font-medium text-2xl text-slate-600">Задачи пользователя</h2>
 
                     <div class="user-tasks relative" :style="tasksContainerStyle">
-                       
+
                         <ClientOnly>
 
-                            <div v-show="isTasksFetching" class="py-7 flex flex-col items-center justify-center" :class="{ 'absolute z-50 h-full w-full bg-white': hasUserActiveTasks }">
+                            <div v-show="isUserTasksFetching" class="py-7 flex flex-col items-center justify-center" :class="{ 'absolute z-50 h-full w-full bg-white': hasUserActiveTasks }">
                                 <div class="w-20 h-20">
                                     <img src="../../assets/images/search.gif" alt="">
                                 </div>
@@ -63,7 +49,7 @@
                                 <p class="max-w-md text-center text-slate-400">Загружаем ваши задачи, пожалуйста подождите</p>
                             </div>
 
-                            <div v-if="!isTasksFetching && !hasUserActiveTasks" class="py-7 px-3 sm:px-0 flex flex-col items-center justify-center">
+                            <div v-if="!isUserTasksFetching && !hasUserActiveTasks" class="py-7 px-3 sm:px-0 flex flex-col items-center justify-center">
                                 <div class="w-20 h-20">
                                     <img src="../../assets/images/no-data.gif" alt="">
                                 </div>
@@ -74,10 +60,10 @@
                             <div v-else class="flex flex-col gap-3 p-3">
                                 <UserTask 
                                     :task="task" 
-                                    :key="task.id"
-                                    v-for="task in userTasks.data" 
-                                    @review-request="onReviewRequest"
-                                    @solution-upload="onSolutionUpload" 
+                                    :key="task.id" 
+                                    v-for="task in userTasks" 
+                                    @review-request="onReviewRequest" 
+                                    @solution-upload="onSolutionUpload(task.slug)" 
                                 />
                             </div>
 
@@ -86,7 +72,7 @@
                     </div>
 
                 </div>
-                
+
             </div>
 
         </div>
@@ -102,48 +88,50 @@ useHead({ title: 'Профиль' })
 
 const toast = useToast()
 
-interface UserDataInterface { 
-    email: string 
-    username: string 
+interface IUserData {
+    email: string
+    username: string
 }
 
-interface TaskReviewInterface {
+interface ITaskReview {
     comment: string
     rating: number
 }
 
-const { logOut } = useUserAuth()
+const { logOut } = useAuth()
+const { updateUser } = useUser()
 const { getUserTasks } = useTasks()
-const { user, updateUser } = useUser()
-const { userTasks } = storeToRefs(useTasks())
-const { isFetching } = storeToRefs(useUser())
-const { isTasksFetching } = storeToRefs(useTasks())
+const { user } = storeToRefs(useUserStore())
+
+const { isUserUpdating } = storeToRefs(useUserStore())
+const { isUserTasksFetching, userTasks } = storeToRefs(useTaskStore())
 
 const uploadingTaskSlug = ref<string>('')
-const taskReviewData = ref({} as TaskReviewInterface)
+const taskReviewData = ref({} as ITaskReview)
 const isSolutionReviewModalVisible = ref<boolean>(false)
 const isSolutionUploadModalVisible = ref<boolean>(false)
 
-const userData = computed<UserDataInterface>(() => {
+const userData = computed<IUserData>(() => {
     return {
-        email: user.data.email,
-        username: user.data.username
+        email: user.value.email,
+        username: user.value.username
     }
 })
 
 const tasksContainerStyle = computed(() => {
-    return isTasksFetching.value ? { minHeight: '200px' } : ''
+    return isUserTasksFetching.value ? { minHeight: '200px' } : ''
 })
 
-const hasUserActiveTasks = computed<boolean>(() => userTasks.value.data?.length > 0)
+const hasUserActiveTasks = computed<boolean>(() => userTasks.value.length > 0)
 
-async function updateProfile(data: UserDataInterface): Promise<void> {
-    const status = await updateUser(data)
+async function updateProfile(data: IUserData): Promise<void> {
 
-    if (status === 'success') {
+    const response = await updateUser({ body: { ...data } })
+
+    if (response.status.value === 'success') {
         toast.add({ title: 'Пользовательские данные успешно обновлены' })
     }
-    
+
 }
 
 function onSolutionUpload(taskSlug: string) {
@@ -155,13 +143,11 @@ function onSolutionUploadModalClose() {
     uploadingTaskSlug.value = ''
 }
 
-function onReviewRequest(payload: TaskReviewInterface) {
+function onReviewRequest(payload: ITaskReview) {
     taskReviewData.value = payload
     isSolutionReviewModalVisible.value = true
 }
 
-onMounted(() => {
-    getUserTasks(user.data.username)
-})
+getUserTasks({ customParams: { username: user.value.username } })
 
 </script>
