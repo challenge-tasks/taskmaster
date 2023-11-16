@@ -74,23 +74,6 @@
     }
 }
 
-.task-tags {
-    gap: 8px;
-    display: flex;
-    align-items: center;
-
-    &__item {
-        padding: 0px 8px;
-        border-radius: 5px;
-        background-color: #f1f5f9;
-
-        span {
-            color: #64748b;
-            font-size: 14px;
-        }
-    }
-}
-
 @media (max-width: 1025px) {
     .task {
         &__images {

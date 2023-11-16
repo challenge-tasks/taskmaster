@@ -1,29 +1,28 @@
-import { FilterOptions } from "types";
+import { SortOptions } from "types";
 
-export const filterOptions: Array<FilterOptions> = [
+export const filterOptions: Array<SortOptions> = [
     {
-        radioGroupName: 'diffculty',
-        groupName: 'Уровень: ',
+        groupName: 'По сложности: ',
         options: [
             {
-                label: 'Все',
-                value: 'all'
-            },
-            {
-                label: 'Новичок',
-                value: 'newbie'
+                label: 'Intern',
+                value: '1'
             },
             {
                 label: 'Junior',
-                value: 'junior'
+                value: '2'
             },
             {
                 label: 'Middle',
-                value: 'middle'
+                value: '3'
             },
             {
                 label: 'Senior',
-                value: 'senior'
+                value: '4'
+            },
+            {
+                label: 'Guru',
+                value: '5'
             }
         ]
     }

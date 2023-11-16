@@ -4,12 +4,7 @@ export type TasksListType = Array<TaskType> | undefined
 
 export interface SortOptions {
     groupName?: string,
-    options: Array<SortOption>
-}
-
-export interface SortOption {
-    label: string
-    value: string
+    options: Array<FilterOption>
 }
 
 export interface FilterOption {

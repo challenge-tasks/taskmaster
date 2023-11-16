@@ -40,10 +40,10 @@
 
                     <div class="swiper-navigation">
                         <button class="swiper-navigation__prev">
-                            <UIcon name="i-octicon-arrow-left-24" />
+                            <UIcon name="i-octicon-arrow-left-24" class="text-white" />
                         </button>
                         <button class="swiper-navigation__next">
-                            <UIcon name="i-octicon-arrow-right-24" />
+                            <UIcon name="i-octicon-arrow-right-24" class="text-white" />
                         </button>
                     </div>
                 </div>
@@ -52,10 +52,10 @@
 
                     <div class="mb-4">
                         <span class="inline-block mb-2 font-medium text-slate-600">Стек технологий: </span>
-                        <div class="task-tags">
-                            <div v-for="stack in task.data.stacks" :key="stack.id" class="task-tags__item">
-                                <span>{{ stack.name }}</span>
-                            </div>
+                        <div class="flex flex-wrap gap-2">
+                            <UBadge v-for="stack in task.data.stacks" :key="stack.id" class="rounded-full" color="sky" variant="subtle">
+                                {{ stack.name }}
+                            </UBadge>
                         </div>
                     </div>
 

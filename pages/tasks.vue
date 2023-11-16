@@ -1,30 +1,53 @@
 <template>
     <section class="section">
         <div class="mx-auto tm-container">
+            
             <div class="mb-4 sm:mb-8 gap-5 flex flex-wrap items-center justify-between">
 
                 <div class="flex flex-col">
                     <h2 class="section__title">Все задания</h2>
                 </div>
 
-                <div class="ml-auto sm:ml-0 flex items-center gap-5">
-                    <Dropdown :icon="{ name: 'octicon:sort-desc-24' }" label="Фильтровать по">
-                        <template v-slot:options>
-                            <div v-for="group in sortingOptions" class="dropdown__group">
-                                <span class="dropdown__options-group">{{ group.groupName }}</span>
-                                <Checkbox v-for="option in group.options" v-model="sortingCheckedValues" :customValue="option.value" :label="option.label" />
+                <div class="ml-auto sm:ml-0 flex items-center gap-3">
+                    
+                    <UPopover :open="isFilterPopperVisible" :popper="{ placement: 'bottom-end' }">
+                    
+                        <UButton @click="toggleFilterPopper" color="white" label="Фильтр" class="rounded-md" trailing-icon="i-heroicons-chevron-down-20-solid" />
+                        
+                        <template v-slot:panel>
+                            <div class="py-2 px-3">
+                                <div class="space-y-2" v-for="filter in filterOptions" :key="filter.groupName">
+                                    <span v-if="filter.groupName" class="font-bold text-sm">{{ filter.groupName }}</span>
+                                    <UCheckbox v-for="option of filter.options" :key="option.value" v-model="filterCheckedValue" v-bind="option">
+                                        <template v-slot:label>
+                                            <span class="font-normal">{{ option.label }}</span>
+                                        </template>
+                                    </UCheckbox>
+                                </div>
                             </div>
                         </template>
-                    </Dropdown>
+                    
+                    </UPopover>
+                    
+                    <UPopover :open="isSortPopperVisible" :popper="{ placement: 'bottom-end' }">
+                    
+                        <UButton @click="toggleSortPopper" color="white" label="Сортировка" class="rounded-md" trailing-icon="i-heroicons-chevron-down-20-solid" />
+                        
+                        <template v-slot:panel>
+                            <div class="py-2 px-3">
+                                <div class="space-y-2" v-for="sort in sortOptions" :key="sort.groupName">
+                                    <span v-if="sort.groupName" class="font-bold text-sm">{{ sort.groupName }}</span>
+                                    <URadio v-for="option of sort.options" :key="option.value" v-model="sortCheckedValues" v-bind="option">
+                                        <template v-slot:label>
+                                            <span class="font-normal">{{ option.label }}</span>
+                                        </template>
+                                    </URadio>
+                                </div>
+                            </div>
+                        </template>
+                    
+                    </UPopover>
 
-                    <Dropdown :icon="{ name: 'octicon:filter-24' }" label="Сортировать по">
-                        <template v-slot:options>
-                            <div v-for="group in filteringOptions" class="dropdown__group">
-                                <span class="dropdown__options-group">{{ group.groupName }}</span>
-                                <Radio v-for="option in group.options" v-model="filterCheckedValue" :customValue="option.value" :label="option.label" />
-                            </div>
-                        </template>
-                    </Dropdown>
                 </div>
 
             </div>
@@ -57,15 +80,25 @@ if (response.data.value && response.status.value === 'success') {
     tasks.list = response.data.value.data
 }
 
-const sortingCheckedValues = ref([])
-const filterCheckedValue = ref('all')
-const sortingOptions = reactive(sortOptions)
-const filteringOptions = reactive(filterOptions)
+const filterCheckedValue = ref([])
+const sortCheckedValues = ref('all')
+const isSortPopperVisible = ref(false)
+const isFilterPopperVisible = ref(false)
 
-watch(() => sortingCheckedValues.value, async (newVal) => {
+function toggleSortPopper() {
+    isSortPopperVisible.value = !isSortPopperVisible.value
+    isFilterPopperVisible.value = false
+}
+
+function toggleFilterPopper() {
+    isSortPopperVisible.value = false
+    isFilterPopperVisible.value = !isFilterPopperVisible.value
+}
+
+watch(() => sortCheckedValues.value, async (newVal) => {
     const options = {
         query: {
-            difficulty: newVal.join(',')
+            sort: newVal
         }
     }
 
@@ -80,7 +113,7 @@ watch(() => sortingCheckedValues.value, async (newVal) => {
 watch(() => filterCheckedValue.value, async (newVal) => {
     const options = {
         query: {
-            sort: newVal
+            difficulty: newVal.join(',')
         }
     }
 

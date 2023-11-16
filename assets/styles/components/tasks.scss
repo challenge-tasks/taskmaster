@@ -103,40 +103,6 @@
     }
 }
 
-.task-difficulty {
-    line-height: 1;
-    font-size: 12px;
-    padding: 4px 6px;
-    color: #ffffff;
-    font-weight: 500;
-    border-radius: 5px;
-    display: inline-block;
-
-    &--big {
-        font-size: 15px;
-    }
-
-    &[data-difficulty="0"] {
-        background-color: #4ac8de;
-    }
-
-    &[data-difficulty="1"] {
-        background-color: #4ade80;
-    }
-
-    &[data-difficulty="2"] {
-        background-color: #fcd34d;
-    }
-
-    &[data-difficulty="3"] {
-        background-color: #f87171;
-    }
-    
-    &[data-difficulty="4"] {
-        background-color: #ff5e5e;
-    }
-}
-
 @media (max-width: 1200px) {
     .task-card {
         flex-basis: calc((100% / 3) - 25px);
