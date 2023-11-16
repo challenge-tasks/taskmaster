@@ -4,7 +4,7 @@
             <div class="intro">
 
                 <div class="intro__info">
-                    <h1 class="mb-3 intro__title">На пути к <span class="text-indigo-600">совершенствованию</span> навыков</h1>
+                    <h1 class="mb-3 intro__title">На пути к <span class="text-royalBlue-500">совершенствованию</span> навыков</h1>
                     
                     <p :class="{ 'mb-4': !isAuthenticated }" class="intro__text text-slate-500">
                         Платформа, где ваши навыки обретают новое измерение. Независимо от

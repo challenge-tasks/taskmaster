@@ -23,9 +23,11 @@
                             <UIcon name="i-octicon-zap-16" class="text-lg text-gray-700" />
                         </UBadge>
 
-                        <UButton v-if="!isTaskDone" :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="p-2 sm:p-1.5 order-0 sm:order-1 btn rounded-lg">
-                            <span class="sm:hidden">Загрузить решение</span>    
-                        </UButton>
+                        <UTooltip text="Загрузить свое решение" :popper="{ arrow: true, placement: 'right' }" class="order-0 sm:order-1">
+                            <UButton v-if="!isTaskDone" :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="p-2 sm:p-1.5 btn rounded-lg">
+                                <span class="sm:hidden">Загрузить решение</span>
+                            </UButton>
+                        </UTooltip>
                     </div>
 
                 </div>

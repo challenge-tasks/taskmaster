@@ -5,7 +5,7 @@
                 <div class="gap-y-5 sm:gap-0 flex flex-col-reverse md:flex-row items-center justify-around">
                     <div class="md:max-w-xl lg:max-w-2xl xl:max-w-5xl">
                         <h2 class="mb-3 font-medium text-xl sm:text-2xl lg:text-3xl">В чем заключается <span
-                                class="text-indigo-600">идея</span>
+                                class="text-royalBlue-500">идея</span>
                             проекта?</h2>
                         <p class="md:text-base lg:text-lg text-slate-600">
                             Проект нацелен на развитите навыков начинающих разработчиков, но мы не планируем ограничиваться
@@ -40,7 +40,7 @@
 
                     <div class="md:max-w-xl lg:max-w-2xl xl:max-w-5xl">
                         <h2 class="mb-3 font-medium text-xl sm:text-2xl lg:text-3xl">Как все тут <span
-                                class="text-indigo-600">работает?</span></h2>
+                                class="text-royalBlue-500">работает?</span></h2>
                         <p class="md:text-base lg:text-lg text-slate-600">
                             У пользователя в нашей платформе есть возможность работать с задачей организованно. Пользователь
                             берет задачу на выполнение, после чего задача попадает к нему в кабинет со статусом

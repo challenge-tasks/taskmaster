@@ -61,4 +61,8 @@
             background-color: rgba(80, 72, 229, 0.3);
         }
     }
+
+    &:active {
+        opacity: 0.7;
+    }
 }
