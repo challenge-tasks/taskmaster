@@ -28,6 +28,10 @@
 }
 
 @media (max-width: 575px) {
+    .modal {
+        padding: 10px;
+    }
+
     .modal-content {
         max-width: 95%;
     }

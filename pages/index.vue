@@ -48,9 +48,7 @@
 <script setup lang="ts">
 import type { TaskType } from 'types'
 
-useHead({
-    title: 'Taskmaster - платформа для совершенствования свои навыков'
-})
+useHead({ title: 'Taskmaster - платформа для совершенствования свои навыков' })
 
 let tasks = reactive({ list: [] as Array<TaskType> })
 

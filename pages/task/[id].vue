@@ -7,31 +7,32 @@
         <div class="mx-auto px-3 container">
             <div class="task">
 
-                <div class="flex justify-between items-center task__header">
-                    <div class="mb-3 sm:mb-0 flex flex-col items-start">
-                        <h2 class="mb-1 text-slate-700 text-2xl font-medium">{{ task.data.name }}</h2>
-                        <span class="task-difficulty task-difficulty--big"
-                            :data-difficulty="getDifficultyLevel(task.data.difficulty)">{{ task.data.difficulty }}</span>
+                <div class="flex justify-between sm:items-center task__header">
+                    <div class="mb-3 sm:mb-0 flex sm:flex-col items-center justify-between sm:items-start">
+                        <h2 class="mb-1 text-slate-700 text-xl sm:text-2xl font-medium">{{ task.data.name }}</h2>
+                        <span :class="badgeClassesBasedOnDifficultyLevel(task.data.difficulty)">{{ task.data.difficulty }}</span>
                     </div>
 
-                    <UButton v-if="!isTaskDoing" @click="handleTaskStart" :loading="isFetching" trailing icon="i-octicon-checklist-24" class="py-3 px-5 rounded-lg">
+                    <UButton v-if="!isTaskDoing" @click="handleTaskStart" :loading="isFetching" trailing icon="i-octicon-checklist-24" class="justify-center sm:justify-items-start py-3 px-5 rounded-lg">
                         {{ taskButtonLabel }}
                     </UButton>
 
-                    <div v-else class="flex gap-2">
-                        <UBadge color="gray" variant="solid" class="py-3">
+                    <div v-else class="flex flex-col sm:flex-row gap-2">
+                        <UBadge color="gray" variant="solid" class="justify-center py-2 sm:py-3 order-1 sm:order-0">
                             <span class="text-sm font-medium px-2">{{ taskButtonLabel }}</span>
                             <UIcon name="i-octicon-zap-16" class="text-lg text-gray-700" />
                         </UBadge>
 
-                        <UButton v-if="!isTaskDone" :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="btn rounded-lg" />
+                        <UButton v-if="!isTaskDone" :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="p-2 sm:p-1.5 order-0 sm:order-1 btn rounded-lg">
+                            <span class="sm:hidden">Загрузить решение</span>    
+                        </UButton>
                     </div>
 
                 </div>
 
                 <div class="task-image-gallery">
                     <Swiper v-bind="swiperConfig" class="task__images">
-                        <SwiperSlide v-for="(image, key) in allImages" :key="key">
+                        <SwiperSlide v-for="(image, key) in allTaskImages" :key="key">
                             <div class="task-image">
                                 <img :src="image" alt="">
                             </div>
@@ -73,7 +74,7 @@
 
 <script setup lang="ts">
 import { TaskType } from '@/types'
-import { getDifficultyLevel } from '@/utils'
+import { badgeClassesBasedOnDifficultyLevel } from '@/utils'
 
 let task = reactive({
     data: {} as TaskType
@@ -117,7 +118,7 @@ const taskButtonLabel = computed(() => {
     return isTaskDoing.value ? t(`task.status.${name}`) : 'Выполнить задание'
 })
 
-const allImages = computed(() => {
+const allTaskImages = computed(() => {
     const result = [task.data.image]
 
 

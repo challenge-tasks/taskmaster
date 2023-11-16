@@ -27,7 +27,7 @@
                             size="lg"
                             type="email"
                             color="white"
-                            icon="i-octicon-link-24"
+                            icon="i-octicon-mail-24"
                             placeholder="Введите электронную почту"
                             v-model:model-value="user.data.email"
                         />

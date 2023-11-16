@@ -1,7 +1,7 @@
 <template>
     <VueFinalModal v-model="isModalVisible" v-bind="modalConfig">
 
-        <div class="mb-4 transition linear delay-150 w-full h-56 flex items-center justify-center relative rounded-md border-2 hover:border-gray-700 border-gray-400 border-dashed">
+        <div class="mb-4 p-3 transition linear delay-150 w-full h-56 flex items-center justify-center relative rounded-md border-2 hover:border-gray-700 border-gray-400 border-dashed">
             <div class="flex flex-col gap-2 items-center justify-center">
                 <ClientOnly>
                     <span class="flex items-center mb-2">
@@ -18,11 +18,11 @@
             <span class="ml-auto text-slate-600">{{ fileSize }}</span>
         </div>
 
-        <div class="flex justify-end gap-2">
-            <UButton @click="cancelUpload" variant="soft" class="py-3 btn">
+        <div class="flex flex-col xs:flex-row justify-end gap-2">
+            <UButton @click="cancelUpload" variant="soft" class="w-full xs:w-auto py-3 btn order-1 xs:order-0">
                 Отменить
             </UButton>
-            <UButton @click="uploadFileToServer" trailing :disabled="!form.file" :loading="isSolutionUploading" class="py-3 btn btn--primary">
+            <UButton @click="uploadFileToServer" trailing :disabled="!form.file" :loading="isSolutionUploading" class="order-0 xs:order-1 w-full xs:w-auto py-3 btn btn--primary">
                 {{ isSolutionUploading ? 'Загружаем' : 'Загрузить решение' }}
             </UButton>
         </div>
