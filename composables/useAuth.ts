@@ -2,31 +2,34 @@ import { AsyncData } from "nuxt/app"
 import { IAuthPayload, AuthResponse, IAuthError } from "types"
 
 export function useAuth() {
+    
     const { $api } = useNuxtApp()
     const config = useRuntimeConfig()
 
-    const { setSignUpModalState } = useModalsStore()
+    const { setUser, setUserToken } = useUserStore()
+    const { setSignUpModalState, setSignInModalState } = useModalsStore()
     const { setAuthenticatedState, setAuthorizingState } = useAuthStore()
 
-    async function signUp(payload: IAuthPayload): Promise<AsyncData<AuthResponse | null, IAuthError | Error | null>> {
+    async function signUp(payload: IAuthPayload): Promise<AsyncData<AuthResponse | null, IAuthError | null>> {
 
         try {
 
             setAuthorizingState(true)
 
-            const response = await useAsyncData<AuthResponse>('register', () => $api('/register', { method: 'POST', body: { ...payload } }))
+            const res = await useAsyncData<AuthResponse, IAuthError>('register', () => $api('/register', { method: 'POST', body: { ...payload } }))
 
-            if (response.status.value === 'success') {
+            if (res.data.value && res.status.value === 'success') {
                 setSignUpModalState(false)
                 setAuthenticatedState(true)
+                setUser(res.data.value.data.user)
+                setUserToken(res.data.value.data.token)
             }
 
-            return response
+            return res
 
         } catch (error: any) {
 
             console.log(error)
-
             return error
 
         } finally {
@@ -34,35 +37,34 @@ export function useAuth() {
         }
     }
 
-    async function signIn(payload: IAuthPayload) {
+    async function signIn(payload: IAuthPayload): Promise<AsyncData<AuthResponse | null, IAuthError | null>> {
 
         try {
 
             setAuthorizingState(true)
 
-            const response = await useFetch<AuthResponse>(config.public.apiBaseUrl + '/login', {
-                method: 'POST',
-                body: payload,
-                server: false
-            })
+            const res = await useAsyncData<AuthResponse, IAuthError>('login', () => $api('/login', { method: 'POST', body: { ...payload } }))
 
-            if (response.status.value === 'success') {
+            if (res.data.value && res.status.value === 'success') {
+                setSignInModalState(false)
                 setAuthenticatedState(true)
+                setUser(res.data.value.data.user)
+                setUserToken(res.data.value.data.token)
             }
 
+            return res
 
-            return response
-
-        } catch (error) {
+        } catch (error: IAuthError | any) {
 
             console.log(error)
+            return error
 
         } finally {
             setAuthorizingState(false)
         }
     }
 
-    async function logOut() {
+    async function logOut(): Promise<void> {
 
         const router = useRouter()
 

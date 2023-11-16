@@ -12,9 +12,9 @@
                 <span class="burger__sausage"></span>
             </span>
 
-            <!-- <div class="menu" :class="{ 'menu--active': isMenuActive }">
+            <div class="menu" :class="{ 'menu--active': isMenuActive }">
 
-                <ULink v-if="isAuthenticated && user.data.id" :to="userProfileLink" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">
+                <ULink v-if="isAuthenticated && user.id" :to="userProfileLink" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">
                     Профиль
                 </ULink>
 
@@ -22,13 +22,13 @@
 
                 <ULink to="/about" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">О проекте</ULink>
 
-                <UButton v-if="!isAuthenticated" @click="toggleSignInModal" size="lg" icon="i-octicon-person-24" trailing class="menu__btn btn btn--rounded">
+                <UButton v-if="!isAuthenticated" @click="showSigninModal" size="lg" icon="i-octicon-person-24" trailing class="menu__btn btn btn--rounded">
                     Войти
                 </UButton>
 
                 <Socials />
 
-            </div> -->
+            </div>
 
         </div>
     </header>
@@ -36,15 +36,16 @@
 
 <script setup lang="ts">
 
-// const { user } = useUser()
 
 const isMenuActive = ref(false)
 
-// const isAuthenticated = toRef(useAuth(), 'isAuthenticated')
+const { showSigninModal } = useModals()
+const { user } = storeToRefs(useUserStore())
+const { isAuthenticated } = storeToRefs(useAuthStore())
 
-// const userProfileLink = computed(() => {
-//     return { name: 'profile-id', params: { id: user.data.username } }
-// })
+const userProfileLink = computed(() => {
+    return { name: 'profile-id', params: { id: user.value.username } }
+})
 
 function toggleMenu() {
     isMenuActive.value = !isMenuActive.value

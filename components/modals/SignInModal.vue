@@ -48,7 +48,7 @@
                 <NuxtLink to="/" class="text-blue-700 text-sm">Забыли пароль?</NuxtLink>
             </div>
 
-            <UButton @click="handleSignInFormSubmit" block trailing :loading="isFetching" size="lg" class="btn" icon="i-octicon-person-24">
+            <UButton @click="handleSignInFormSubmit" block trailing :loading="isAuthorizing" size="lg" class="btn" icon="i-octicon-person-24">
                 Войти
             </UButton>
 
@@ -78,18 +78,22 @@ const errors = reactive({ type: '' })
 
 const rules = validationRules
 
-// const { signIn } = useAuth()
-// const isFetching = toRef(useAuth(), 'isFetching')
+const { signIn } = useAuth()
 const { showSignupModal } = useModals()
-const { isSigninModalShown } = useModalsStore()
+const { isAuthorizing } = storeToRefs(useAuthStore())
+const { isSigninModalShown } = storeToRefs(useModalsStore())
 
 async function handleSignInFormSubmit() {
-    // const res = await signIn({ email: form.email, password: form.password })
-    // errors.type = res?.error?.value?.data.type
+    const res = await signIn({ email: form.email, password: form.password })
+    
+    if (res.error.value) {
+        errors.type = res.error.value.data.type
+    }
+    
 
-    // setTimeout(() => {
-    //     errors.type = ''
-    // }, 2500)
+    setTimeout(() => {
+        errors.type = ''
+    }, 2500)
 }
 
 </script>
