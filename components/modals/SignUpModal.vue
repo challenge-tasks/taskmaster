@@ -1,5 +1,5 @@
 <template>
-    <VueFinalModal v-model="isSignUpModalVisible" overlayTransition="vfm-fade" contentTransition="vfm-fade" :lockScroll="true" @closed="eraseFilledData(form)" class="modal" content-class="modal-content">
+    <VueFinalModal v-model="isSignupModalShown" overlayTransition="vfm-fade" contentTransition="vfm-fade" :lockScroll="true" @closed="eraseFilledData(form)" class="modal" content-class="modal-content">
         <div class="mb-5 modal-content__header">
             <h2 class="mb-2 font-medium text-center text-xl text-black">Регистрация аккаунта</h2>
             <p class="max-w-lg text-center mx-auto text-slate-500">Зарегистрируйтесь для того чтобы получить больше возможностей!</p>
@@ -63,7 +63,7 @@
             </div>
 
 
-            <UButton @click="handleSignupFormSubmit" block trailing :loading="isFetching" size="lg" class="btn" icon="i-octicon-person-add-24">
+            <UButton @click="handleSignupFormSubmit" block trailing :loading="isAuthorizing" size="lg" class="btn" icon="i-octicon-person-add-24">
                 Зарегистрироваться
             </UButton>
         
@@ -76,7 +76,7 @@
 
         <div class="mb-4 flex justify-center">
             <span class="mr-1 text-sm text-slate-500">Уже есть аккаунт?</span>
-            <button @click="authModals.toggleSignInModal" class="text-blue-700 text-sm">Войти</button>
+            <button @click="showSigninModal" class="text-blue-700 text-sm">Войти</button>
         </div>
 
         <AuthOptions />
@@ -96,11 +96,10 @@ const rules = validationRules
 
 const errors = reactive({ type: '' })
 
-const { signUp } = useUserAuth()
-const authModals = useAuthModals()
-
-const { isFetching } = storeToRefs(useUserAuth())
-const { isSignUpModalVisible } = storeToRefs(authModals)
+const { signUp } = useAuth()
+const { showSigninModal } = useModals()
+const { isAuthorizing } = storeToRefs(useAuthStore())
+const { isSignupModalShown } = storeToRefs(useModalsStore())
 
 async function handleSignupFormSubmit() {
     const payload = {
@@ -109,9 +108,12 @@ async function handleSignupFormSubmit() {
         password: form.password
     }
 
-    const res = await signUp(payload)
+    const { error } = await signUp(payload)
 
-    errors.type = res?.error?.value?.data.type
+    if (error.value) {
+        errors.type =  error.value?.data.type
+    }
+
 
     setTimeout(() => {
         errors.type = ''

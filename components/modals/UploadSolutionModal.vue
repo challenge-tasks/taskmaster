@@ -8,7 +8,7 @@
                         <UIcon name="i-ant-design-cloud-upload-outlined" class="text-slate-400 w-10 h-10" />
                     </span>
                 </ClientOnly>
-                <span class="max-w-md text-center text-slate-400">Выберите zip или rar файл где содержится решение по заданию и загрузите его для проверки</span>
+                <span class="max-w-md text-center text-slate-400">Выберите .zip или .rar файл где содержится решение по заданию и загрузите его для проверки</span>
             </div>
             <input type="file" accept=".zip,.rar,.7z,.gz" maxlength="1" ref="fileInput" @change="handleFile" class="opacity-0 absolute top-0 left-0 right-0 bottom-0">
         </div>

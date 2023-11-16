@@ -12,7 +12,7 @@
 
         <span class="sm:ml-auto w-full sm:w-auto flex flex-col items-start justify-between p-2">
             
-            <UBadge class="ml-auto rounded-full">{{ $t(`task.status.${[task.status]}`) }}</UBadge>
+            <UBadge class="ml-auto rounded-full" variant="subtle">{{ $t(`task.status.${[task.status]}`) }}</UBadge>
             
             <span class="flex self-end gap-2">
                 <UTooltip v-if="hasRateAndComment" :text="rateInfoTooltipContent.text" :popper="{ arrow: true, placement: 'top' }">
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { TaskType } from 'types'
+import { ITaskType } from 'types'
 import { trimText } from '@/utils'
 
 const toast = useToast()
@@ -49,7 +49,7 @@ const emit = defineEmits<{
 const props = defineProps({
     task: {
         required: true,
-        type: Object as PropType<TaskType>
+        type: Object as PropType<ITaskType>
     }
 })
 
@@ -57,35 +57,30 @@ const uploadTooltipContent = computed(() => {
     
     if (isTaskReviewing.value) {
         return { 
-            text: 'Ваше решение находится на проверке',
-            placement: 'bottom' 
+            text: 'Ваше решение находится на проверке'
         }
     }
 
     if (isTaskDone.value) {
         return { 
-            text: 'Вы уже получили обратную связь для своего решения',
-            placement: 'bottom' 
+            text: 'Вы уже получили обратную связь для своего решения'
         }
     }
     
     return { 
-        text: 'Загрузите свою работу для проверки', 
-        placement: 'bottom' 
+        text: 'Загрузите свою работу для проверки'
     }
 })
 
 const deleteTooltipContent = computed(() => {
     return { 
-        text: 'Удалить задачу', 
-        placement: 'bottom' 
+        text: 'Удалить задачу'
     }
 })
 
 const rateInfoTooltipContent = computed(() => {
     return {
-        text: 'Посмотреть оценку и замечания',
-        placement: 'bottom'
+        text: 'Посмотреть оценку и замечания'
     }
 })
 

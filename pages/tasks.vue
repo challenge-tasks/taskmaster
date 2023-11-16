@@ -1,7 +1,7 @@
 <template>
     <section class="section">
         <div class="mx-auto tm-container">
-            
+
             <div class="mb-4 sm:mb-8 gap-3 md:gap-5 flex flex-wrap items-center justify-between">
 
                 <div class="flex flex-col">
@@ -15,8 +15,8 @@
 
             </div>
 
-            <div v-if="tasks.list.length" class="tasks">
-                <NuxtLink :to="'/task/' + task.slug" v-for="task in tasks.list" class="tasks__item">
+            <div v-if="tasks.length" class="tasks">
+                <NuxtLink :to="'/task/' + task.slug" v-for="task in tasks" class="tasks__item">
                     <TaskCard :data="task" />
                 </NuxtLink>
             </div>
@@ -34,19 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import type { TaskType } from 'types'
-
-const { $api } = useNuxtApp()
 
 useHead({ title: 'Все задания' })
 
-let tasks = reactive({ list: [] as Array<TaskType> })
-
-const response = await $api.tasks.getTasks()
-
-if (response.data.value && response.status.value === 'success') {
-    tasks.list = response.data.value.data
-}
+const { getTasks } = useTasks()
+const { tasks } = storeToRefs(useTaskStore())
 
 async function handleFilterModelUpdate(payload: number[]) {
     const options = {
@@ -55,24 +47,23 @@ async function handleFilterModelUpdate(payload: number[]) {
         }
     }
 
-    const res = await $api.tasks.getTasks({}, options)
-
-    if (res.data.value && res.status.value === 'success') {
-        tasks.list = res.data.value.data
-    }
+    await getTasks(options)
 }
 
 async function handleSortModelUpdate(payload: string) {
+
+    console.log(payload);
+    
+
     const options = {
         query: {
             sort: payload
         }
     }
 
-    const res = await $api.tasks.getTasks({}, options)
-
-    if (res.data.value && res.status.value === 'success') {
-        tasks.list = res.data.value.data
-    }
+    await getTasks(options)
 }
+
+await getTasks()
+
 </script>

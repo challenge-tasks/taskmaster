@@ -15,9 +15,9 @@
 
 <script setup lang="ts">
 
-onBeforeMount(() => {
-    const { getUser } = useUser()
-    getUser()
-})
+// onBeforeMount(() => {
+//     const { getUser } = useUser()
+//     getUser()
+// })
 
 </script>

@@ -23,7 +23,7 @@
                             <UIcon name="i-octicon-zap-16" class="text-lg text-gray-700" />
                         </UBadge>
 
-                        <UTooltip text="Загрузить свое решение" :popper="{ arrow: true, placement: 'right' }" class="order-0 sm:order-1">
+                        <UTooltip text="Загрузить свое решение" :popper="{ arrow: true, placement: 'auto' }" class="order-0 sm:order-1">
                             <UButton v-if="!isTaskDone" :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="p-2 sm:p-1.5 btn rounded-lg">
                                 <span class="sm:hidden">Загрузить решение</span>
                             </UButton>
@@ -75,36 +75,40 @@
 </template>
 
 <script setup lang="ts">
-import { TaskType } from '@/types'
+import { ITaskType } from '@/types'
 import { badgeClassesBasedOnDifficultyLevel } from '@/utils'
 
 let task = reactive({
-    data: {} as TaskType
+    data: {} as ITaskType
 })
 
+
 const { t } = useI18n()
+
+const { $api } = useNuxtApp()
 
 const { params } = useRoute()
 const appConfig = useRuntimeConfig()
 
-const { getUserTasks } = useTasks()
-const { toggleSignInModal } = useAuthModals()
-const { fetchTaskDetails, startTask } = useTasks()
+// const { startTask } = useTasks()
+// const { getUserTasks } = useTasks()
+// const { toggleSignInModal } = useAuthModals()
 
-const { user } = useUser()
-const { userTasks } = storeToRefs(useTasks())
-const { isFetching } = storeToRefs(useTasks())
-const { isAuthenticated } = storeToRefs(useUserAuth())
+// const { user } = useUser()
+// const { userTasks } = storeToRefs(useTasks())
+// const { isFetching } = storeToRefs(useTasks())
+// const { isAuthenticated } = storeToRefs(useUserAuth())
 
 const isSolutionUploadModalVisible = ref<boolean>(false)
 
-const taskDetailsResponse = await fetchTaskDetails(params.id)
-if (taskDetailsResponse.data && taskDetailsResponse.status === 'success') {
-    task.data = taskDetailsResponse.data.data
+const res = await $api.tasks.getTaskDetail({}, { customParams: { slug: params.id } })
+
+if (res.data.value && res.data.value.data && res.status.value === 'success') {
+    task.data = res.data.value.data
 }
 
 const isTaskDoing = computed(() => {
-    return userTasks.value.data && userTasks.value.data.some((tsk: TaskType) => tsk.id === task.data.id)
+    return userTasks.value.data && userTasks.value.data.some((tsk: ITaskType) => tsk.id === task.data.id)
 })
 
 const isTaskDone =  computed(() => {

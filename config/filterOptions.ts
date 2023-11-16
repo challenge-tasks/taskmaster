@@ -1,6 +1,6 @@
-import { SortOptions } from "types";
+import { ISortOptions } from "types";
 
-export const filterOptions: Array<SortOptions> = [
+export const filterOptions: Array<ISortOptions> = [
     {
         groupName: 'По сложности: ',
         options: [

@@ -1,6 +1,6 @@
-import { FilterOptions } from "types";
+import { IFilterOptions } from "types";
 
-export const sortOptions: Array<FilterOptions> = [
+export const sortOptions: Array<IFilterOptions> = [
     {
         radioGroupName: 'diffculty',
         groupName: '',

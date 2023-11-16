@@ -1,30 +1,28 @@
-import type { AsyncDataRequestStatus } from "nuxt/dist/app/composables/asyncData"
+import { FetchOptions } from 'ofetch'
 
-export type TasksListType = Array<TaskType> | undefined
-
-export interface SortOptions {
+export interface ISortOptions {
     groupName?: string,
-    options: Array<FilterOption>
+    options: Array<IFilterOption>
 }
 
-export interface FilterOption {
+export interface IFilterOption {
     label: string
     value: string
 }
 
-export interface FilterOptions {
+export interface IFilterOptions {
     radioGroupName: string,
     groupName?: string,
-    options: Array<FilterOption>
+    options: Array<IFilterOption>
 }
 
-export interface AuthPayload {
+export interface IAuthPayload {
     username?: string
     email: string
     password: string
 }
 
-export interface User {
+export interface IUser {
     avatar: string
     created_at: number
     email: string
@@ -36,18 +34,18 @@ export interface User {
 export interface AuthResponse {
     data: {
         token: string
-        user: User
+        user: IUser
     }
 }
 
-export interface SimplifiedResponseType<DataT = {}, ErrorT = {}> {
-    data: DataT
-    pending: boolean
-    error: ErrorT | null
-    status: AsyncDataRequestStatus
+export interface IAuthError {
+    data: {
+        type: string
+        message: string
+    }
 }
 
-export interface TaskType {
+export interface ITaskType {
     id: number
     slug: string
     name: string
@@ -59,30 +57,37 @@ export interface TaskType {
     rating?: number
     comment?: string | null
     images?: Array<string>
-    stacks: Array<TechStackType>
-    tags: Array<TagType>
+    stacks: Array<ITechStackType>
+    tags: Array<ITagType>
     created_at: number
     updated_at: number
 }
 
-export interface ITasksList {
-    data: Array<TaskType>
+export interface ITasksResponse {
+    data: ITaskType[]
     links: object
     meta: object
 }
 
-export interface TaskDetailsResponse {
-    data: TaskType
+export interface ITaskDetail {
+    data: ITaskType
 }
 
-export interface TagType {
+export interface ITagType {
     id: number
     slug: string
     name: string
 }
 
-export interface TechStackType {
+export interface ITechStackType {
     id: number
     slug: string
     name: string
+}
+
+export interface IFetchOptions {
+    customParams?: {
+        [key: string]: any
+    }
+    fetcherOptions?: FetchOptions<'json'>
 }

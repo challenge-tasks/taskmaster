@@ -12,7 +12,7 @@
                 <span class="burger__sausage"></span>
             </span>
 
-            <div class="menu" :class="{ 'menu--active': isMenuActive }">
+            <!-- <div class="menu" :class="{ 'menu--active': isMenuActive }">
 
                 <ULink v-if="isAuthenticated && user.data.id" :to="userProfileLink" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">
                     Профиль
@@ -28,7 +28,7 @@
 
                 <Socials />
 
-            </div>
+            </div> -->
 
         </div>
     </header>
@@ -36,15 +36,15 @@
 
 <script setup lang="ts">
 
-const { user } = useUser()
+// const { user } = useUser()
 
 const isMenuActive = ref(false)
 
-const { isAuthenticated } = storeToRefs(useUserAuth())
+// const isAuthenticated = toRef(useAuth(), 'isAuthenticated')
 
-const userProfileLink = computed(() => {
-    return { name: 'profile-id', params: { id: user.data.username } }
-})
+// const userProfileLink = computed(() => {
+//     return { name: 'profile-id', params: { id: user.data.username } }
+// })
 
 function toggleMenu() {
     isMenuActive.value = !isMenuActive.value
@@ -56,6 +56,5 @@ function toggleMenu() {
     })
 }
 
-const { toggleSignInModal } = useAuthModals()
 
 </script>

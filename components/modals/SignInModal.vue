@@ -1,5 +1,5 @@
 <template>
-    <VueFinalModal v-model="isSignInModalVisible" overlayTransition="vfm-fade" contentTransition="vfm-fade" @closed="eraseFilledData(form)" :lockScroll="true" class="modal" content-class="modal-content">
+    <VueFinalModal v-model="isSigninModalShown" overlayTransition="vfm-fade" contentTransition="vfm-fade" @closed="eraseFilledData(form)" :lockScroll="true" class="modal" content-class="modal-content">
         <div class="mb-5 modal-content__header">
             <h2 class="mb-2 font-medium text-center text-xl text-black">Вход в аккаунт</h2>
             <p class="max-w-lg text-center mx-auto text-slate-500">Войдите в свой аккаунт для того чтобы получить больше возможностей!</p>
@@ -61,7 +61,7 @@
 
         <div class="mb-4 flex justify-center">
             <span class="mr-1 text-sm text-slate-500">Все ещё нет аккаунта?</span>
-            <button @click="authStore.toggleSignUpModal" class="text-blue-700 text-sm">Зарегистрироваться</button>
+            <button @click="showSignupModal" class="text-blue-700 text-sm">Зарегистрироваться</button>
         </div>
 
         <AuthOptions />
@@ -72,28 +72,24 @@
 <script setup lang="ts">
 import { VueFinalModal } from 'vue-final-modal'
 
-const form = reactive({
-    email: '',
-    password: ''
-})
+const form = reactive({ email: '', password: '' })
 
 const errors = reactive({ type: '' })
 
 const rules = validationRules
 
-const authStore = useAuthModals()
-const userAuthStore = useUserAuth()
-
-const { isFetching } = storeToRefs(userAuthStore)
-const { isSignInModalVisible } = storeToRefs(authStore)
+// const { signIn } = useAuth()
+// const isFetching = toRef(useAuth(), 'isFetching')
+const { showSignupModal } = useModals()
+const { isSigninModalShown } = useModalsStore()
 
 async function handleSignInFormSubmit() {
-    const res = await userAuthStore.signIn({ email: form.email, password: form.password })
-    errors.type = res?.error?.value?.data.type
+    // const res = await signIn({ email: form.email, password: form.password })
+    // errors.type = res?.error?.value?.data.type
 
-    setTimeout(() => {
-        errors.type = ''
-    }, 2500)
+    // setTimeout(() => {
+    //     errors.type = ''
+    // }, 2500)
 }
 
 </script>
