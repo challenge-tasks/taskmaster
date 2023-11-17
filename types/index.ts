@@ -91,3 +91,9 @@ export interface IFetchOptions {
     }
     fetcherOptions?: FetchOptions<'json'>
 }
+
+export interface IStartTaskSuccessResponse { 
+    data: { 
+        status: string 
+    } 
+}

@@ -38,8 +38,8 @@ import { trimText } from '@/utils'
 
 const toast = useToast()
 const config = useRuntimeConfig()
-const { removeUserTask } = useTasks()
 const { user } = storeToRefs(useUserStore())
+const { removeUserTask, getUserTasks } = useTasks()
 
 const emit = defineEmits<{ 
     'solution-upload': any
@@ -109,6 +109,9 @@ async function deleteTask() {
     const res = await removeUserTask({ customParams: { username, taskSlug: props.task.slug } })
 
     if (!res.error.value && res.status.value === 'success') {
+
+        await getUserTasks({ customParams: { username: user.value.username } })
+
         toast.add({ title: 'Задача успешно удалена из профиля пользователя' })
     }
 

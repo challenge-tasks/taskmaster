@@ -1,6 +1,6 @@
 <template>
     <Head>
-        <Title>{{ task.data.name }}</Title>
+        <Title>{{ task.name }}</Title>
     </Head>
 
     <section class="section">
@@ -9,11 +9,11 @@
 
                 <div class="flex justify-between sm:items-center task__header">
                     <div class="mb-3 sm:mb-0 flex sm:flex-col items-center justify-between sm:items-start">
-                        <h2 class="mb-1 text-slate-700 text-xl sm:text-2xl font-medium">{{ task.data.name }}</h2>
-                        <span :class="badgeClassesBasedOnDifficultyLevel(task.data.difficulty)">{{ task.data.difficulty }}</span>
+                        <h2 class="mb-1 text-slate-700 text-xl sm:text-2xl font-medium">{{ task.name }}</h2>
+                        <span :class="badgeClassesBasedOnDifficultyLevel(task.difficulty)">{{ task.difficulty }}</span>
                     </div>
 
-                    <UButton v-if="!isTaskDoing" @click="handleTaskStart" :loading="isFetching" trailing icon="i-octicon-checklist-24" class="justify-center sm:justify-items-start py-3 px-5 rounded-lg">
+                    <UButton v-if="!isTaskDoing" @click="handleTaskStart" :loading="isTaskStarting" trailing icon="i-octicon-checklist-24" class="justify-center sm:justify-items-start py-3 px-5 rounded-lg">
                         {{ taskButtonLabel }}
                     </UButton>
 
@@ -56,14 +56,14 @@
                     <div class="mb-4">
                         <span class="inline-block mb-2 font-medium text-slate-600">Стек технологий: </span>
                         <div class="flex flex-wrap gap-2">
-                            <UBadge v-for="stack in task.data.stacks" :key="stack.id" class="rounded-full" color="sky" variant="subtle">
+                            <UBadge v-for="stack in task.stacks" :key="stack.id" class="rounded-full" color="sky" variant="subtle">
                                 {{ stack.name }}
                             </UBadge>
                         </div>
                     </div>
 
                     <client-only>
-                        <p class="mb-4 text-slate-500" v-html="task.data.description"></p>
+                        <p class="mb-4 text-slate-500" v-html="task.description"></p>
                     </client-only>
                 </div>
 
@@ -71,66 +71,53 @@
         </div>
     </section>
 
-    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="task.data.slug ?? ''" />
+    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="task.slug ?? ''" />
 </template>
 
 <script setup lang="ts">
 import { ITaskType } from '@/types'
 import { badgeClassesBasedOnDifficultyLevel } from '@/utils'
 
-let task = reactive({
-    data: {} as ITaskType
-})
-
+let task = ref({} as ITaskType)
 
 const { t } = useI18n()
-
-const { $api } = useNuxtApp()
 
 const { params } = useRoute()
 const appConfig = useRuntimeConfig()
 
-// const { startTask } = useTasks()
-// const { getUserTasks } = useTasks()
-// const { toggleSignInModal } = useAuthModals()
+const { showSigninModal } = useModals()
+const { startTask, getTaskDetail } = useTasks()
 
-// const { user } = useUser()
-// const { userTasks } = storeToRefs(useTasks())
-// const { isFetching } = storeToRefs(useTasks())
-// const { isAuthenticated } = storeToRefs(useUserAuth())
+const { user } = storeToRefs(useUserStore())
+const { isTaskStarting } = storeToRefs(useTaskStore())
+const { isAuthenticated } = storeToRefs(useAuthStore())
 
 const isSolutionUploadModalVisible = ref<boolean>(false)
 
-const res = await $api.tasks.getTaskDetail({}, { customParams: { slug: params.id } })
-
-if (res.data.value && res.data.value.data && res.status.value === 'success') {
-    task.data = res.data.value.data
-}
-
 const isTaskDoing = computed(() => {
-    return userTasks.value.data && userTasks.value.data.some((tsk: ITaskType) => tsk.id === task.data.id)
+    return task.value.status === 'in_development'
 })
 
 const isTaskDone =  computed(() => {
-    return task.data.status === 'done'
+    return task.value.status === 'done'
 })
 
 const isTaskInReview =  computed(() => {
-    return task.data.status === 'reviewing'
+    return task.value.status === 'reviewing'
 })
 
 const taskButtonLabel = computed(() => {
-    const name = task.data.status
+    const name = task.value.status
     return isTaskDoing.value ? t(`task.status.${name}`) : 'Выполнить задание'
 })
 
 const allTaskImages = computed(() => {
-    const result = [task.data.image]
+    const result = [task.value.image]
 
 
-    if (task.data.images?.length) {
-        for (let i = 0; i < task.data.images?.length; i++) {
-            result.push(task.data.images[i])
+    if (task.value.images?.length) {
+        for (let i = 0; i < task.value.images?.length; i++) {
+            result.push(task.value.images[i])
         }
     }
 
@@ -146,26 +133,36 @@ const swiperConfig = {
     }
 }
 
+
 function handleTaskSolutionUpload() {
     if (!isTaskInReview.value) {
         isSolutionUploadModalVisible.value = true
     }
 }
 
+async function fetchTaskDetail() {
+    const res = await getTaskDetail({ customParams: { slug: params.id } })
+
+    if (res.data.value && res.status.value === 'success') {
+        task.value = res.data.value.data
+    }
+}
+
 async function handleTaskStart() {
     if (isAuthenticated.value) {
 
-        const res = await startTask(user.data.username, task.data.id)
-
-        if (res) {
-            task.data.status = res.data.status
+        const username = user.value.username
+        const res = await startTask({ customParams: { username }, fetcherOptions: { body: { task_id: task.value.id } } })
+        
+        if (res.data.value) {
+            task.value.status = res.data.value.data.status
         }
 
-        await getUserTasks(user.data.username)
-
     } else {
-        toggleSignInModal()
+        showSigninModal()
     }
 }
+
+await fetchTaskDetail()
 
 </script>

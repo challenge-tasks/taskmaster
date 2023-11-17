@@ -1,5 +1,5 @@
 import { AsyncData } from "nuxt/app"
-import { IAuthPayload, AuthResponse, IAuthError } from "types"
+import { IAuthPayload, AuthResponse, IAuthError, IUser } from "types"
 
 export function useAuth() {
     
@@ -7,6 +7,7 @@ export function useAuth() {
     const config = useRuntimeConfig()
 
     const { setUser, setUserToken } = useUserStore()
+    const { userToken } = storeToRefs(useUserStore())
     const { setSignUpModalState, setSignInModalState } = useModalsStore()
     const { setAuthenticatedState, setAuthorizingState } = useAuthStore()
 
@@ -64,23 +65,27 @@ export function useAuth() {
         }
     }
 
-    async function logOut(): Promise<void> {
+    async function logOut(): Promise<AsyncData<unknown | null, Error | null>> {
 
         const router = useRouter()
 
         const res = await useFetch(config.public.apiBaseUrl + '/logout', {
             method: 'POST',
             headers: {
-                Authorization: `Bearer`
+                Authorization: `Bearer ${userToken.value}`
             },
             server: false
         })
 
         if (res.status.value === 'success') {
+            setUserToken('')
+            setUser({} as IUser)
             setAuthenticatedState(false)
         }
 
         router.push('/')
+
+        return res
     }
 
     return {

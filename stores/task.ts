@@ -4,6 +4,7 @@ export const useTaskStore = defineStore('task-store', () => {
     
     const tasks = ref([] as ITaskType[])
     const userTasks = ref([] as ITaskType[])
+    const isTaskStarting = ref<boolean>(false)
     const isTasksFetching = ref<boolean>(false)
     const isUserTasksFetching = ref<boolean>(false)
 
@@ -17,6 +18,10 @@ export const useTaskStore = defineStore('task-store', () => {
 
     function setTasksFetchingState(payload: boolean) {
         isTasksFetching.value = payload
+    }
+
+    function setTaskStartingState(payload: boolean) {
+        isTaskStarting.value = payload
     }
 
     function setTasks(payload: ITaskType[]) {
@@ -33,8 +38,10 @@ export const useTaskStore = defineStore('task-store', () => {
         userTasks,
         setUserTasks,
         limitedTasks,
+        isTaskStarting,
         isTasksFetching,
         isUserTasksFetching,
+        setTaskStartingState,
         setTasksFetchingState,
         setUserTasksFetchingState
     }

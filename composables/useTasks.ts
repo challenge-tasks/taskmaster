@@ -1,12 +1,12 @@
 import { FetchOptions } from 'ofetch';
 import { AsyncData } from "nuxt/app"
-import { IFetchOptions, ITasksResponse } from "types"
+import { IFetchOptions, IStartTaskSuccessResponse, ITaskDetail, ITasksResponse } from "types"
 
 export function useTasks() {
 
     const { $api } = useNuxtApp()
     const { userToken } = storeToRefs(useUserStore())
-    const { setTasks, setUserTasks, setTasksFetchingState, setUserTasksFetchingState } = useTaskStore()
+    const { setTasks, setUserTasks, setTasksFetchingState, setTaskStartingState, setUserTasksFetchingState } = useTaskStore()
 
     async function getTasks(options?: FetchOptions<'json'>): Promise<AsyncData<ITasksResponse | null, Error | null>> {
 
@@ -30,6 +30,33 @@ export function useTasks() {
             setTasksFetchingState(false)
         }
 
+    }
+
+    async function getTaskDetail(options: IFetchOptions = {}): Promise<AsyncData<ITaskDetail | null, Error | null>> {
+
+        try {
+
+            const slug = options.customParams?.slug
+
+            if (userToken.value) {
+                if (!options.fetcherOptions) {
+                    options.fetcherOptions = {}
+                }
+
+                options.fetcherOptions.headers = {
+                    Authorization: `Bearer ${userToken.value}`
+                }
+            }
+            
+            const res = await useAsyncData<ITaskDetail>('tasks', () => $api(`/tasks/${slug}`, { ...options.fetcherOptions }))
+
+            return res
+            
+        } catch (error: any) {
+            console.log(error)
+            return error
+        }
+        
     }
 
     async function getUserTasks(options: IFetchOptions = {}): Promise<AsyncData<ITasksResponse | null, Error | null>> {
@@ -101,9 +128,34 @@ export function useTasks() {
         }
     }
 
+    async function startTask(options: IFetchOptions= {}): Promise<AsyncData<IStartTaskSuccessResponse | null, Error | null>> {
+        try {
+            setTaskStartingState(true)
+
+            const username = options.customParams?.username
+            const res = await useAsyncData<IStartTaskSuccessResponse>('start-task', () => $api(`/users/${username}/tasks`, { 
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${userToken.value}`
+                },
+                ...options.fetcherOptions
+            }))
+
+            return res
+            
+        } catch (error: any) {
+            console.log(error)
+            return error
+        } finally {
+            setTaskStartingState(false)
+        }
+    }
+
     return {
         getTasks,
+        startTask,
         getUserTasks,
+        getTaskDetail,
         removeUserTask
     }
 }
