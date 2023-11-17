@@ -1,5 +1,5 @@
-import { FetchOptions } from 'ofetch';
 import { IUser } from "types"
+import { FetchOptions } from 'ofetch';
 import { AsyncData } from "nuxt/app"
 
 export function useUser() {
@@ -11,6 +11,10 @@ export function useUser() {
     async function getUser(): Promise<AsyncData<{ data: IUser } | null, Error | null>> {
 
         try {
+
+            if (!userToken || !userToken.value) {
+                throw new Error('User token is missing, log in and try again')
+            }
 
             const res = await useAsyncData<{ data: IUser }, Error | null>('profile', () => $api('/profile', {
                 method: 'GET',

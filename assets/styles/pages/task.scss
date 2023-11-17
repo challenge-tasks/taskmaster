@@ -24,8 +24,9 @@
 }
 
 .task-image-gallery {
-    position: relative;
     margin: 0 auto;
+    max-width: 750px;
+    position: relative;
 
     .swiper-navigation {
         &__prev {

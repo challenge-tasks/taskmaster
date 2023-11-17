@@ -17,15 +17,18 @@
 
 const { getUser } = useUser()
 const { getUserTasks } = useTasks()
+const { isAuthenticated } = storeToRefs(useAuthStore())
 
 onBeforeMount(async () => {
-    const res = await getUser()
+    if (isAuthenticated.value) {
+        const res = await getUser()
 
-    watch(() => res.data.value, async (newVal) => {
-        if (newVal) {
-            await getUserTasks({ customParams: { username: newVal.data.username } })
-        }
-    })
+        watch(() => res.data.value, async (newVal) => {
+            if (newVal) {
+                await getUserTasks({ customParams: { username: newVal.data.username } })
+            }
+        })
+    }
 })
 
 </script>
