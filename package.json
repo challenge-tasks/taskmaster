@@ -4,7 +4,7 @@
   "scripts": {
     "build": "NODE_OPTIONS='--max-old-space-size=500' nuxt build",
     "dev": "nuxt dev",
-    "restart": "git pull && nuxt build && pm2 restart Taskmaster",
+    "restart": "git pull && npm run build && pm2 restart Taskmaster",
     "generate": "NODE_OPTIONS='--max-old-space-size=500' nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
