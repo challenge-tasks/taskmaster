@@ -2,9 +2,9 @@
   "name": "nuxt-app",
   "private": true,
   "scripts": {
-    "build": "NODE_OPTIONS=--max_old_space_size=500 nuxt build",
+    "build": "--max_old_space_size=500 nuxt build",
     "dev": "nuxt dev",
-    "generate": "NODE_OPTIONS=--max_old_space_size=500 nuxt generate",
+    "generate": "--max_old_space_size=500 nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
