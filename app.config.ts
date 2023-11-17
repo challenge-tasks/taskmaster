@@ -11,7 +11,26 @@ export default defineAppConfig({
         },
 
         notifications: {
-            position: 'top-0 bottom-auto'
+            position: 'top-0 bottom-auto',
+        },
+
+        notification: {
+            default: {
+                color: 'green',
+                
+                closeButton: {
+                    variant: "ghost",
+                    padded: true
+                },
+
+                actionButton: {
+                    size: 'lg'
+                }
+            },
+
+            progress: {
+                background: "bg-{color}-400 dark:bg-{color}-400"
+            }
         },
 
         tooltip: {

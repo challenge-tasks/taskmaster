@@ -34,6 +34,8 @@
 import { IFetchOptions } from 'types'
 import { VueFinalModal } from 'vue-final-modal'
 
+const toast = useToast()
+
 interface PropsInterface {
     taskSlug: string
     modelValue: boolean
@@ -132,6 +134,7 @@ async function uploadFileToServer() {
     if (res.data.value && res.status.value === 'success') {
         emit('upload-success')
         isModalVisible.value = false
+        toast.add({ title: 'Решение для задачи успешно загружено' })
     }
 }
 
