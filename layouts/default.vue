@@ -15,8 +15,6 @@
 
 <script setup lang="ts">
 
-const timeout = ref<any>(null)
-
 const { getUser } = useUser()
 const { getUserTasks } = useTasks()
 

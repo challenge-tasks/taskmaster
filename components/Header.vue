@@ -37,7 +37,8 @@
 <script setup lang="ts">
 
 
-const isMenuActive = ref(false)
+const { setMenuState } = useGlobalStore()
+const { isMenuActive } = storeToRefs(useGlobalStore())
 
 const { showSigninModal } = useModals()
 const { user } = storeToRefs(useUserStore())
@@ -48,14 +49,16 @@ const userProfileLink = computed(() => {
 })
 
 function toggleMenu() {
-    isMenuActive.value = !isMenuActive.value
+    setMenuState(!isMenuActive.value)
+}
 
+watch(isMenuActive, (newVal) => {
     useHead({
         bodyAttrs: {
-            class: isMenuActive.value ? 'overflow-hidden' : ''
+            class: newVal ? 'overflow-hidden' : ''
         }
     })
-}
+})
 
 
 </script>
