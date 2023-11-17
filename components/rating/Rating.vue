@@ -1,45 +1,42 @@
 <template>
     <client-only>
-    <div class="flex items-center">
-        <div v-for="rating in ratings" :key="rating.value" class="rating">
-            <div class="rating__img" style="width: 100px; height: 100px; background-image: url(images['/assets/images/0.png'].default);">
-                <img :srс="images['/assets/images/0.png'].default" width="100" height="100" />
+        <div class="flex gap-2 items-center">
+            <div v-for="rating in ratings" :key="rating.value" class="rating flex gap-3 flex-col items-center">
+                <div class="rating__img">
+                    <img srс="/1.png" alt="" />
+                </div>
+                <span class="font-medium">{{ rating.value }}</span>
             </div>
-            <span class="font-medium">{{ rating.value }}</span>
         </div>
-    </div>
     </client-only>
 </template>
 
 <script setup lang="ts">
-import zeroRating from '@/assets/images/0.png'
-
-const images = import.meta.globEager("@/assets/images/*.png");
 
 const ratings = ref([
     {
         value: 0,
-        image: '@/assets/images/1.png'
+        image: '/0.png'
     },
     {
         value: 1,
-        image: '@/assets/images/1.png'
+        image: '/1.png'
     },
     {
         value: 2,
-        image: '@/assets/images/1.png'
+        image: '/2.png'
     },
     {
         value: 3,
-        image: '@/assets/images/1.png'
+        image: '/3.png'
     },
     {
         value: 4,
-        image: '@/assets/images/1.png'
+        image: '/4.png'
     },
     {
         value: 5,
-        image: '@/assets/images/1.png'
+        image: '/5.png'
     }
 ])
 

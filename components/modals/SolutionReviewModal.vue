@@ -1,8 +1,24 @@
 <template>
     <VueFinalModal v-model="isModalVisible" v-bind="modalConfig">
 
-        <div class="flex flex-col">
+        <div class="flex gap-5 flex-col">
+
+            <div class="gap-2 flex items-center justify-between">
+                <span class="font-medium text-lg text-slate-800">Отзыв о вашем решении</span>
+                <UButton variant="ghost" icon="i-ion-close-outline" />
+            </div>
+            
             <Rating />
+
+            <div class="px-2">
+                <span class="mb-2 block font-medium text-md text-slate-700">Есть некоторые замечания...</span>
+
+                <ClientOnly>
+                    <div class="text-slate-600" v-html="taskReview.comment"></div>
+                </ClientOnly>
+
+            </div>
+            
         </div>
         
     </VueFinalModal>
