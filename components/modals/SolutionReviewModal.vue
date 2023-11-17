@@ -8,9 +8,16 @@
                 <UButton variant="ghost" icon="i-ion-close-outline" />
             </div>
             
-            <Rating />
+            <div class="flex gap-2 justify-around items-center">
+                <div v-for="rating in ratings" :key="rating.value" :class="markRating(rating.value)" class="rating flex gap-1 flex-col items-center">
+                    <div class="rating__img">
+                        <img :src="images[rating.value]" alt="">
+                    </div>
+                    <span class="font-medium">{{ rating.value }}</span>
+                </div>
+            </div>
 
-            <div class="px-2">
+            <div>
                 <span class="mb-2 block font-medium text-md text-slate-700">Есть некоторые замечания...</span>
 
                 <ClientOnly>
@@ -25,12 +32,25 @@
 </template>
 
 <script setup lang="ts">
+import { filename } from 'pathe/utils'
 import { VueFinalModal } from 'vue-final-modal'
 
 interface PropsInterface {
     modelValue: boolean
     taskReview: { comment: string, rating: number }
 }
+
+const glob = import.meta.glob('@/assets/images/*.png', { eager: true })
+const images = Object.fromEntries(Object.entries(glob).map(([key, value]) => [filename(key), value.default]))
+
+const ratings = ref([
+    { value: 0 },
+    { value: 1 },
+    { value: 2 },
+    { value: 3 },
+    { value: 4 },
+    { value: 5 }
+])
 
 const props = defineProps<PropsInterface>()
 const emit = defineEmits<{ (e: 'update:modelValue', id: boolean): void }>()
@@ -52,5 +72,13 @@ const isModalVisible = computed({
         return emit('update:modelValue', newVal)
     }
 })
+
+function markRating(rating: number) {
+    if (props.taskReview.rating === rating) {
+        return 'blur-none'
+    }
+
+    return 'blur-sm'
+}
 
 </script>
