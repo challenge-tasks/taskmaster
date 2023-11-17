@@ -52,9 +52,6 @@ async function handleFilterModelUpdate(payload: number[]) {
 
 async function handleSortModelUpdate(payload: string) {
 
-    console.log(payload);
-    
-
     const options = {
         query: {
             sort: payload

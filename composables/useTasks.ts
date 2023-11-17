@@ -82,9 +82,7 @@ export function useTasks() {
                 },
                 ...options.fetcherOptions
             }))
-
-            console.log(res)
-
+            
             return res
             
         } catch (error: any) {

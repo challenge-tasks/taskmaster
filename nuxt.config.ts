@@ -19,10 +19,6 @@ export default defineNuxtConfig({
     '@/assets/styles/global.scss'
   ],
 
-  image: {
-    format: ['webp']
-  },
-
   i18n: {
     vueI18n: './i18n/i18n.config.ts',
     defaultLocale: 'ru'
@@ -41,7 +37,6 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/ui',
-    '@nuxt/image',
     'nuxt-swiper',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',

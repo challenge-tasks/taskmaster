@@ -23,8 +23,8 @@
                             <UIcon name="i-octicon-zap-16" class="text-lg text-gray-700" />
                         </UBadge>
 
-                        <UTooltip :text="uploadTooltipLabel" :popper="{ arrow: true, placement: 'bottom' }" class="order-0 sm:order-1">
-                            <UButton v-if="!isTaskDone" :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="p-2 sm:p-1.5 btn rounded-lg">
+                        <UTooltip v-if="!isTaskDone" :text="uploadTooltipLabel" :popper="{ arrow: true, placement: 'bottom' }" class="order-0 sm:order-1">
+                            <UButton :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="p-2 sm:p-1.5 btn rounded-lg">
                                 <span class="sm:hidden">Загрузить решение</span>
                             </UButton>
                         </UTooltip>
