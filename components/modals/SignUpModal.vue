@@ -76,7 +76,7 @@
 
         <div class="mb-4 flex justify-center">
             <span class="mr-1 text-sm text-slate-500">Уже есть аккаунт?</span>
-            <button @click="showSigninModal" class="text-blue-700 text-sm">Войти</button>
+            <button @click="swapModals" class="text-blue-700 text-sm">Войти</button>
         </div>
 
         <AuthOptions />
@@ -97,9 +97,14 @@ const rules = validationRules
 const errors = reactive({ type: '' })
 
 const { signUp } = useAuth()
-const { showSigninModal } = useModals()
 const { isAuthorizing } = storeToRefs(useAuthStore())
+const { showSigninModal, hideSignupModal } = useModals()
 const { isSignupModalShown } = storeToRefs(useModalsStore())
+
+async function swapModals() {
+    showSigninModal()
+    hideSignupModal()
+}
 
 async function handleSignupFormSubmit() {
     const payload = {
