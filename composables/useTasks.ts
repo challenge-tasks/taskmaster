@@ -1,12 +1,19 @@
 import { FetchOptions } from 'ofetch';
 import { AsyncData } from "nuxt/app"
-import { IFetchOptions, IStartTaskSuccessResponse, ITaskDetail, ITasksResponse } from "types"
+import { IFetchOptions, IStartTaskSuccessResponse, ITaskDetail, ITaskSolutionUploadSuccess, ITasksResponse } from "types"
 
 export function useTasks() {
 
     const { $api } = useNuxtApp()
     const { userToken } = storeToRefs(useUserStore())
-    const { setTasks, setUserTasks, setTasksFetchingState, setTaskStartingState, setUserTasksFetchingState } = useTaskStore()
+    const { 
+        setTasks, 
+        setUserTasks, 
+        setTaskStartingState, 
+        setTasksFetchingState,
+        setTaskUploadingStatus, 
+        setUserTasksFetchingState 
+    } = useTaskStore()
 
     async function getTasks(options?: FetchOptions<'json'>): Promise<AsyncData<ITasksResponse | null, Error | null>> {
 
@@ -32,7 +39,7 @@ export function useTasks() {
 
     }
 
-    async function getTaskDetail(options: IFetchOptions = {}): Promise<AsyncData<ITaskDetail | null, Error | null>> {
+    async function getTaskDetail(options: IFetchOptions): Promise<AsyncData<ITaskDetail | null, Error | null>> {
 
         try {
 
@@ -57,6 +64,38 @@ export function useTasks() {
             return error
         }
         
+    }
+
+    async function uploadSolution(options: IFetchOptions): Promise<AsyncData<ITaskSolutionUploadSuccess | null, Error | null>> {
+        
+        try {
+
+            setTaskUploadingStatus(true)
+            
+            const slug = options?.customParams?.slug
+            const username = options?.customParams?.username
+
+            const res = await useAsyncData<ITaskSolutionUploadSuccess>('task-uploading', () => $api(`/users/${username}/tasks/${slug}/solutions`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${userToken.value}`
+                },
+                ...options.fetcherOptions
+            }))
+
+            console.log(res)
+
+            return res
+            
+        } catch (error: any) {
+            
+            console.log(error)
+            return error
+
+        } finally {
+            setTaskUploadingStatus(false)
+        }
+
     }
 
     async function getUserTasks(options: IFetchOptions = {}): Promise<AsyncData<ITasksResponse | null, Error | null>> {
@@ -156,6 +195,7 @@ export function useTasks() {
         startTask,
         getUserTasks,
         getTaskDetail,
-        removeUserTask
+        removeUserTask,
+        uploadSolution
     }
 }

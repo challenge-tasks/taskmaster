@@ -13,7 +13,7 @@
                         <span :class="badgeClassesBasedOnDifficultyLevel(task.difficulty)">{{ task.difficulty }}</span>
                     </div>
 
-                    <UButton v-if="!isTaskDoing" @click="handleTaskStart" :loading="isTaskStarting" trailing icon="i-octicon-checklist-24" class="justify-center sm:justify-items-start py-3 px-5 rounded-lg">
+                    <UButton v-if="!isTaskBusy" @click="handleTaskStart" :loading="isTaskStarting" trailing icon="i-octicon-checklist-24" class="justify-center sm:justify-items-start py-3 px-5 rounded-lg">
                         {{ taskButtonLabel }}
                     </UButton>
 
@@ -23,7 +23,7 @@
                             <UIcon name="i-octicon-zap-16" class="text-lg text-gray-700" />
                         </UBadge>
 
-                        <UTooltip text="Загрузить свое решение" :popper="{ arrow: true, placement: 'auto' }" class="order-0 sm:order-1">
+                        <UTooltip :text="uploadTooltipLabel" :popper="{ arrow: true, placement: 'bottom' }" class="order-0 sm:order-1">
                             <UButton v-if="!isTaskDone" :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="p-2 sm:p-1.5 btn rounded-lg">
                                 <span class="sm:hidden">Загрузить решение</span>
                             </UButton>
@@ -71,7 +71,7 @@
         </div>
     </section>
 
-    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="task.slug ?? ''" />
+    <UploadSolutionModal v-model="isSolutionUploadModalVisible" @upload-success="handelSuccessUpload" :task-slug="task.slug ?? ''" />
 </template>
 
 <script setup lang="ts">
@@ -106,9 +106,26 @@ const isTaskInReview =  computed(() => {
     return task.value.status === 'reviewing'
 })
 
+const isTaskBusy = computed(() => {
+    return isTaskInReview.value || isTaskDone.value || isTaskDoing.value
+})
+
 const taskButtonLabel = computed(() => {
     const name = task.value.status
-    return isTaskDoing.value ? t(`task.status.${name}`) : 'Выполнить задание'
+
+    if (isTaskDoing.value || isTaskDone.value || isTaskInReview.value) {
+        return t(`task.status.${name}`)
+    }
+
+    return 'Выполнить задание'
+})
+
+const uploadTooltipLabel = computed(() => {
+    if (isTaskInReview.value) {
+        return 'Ваше решение проверяется'
+    }
+
+    return 'Загрузить свое решение'
 })
 
 const allTaskImages = computed(() => {
@@ -133,11 +150,14 @@ const swiperConfig = {
     }
 }
 
-
 function handleTaskSolutionUpload() {
     if (!isTaskInReview.value) {
         isSolutionUploadModalVisible.value = true
     }
+}
+
+async function handelSuccessUpload() {
+    await fetchTaskDetail()
 }
 
 async function fetchTaskDetail() {

@@ -97,3 +97,7 @@ export interface IStartTaskSuccessResponse {
         status: string 
     } 
 }
+
+export interface ITaskSolutionUploadSuccess {
+    success: boolean
+}

@@ -22,8 +22,8 @@
             <UButton @click="cancelUpload" variant="soft" class="w-full xs:w-auto py-3 btn order-1 xs:order-0">
                 Отменить
             </UButton>
-            <UButton @click="uploadFileToServer" trailing :disabled="!form.file" :loading="isSolutionUploading" class="order-0 xs:order-1 w-full xs:w-auto py-3 btn btn--primary">
-                {{ isSolutionUploading ? 'Загружаем' : 'Загрузить решение' }}
+            <UButton @click="uploadFileToServer" trailing :disabled="!form.file" :loading="isTaskSolutionUploading" class="order-0 xs:order-1 w-full xs:w-auto py-3 btn btn--primary">
+                {{ uploadButtonLabel }}
             </UButton>
         </div>
 
@@ -31,6 +31,7 @@
 </template>
 
 <script setup lang="ts">
+import { IFetchOptions } from 'types'
 import { VueFinalModal } from 'vue-final-modal'
 
 interface PropsInterface {
@@ -38,11 +39,15 @@ interface PropsInterface {
     modelValue: boolean
 }
 
-const { uploadTaskSolution } = useTasks()
-const { isSolutionUploading } = storeToRefs(useTasks())
+const { uploadSolution } = useTasks()
+const { user } = storeToRefs(useUserStore())
+const { isTaskSolutionUploading } = storeToRefs(useTaskStore())
 
 const props = defineProps<PropsInterface>()
-const emit = defineEmits<{ (e: 'update:modelValue', id: boolean): void }>()
+const emit = defineEmits<{ 
+    (e: 'upload-success'): void 
+    (e: 'update:modelValue', id: boolean): void 
+}>()
 
 const modalConfig = ref({
     class: "modal",
@@ -53,6 +58,7 @@ const modalConfig = ref({
 })
 
 const fileInput = ref<HTMLFormElement>()
+
 const form = reactive({ file: null } as { file: File | null })
 
 const fileSize = computed(() => {
@@ -70,6 +76,10 @@ const fileSize = computed(() => {
     } else {
         return 0
     }
+})
+
+const uploadButtonLabel = computed(() => {
+    return isTaskSolutionUploading.value ? 'Загружаем' : 'Загрузить решение'
 })
 
 const isModalVisible = computed({
@@ -103,12 +113,24 @@ async function uploadFileToServer() {
         return false
     }
 
-    const body = new FormData()
-    body.append('file', form.file, form.file.name)
+    const formData = new FormData()
+    formData.append('file', form.file)
 
-    const res = await uploadTaskSolution(props.taskSlug, { body })
+    const requstBody: IFetchOptions = {
+        customParams: {
+            slug: props.taskSlug,
+            username: user.value.username
+        },
 
-    if (res && res.value && res.value.success) {
+        fetcherOptions: { 
+            body: formData
+        }
+    }
+
+    const res = await uploadSolution(requstBody)
+
+    if (res.data.value && res.status.value === 'success') {
+        emit('upload-success')
         isModalVisible.value = false
     }
 }
