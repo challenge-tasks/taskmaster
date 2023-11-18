@@ -35,7 +35,7 @@
             </div>
 
             <div class="mt-5 flex justify-center">
-                <NuxtLink to="/tasks" class="flex bg-green-300 gap-2 py-3 btn btn--primary btn--rounded menu__btn">
+                <NuxtLink to="/tasks" class="w-full sm:w-auto flex bg-green-300 gap-2 py-3 btn btn--primary btn--rounded">
                     <span class="btn__label">Посмотреть все задания</span>
                     <UIcon name="i-octicon-tasklist-24" class="btn__icon" />
                 </NuxtLink>

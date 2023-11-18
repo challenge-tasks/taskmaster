@@ -7,24 +7,24 @@
         <div class="mx-auto px-3 sm:container">
             <div class="task">
 
-                <div class="flex justify-between items-start md:items-center task__header">
+                <div class="flex justify-between items-start task__header">
                     <div class="mb-3 sm:mb-0 flex gap-3 md:gap-2 sm:flex-col items-center justify-between sm:items-start">
                         <h2 class="mb-1 text-slate-700 text-xl sm:text-2xl font-medium">{{ task.name }}</h2>
                         <span :class="badgeClassesBasedOnDifficultyLevel(task.difficulty)">{{ task.difficulty }}</span>
                     </div>
 
-                    <UButton v-if="!isTaskBusy" @click="handleTaskStart" :loading="isTaskStarting" trailing icon="i-octicon-checklist-24" class="justify-center sm:justify-items-start py-3 px-5 rounded-lg">
+                    <UButton v-if="!isTaskBusy" @click="handleTaskStart" :loading="isTaskStarting" trailing icon="i-octicon-checklist-24" class="w-full sm:w-auto justify-center sm:justify-start py-3 px-5 rounded-lg">
                         {{ taskButtonLabel }}
                     </UButton>
 
-                    <div v-else class="flex flex-col sm:flex-row gap-2">
+                    <div v-else class="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
                         <UBadge color="gray" variant="solid" class="justify-center py-2 sm:py-3 order-1 sm:order-0">
                             <span class="text-sm font-medium px-2">{{ taskButtonLabel }}</span>
                             <UIcon name="i-octicon-zap-16" class="text-lg text-gray-700" />
                         </UBadge>
 
                         <UTooltip v-if="!isTaskDone" :text="uploadTooltipLabel" :popper="{ arrow: true, placement: 'bottom' }" class="order-0 sm:order-1">
-                            <UButton :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="p-2 sm:p-1.5 btn rounded-lg">
+                            <UButton :disabled="isTaskInReview" @click="handleTaskSolutionUpload" icon="i-octicon-upload-16" class="w-full sm:w-auto p-2 sm:p-1.5 btn rounded-lg">
                                 <span class="sm:hidden">Загрузить решение</span>
                             </UButton>
                         </UTooltip>
