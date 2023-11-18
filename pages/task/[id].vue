@@ -7,8 +7,8 @@
         <div class="mx-auto px-3 sm:container">
             <div class="task">
 
-                <div class="flex justify-between sm:items-center task__header">
-                    <div class="mb-3 sm:mb-0 flex sm:flex-col items-center justify-between sm:items-start">
+                <div class="flex justify-between items-start md:items-center task__header">
+                    <div class="mb-3 sm:mb-0 flex gap-3 md:gap-2 sm:flex-col items-center justify-between sm:items-start">
                         <h2 class="mb-1 text-slate-700 text-xl sm:text-2xl font-medium">{{ task.name }}</h2>
                         <span :class="badgeClassesBasedOnDifficultyLevel(task.difficulty)">{{ task.difficulty }}</span>
                     </div>

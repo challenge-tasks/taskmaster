@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   }],
 
   ui: {
-    icons: ['ion', 'octicon', 'ant-design', 'bxl']
+    icons: ['ion', 'octicon', 'ant-design']
   },
 
   colorMode: {
