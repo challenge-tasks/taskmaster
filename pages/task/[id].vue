@@ -4,7 +4,7 @@
     </Head>
 
     <section class="section">
-        <div class="mx-auto px-3 container">
+        <div class="mx-auto px-3 sm:container">
             <div class="task">
 
                 <div class="flex justify-between sm:items-center task__header">

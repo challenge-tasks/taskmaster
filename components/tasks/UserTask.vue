@@ -1,21 +1,21 @@
 <template>
-    <span class="flex flex-col sm:flex-row user-task">
+    <span class="flex flex-col lg:flex-row user-task">
 
-        <span class="mr-3 flex-shrink-0 w-full sm:w-40 sm:max-h-32 overflow-hidden">
+        <span class="lg:mr-3 flex-shrink-0 w-full lg:w-56 sm:max-h-36 overflow-hidden">
             <img :src="taskImage" />
         </span>
         
-        <span class="sm:px-0 px-2 py-2">
+        <span class="lg:px-0 px-2 py-2">
             <NuxtLink :to="'/task/' + task.slug" class="inline-block font-medium hover:text-blue-600 mb-1">{{ task.name }}</NuxtLink>
-            <p class="text-slate-500 max-w-lg">{{ trimText(task.summary, 135) }}</p>
+            <p class="text-slate-500 md:text-sm max-w-lg">{{ trimText(task.summary, 135) }}</p>
         </span>
 
-        <span class="sm:ml-auto w-full sm:w-auto flex flex-col items-start justify-between p-2">
+        <span class="lg:ml-auto w-full sm:w-auto flex lg:flex-col items-center lg:items-start justify-between p-2">
             
-            <UBadge class="ml-auto rounded-full" variant="subtle">{{ $t(`task.status.${[task.status]}`) }}</UBadge>
+            <UBadge class="lg:ml-auto rounded-full" variant="subtle">{{ $t(`task.status.${[task.status]}`) }}</UBadge>
             
             <span class="flex self-end gap-2">
-                <UTooltip v-if="hasRateAndComment" :text="rateInfoTooltipContent.text" :popper="{ arrow: true, placement: 'top' }">
+                <UTooltip v-if="hasRateOrComment" :text="rateInfoTooltipContent.text" :popper="{ arrow: true, placement: 'top' }">
                     <UButton @click="onRateInfoRequest" size="xs" variant="soft" icon="i-octicon-info-16" class="rounded-md" />
                 </UTooltip>
                 
@@ -84,8 +84,8 @@ const rateInfoTooltipContent = computed(() => {
     }
 })
 
-const hasRateAndComment = computed(() => {
-    return props.task.comment && props.task.rating
+const hasRateOrComment = computed(() => {
+    return props.task.comment || props.task.rating
 })
 
 const isTaskReviewing = computed(() => {

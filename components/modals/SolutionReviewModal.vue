@@ -5,10 +5,10 @@
 
             <div class="gap-2 flex items-center justify-between">
                 <span class="font-medium text-lg text-slate-800">Отзыв о вашем решении</span>
-                <UButton variant="ghost" icon="i-ion-close-outline" />
+                <UButton variant="ghost" @click="isModalVisible = false" icon="i-ion-close-outline" />
             </div>
             
-            <div class="flex gap-2 justify-around items-center">
+            <div class="mb-3 flex gap-2 justify-around items-center">
                 <div v-for="rating in ratings" :key="rating.value" :class="markRating(rating.value)" class="rating flex gap-1 flex-col items-center">
                     <div class="rating__img">
                         <img :src="images[rating.value]" alt="">
@@ -17,13 +17,15 @@
                 </div>
             </div>
 
-            <div>
-                <span class="mb-2 block font-medium text-md text-slate-700">Есть некоторые замечания...</span>
-
+            <div v-if="taskReview.comment">
+                <span class="block font-medium text-md text-slate-700">Есть некоторые замечания:</span>
                 <ClientOnly>
                     <div class="text-slate-600" v-html="taskReview.comment"></div>
                 </ClientOnly>
+            </div>
 
+            <div v-else class="mt-2 mb-4">
+                <span class="block text-md text-center text-slate-400">К решению нет никаких замечаний...</span>
             </div>
             
         </div>
@@ -75,10 +77,10 @@ const isModalVisible = computed({
 
 function markRating(rating: number) {
     if (props.taskReview.rating === rating) {
-        return 'blur-none'
+        return 'grayscale-0'
     }
 
-    return 'blur-sm'
+    return 'grayscale text-slate-400'
 }
 
 </script>

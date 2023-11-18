@@ -2,9 +2,9 @@
     <section class="section">
         <div class="mx-auto tm-container">
 
-            <div class="grid grid-cols-1 sm:grid-cols-[300px_1fr] gap-5">
+            <div class="grid lg:grid-cols-[300px_1fr] gap-5">
 
-                <div class="div">
+                <div class="w-full sm:w-80 lg:w-auto">
                     <div class="profile-img mx-auto sm:mx-0 mb-4">
                         <img :src="user.avatar">
                     </div>
@@ -57,7 +57,7 @@
                                 <p class="max-w-md text-center text-slate-400">У вас еще нет ни одной задачи на выполнении, перейдите на страницу всех задач и возьмите на выполнение задачу...</p>
                             </div>
 
-                            <div v-else class="flex flex-col gap-3 p-3">
+                            <div v-else class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-3 p-3">
                                 <UserTask 
                                     :task="task" 
                                     :key="task.id" 
