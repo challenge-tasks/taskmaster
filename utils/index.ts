@@ -28,6 +28,24 @@ export function trimText(summary: string, maxLength: number) {
     }
 }
 
+export function generateGithubAuthUrl(from: any) {
+
+    const config = useRuntimeConfig()
+
+    const rootUrl = 'https://github.com/login/oauth/authorize'
+
+    const options = {
+        state: from,
+        scope: 'user,user:email',
+        client_id: config.public.github_client_id,
+        redirect_uri: config.public.github_oauth_redirect_url
+    }
+
+    const queryString = new URLSearchParams(options)
+
+    return `${rootUrl}?${queryString.toString()}`
+}
+
 export function badgeClassesBasedOnDifficultyLevel(difficulty: string) {
     const diffLevel = getDifficultyLevel(difficulty)
 

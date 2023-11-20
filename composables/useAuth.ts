@@ -8,6 +8,7 @@ export function useAuth() {
 
     const { setUser, setUserToken } = useUserStore()
     const { userToken } = storeToRefs(useUserStore())
+    const { userGToken } = storeToRefs(useUserStore())
     const { setSignUpModalState, setSignInModalState } = useModalsStore()
     const { setAuthenticatedState, setAuthorizingState } = useAuthStore()
 
@@ -88,10 +89,28 @@ export function useAuth() {
         return res
     }
 
+    async function getUserFromGithub() {
+
+        console.log('Log')
+
+        const res = await useAsyncData('github-user', () => $fetch('https://api.github.com/user', {
+            headers: {
+                Authorization: `Bearer ${userGToken.value}`
+            }
+        }))
+
+        console.log(res)
+    }
+
+    onBeforeMount(async () => {
+        await getUserFromGithub()
+    })
+
     return {
         logOut,
         signUp,
-        signIn
+        signIn,
+        getUserFromGithub
     }
 }
 

@@ -4,6 +4,7 @@ export const useUserStore = defineStore('user-store', () => {
 
     const user = ref({} as IUser)
     const userToken = useCookie<string>('token')
+    const userGToken = useCookie<string>('gToken')
     
     const isUserUpdating = ref<boolean>(false)
 
@@ -28,6 +29,7 @@ export const useUserStore = defineStore('user-store', () => {
         user,
         setUser,
         userToken,
+        userGToken,
         logOutUser,
         setUserToken,
         isUserUpdating,
