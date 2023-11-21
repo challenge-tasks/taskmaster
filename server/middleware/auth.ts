@@ -1,4 +1,4 @@
-import { AuthResponse, GithubUserData, IUser } from "@/types"
+import { AuthResponse, GithubUserData } from "@/types"
 
 export default defineEventHandler(async (event) => {
 
