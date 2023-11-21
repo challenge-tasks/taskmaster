@@ -2,6 +2,8 @@ import { AuthResponse, GithubUserData, IUser } from "@/types"
 
 export default defineEventHandler(async (event) => {
 
+    let username = ''
+
     interface GithubResponse {
         access_token: string
         token_type: string
@@ -40,6 +42,8 @@ export default defineEventHandler(async (event) => {
                     avatar: user.avatar_url, 
                     github_id: user.id 
                 })
+
+                username = response.data.user.username
 
                 setCookie(event, 'token', response.data.token)
             }
@@ -80,8 +84,6 @@ export default defineEventHandler(async (event) => {
     }
 
     async function authUserOnServer(data: GithubDataServerPayload): Promise<AuthResponse> {
-        console.log(data)
-        
         try {
             
 
@@ -106,6 +108,12 @@ export default defineEventHandler(async (event) => {
 
     if (query.code) {
         await getUserAccessToken()
-        await sendRedirect(event, '/', 302)
+
+        if (username) {
+            await sendRedirect(event, `/profile/${username}`, 302)
+        } else {
+            await sendRedirect(event, '/', 302)
+        }
+
     }
 })
