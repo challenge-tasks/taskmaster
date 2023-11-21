@@ -33,6 +33,10 @@ export default defineAppConfig({
             }
         },
 
+        // modal: {
+        //     base: 'modal-content'
+        // },
+
         tooltip: {
             width: 'max-w-xs',
             base: '[@media(pointer:coarse)]:hidden px-2 py-1 h-auto whitespace-normal text-xs font-normal relative'

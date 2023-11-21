@@ -89,28 +89,10 @@ export function useAuth() {
         return res
     }
 
-    async function getUserFromGithub() {
-
-        console.log('Log')
-
-        const res = await useAsyncData('github-user', () => $fetch('https://api.github.com/user', {
-            headers: {
-                Authorization: `Bearer ${userGToken.value}`
-            }
-        }))
-
-        console.log(res)
-    }
-
-    onBeforeMount(async () => {
-        await getUserFromGithub()
-    })
-
     return {
         logOut,
         signUp,
-        signIn,
-        getUserFromGithub
+        signIn
     }
 }
 

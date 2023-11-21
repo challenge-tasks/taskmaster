@@ -17,8 +17,7 @@
     "@vueuse/core": "^10.2.1",
     "@vueuse/nuxt": "^10.3.0",
     "nuxt": "^3.6.2",
-    "sass": "^1.63.6",
-    "vue-final-modal": "^4.4.5"
+    "sass": "^1.63.6"
   },
   "dependencies": {
     "@iconify-json/ant-design": "^1.1.10",

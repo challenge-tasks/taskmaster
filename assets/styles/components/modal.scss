@@ -1,38 +1,17 @@
-.modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s linear;
-}
-
 .modal-content {
     width: 100%;
     border: none;
-    max-width: 40%;
+    display: flex;
     padding: 30px 20px;
     border-radius: 5px;
+    align-items: center;
+    flex-direction: column;
     background-color: #ffffff;
     transition: all 0.2s linear;
-}
 
-@media (min-width: 1440px) {
-    .modal-content {
-        max-width: 30%;
-    }
-}
-
-@media (max-width: 768px) {
-    .modal-content {
-        max-width: 70%;
-    }
-}
-
-@media (max-width: 575px) {
-    .modal {
-        padding: 10px;
-    }
-
-    .modal-content {
-        max-width: 95%;
+    &__body {
+        margin: 0;
+        width: 100%;
+        max-width: 90%;
     }
 }

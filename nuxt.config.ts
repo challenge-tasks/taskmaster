@@ -15,7 +15,6 @@ export default defineNuxtConfig({
   },
 
   css: [
-    'vue-final-modal/style.css',
     '@/assets/styles/global.scss'
   ],
 

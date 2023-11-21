@@ -1,7 +1,7 @@
 <template>
-    <VueFinalModal v-model="isModalVisible" v-bind="modalConfig">
+    <UModal v-model="isModalVisible">
 
-        <div class="flex gap-5 flex-col">
+        <div class="flex gap-5 flex-col p-4">
 
             <div class="gap-2 flex items-center justify-between">
                 <span class="font-medium text-lg text-slate-800">Отзыв о вашем решении</span>
@@ -30,12 +30,11 @@
             
         </div>
         
-    </VueFinalModal>
+    </UModal>
 </template>
 
 <script setup lang="ts">
 import { filename } from 'pathe/utils'
-import { VueFinalModal } from 'vue-final-modal'
 
 interface PropsInterface {
     modelValue: boolean
@@ -56,14 +55,6 @@ const ratings = ref([
 
 const props = defineProps<PropsInterface>()
 const emit = defineEmits<{ (e: 'update:modelValue', id: boolean): void }>()
-
-const modalConfig = ref({
-    class: "modal",
-    lockScroll: true,
-    overlayTransition: "vfm-fade",
-    contentTransition: "vfm-fade",
-    contentClass: "max-w-xl w-full bg-white rounded-md px-5 py-4"
-})
 
 const isModalVisible = computed({
     get() {
