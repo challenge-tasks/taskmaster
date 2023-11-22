@@ -11,7 +11,7 @@ export default defineAppConfig({
         },
 
         notifications: {
-            position: 'bottom-0 top-auto',
+            position: 'left-2/4 -translate-x-2/4 top-0 bottom-auto',
         },
 
         notification: {
@@ -32,10 +32,6 @@ export default defineAppConfig({
                 background: "bg-{color}-400 dark:bg-{color}-400"
             }
         },
-
-        // modal: {
-        //     base: 'modal-content'
-        // },
 
         tooltip: {
             width: 'max-w-xs',

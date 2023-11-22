@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
         email: string
         github_id: number
         avatar: string
+        github_url: string
     }
 
     const query = getQuery(event)
@@ -40,6 +41,7 @@ export default defineEventHandler(async (event) => {
                     username: user.login,
                     email: user.email,
                     avatar: user.avatar_url,
+                    github_url: user.html_url,
                     github_id: user.id
                 })
 
@@ -90,6 +92,7 @@ export default defineEventHandler(async (event) => {
                 body: {
                     email: data.email,
                     avatar: data.avatar,
+                    github_url: data.github_url,
                     username: data.username,
                     github_id: data.github_id
                 }

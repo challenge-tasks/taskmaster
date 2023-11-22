@@ -118,7 +118,11 @@ onMounted(() => {
 
     if (route.query.verify === 'success') {
     
-        toast.add({ title: 'Вы успешно подтвердили Email', closeButton: { variant: 'ghost' } })
+        toast.add({ 
+            title: 'Вы успешно подтвердили Email', 
+            closeButton: { variant: 'ghost' },
+            description: '<p class="leading-6">Теперь у вас есть возможность связать свой Github аккаунт на платформе</p>' 
+        })
     
     } else if (route.query.verify === 'fail') {
     
@@ -126,7 +130,7 @@ onMounted(() => {
             color: 'red',
             closeButton: { variant: 'ghost' },
             title: 'Что-то пошло не так при подтверждении',
-            description: 'Произошла непредвиденная ошибка при подтверждении Email, пожалуйста сообщите разработчикам в группе <a href="https://t.me/+sNukVGsJnzFjYzcy" class="text-blue-500">Telegram</a>' 
+            description: '<p class="leading-6">Произошла непредвиденная ошибка при подтверждении Email, пожалуйста сообщите разработчикам в группе <a href="https://t.me/+sNukVGsJnzFjYzcy" class="text-blue-500">Telegram</a></p>'
         })
     
     }
