@@ -1,5 +1,5 @@
 import { AsyncData } from "nuxt/app"
-import { IAuthPayload, AuthResponse, IAuthError, IUser } from "types"
+import { IAuthPayload, AuthResponse, IAuthError, IUser, SimpleSuccessResponse } from "types"
 
 export function useAuth() {
     
@@ -66,6 +66,26 @@ export function useAuth() {
         }
     }
 
+    async function requestPasswordRecovery(email: string): Promise<AsyncData<SimpleSuccessResponse | null, Error | null>>  {
+        
+        try {
+
+            const res = await useAsyncData<SimpleSuccessResponse>('password-recovery-request', () => $api('/password-recovery', { 
+                method: 'GET', 
+                params: {
+                    email
+                }
+            }))
+
+            return res
+            
+        } catch (error: any) {
+            console.log(error)
+            return error
+        }
+
+    }
+
     async function logOut(): Promise<AsyncData<unknown | null, Error | null>> {
 
         const router = useRouter()
@@ -92,7 +112,8 @@ export function useAuth() {
     return {
         logOut,
         signUp,
-        signIn
+        signIn,
+        requestPasswordRecovery
     }
 }
 

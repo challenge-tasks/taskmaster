@@ -148,3 +148,7 @@ export interface GithubUserData {
         private_repos: number
     }
 }
+
+export interface SimpleSuccessResponse {
+    success: boolean
+}

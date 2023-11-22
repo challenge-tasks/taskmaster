@@ -11,7 +11,7 @@ export default defineAppConfig({
         },
 
         notifications: {
-            position: 'left-2/4 -translate-x-2/4 top-0 bottom-auto',
+            position: 'bottom-0 top-auto',
         },
 
         notification: {

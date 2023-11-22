@@ -4,6 +4,7 @@ export const useModalsStore = defineStore('app-modals', () => {
     
     const isSignupModalShown = ref<boolean>(false)
     const isSigninModalShown = ref<boolean>(false)
+    const isRecoveryModalVisible = ref<boolean>(false)
 
     function setSignInModalState(payload: boolean) {
         isSigninModalShown.value = payload
@@ -21,10 +22,20 @@ export const useModalsStore = defineStore('app-modals', () => {
         }
     }
 
+    function setRecoveryModalState(payload: boolean) {
+        isRecoveryModalVisible.value = payload
+    
+        if (payload) {
+            setMenuState(false)
+        }
+    }
+
     return {
         isSigninModalShown,
         isSignupModalShown,
+        isRecoveryModalVisible,
         setSignInModalState,
-        setSignUpModalState
+        setSignUpModalState,
+        setRecoveryModalState
     }
 })

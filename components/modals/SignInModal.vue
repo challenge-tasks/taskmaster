@@ -45,8 +45,8 @@
                     </transition-slide>
                 </div>
 
-                <div class="mb-4 flex justify-between">
-                    <NuxtLink to="/" class="text-blue-700 text-sm">Забыли пароль?</NuxtLink>
+                <div class="mb-3 flex justify-between">
+                    <span @click="recoveryActions" variant="link" class="cursor-pointer text-blue-700 text-sm">Забыли пароль?</span>
                 </div>
 
                 <UButton @click="handleSignInFormSubmit" block trailing :loading="isAuthorizing" size="lg" class="btn" icon="i-octicon-person-24">
@@ -79,8 +79,13 @@ const rules = validationRules
 
 const { signIn } = useAuth()
 const { isAuthorizing } = storeToRefs(useAuthStore())
-const { showSignupModal, hideSigninModal } = useModals()
 const { isSigninModalShown } = storeToRefs(useModalsStore())
+const { showSignupModal, hideSigninModal, showRecoveryModal } = useModals()
+
+function recoveryActions() {
+    showRecoveryModal()
+    hideSigninModal()
+}
 
 function swapModals() {
     showSignupModal()

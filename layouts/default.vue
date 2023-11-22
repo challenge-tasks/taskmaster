@@ -9,6 +9,7 @@
 
         <SignInModal />
         <SignUpModal />
+        <RecoveryModal />
         
         <UNotifications>
             <template v-slot:description="{ description }">

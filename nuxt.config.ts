@@ -2,7 +2,15 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      link: [{ rel: 'icon', href: '/favicon.png' }]
+      link: [
+        { rel: 'icon', href: '/favicon/favicon.ico' },
+        { rel: 'manifest', href: '/favicon/site.webmanifest' },
+        { rel: 'shortcut icon', href: "/favicon/favicon.ico" },
+        { rel: 'icon', type: "image/png", href: '/favicon/favicon-16x16.png' },
+        { rel: 'icon', type: "image/png", href: '/favicon/favicon-32x32.png' },
+        { rel: 'mask-icon', color: "#4f46e5", href: '/favicon/safari-pinned-tab.svg' },
+        { rel: 'apple-touch-icon', sizes: "180x180", href: '/favicon/apple-touch-icon.png' }
+      ]
     }
   },
 
