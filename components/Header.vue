@@ -2,7 +2,8 @@
     <header class="header">
         <div class="header__inner">
 
-            <NuxtLink to="/">
+            <NuxtLink to="/" class="inline-flex items-center gap-1">
+                <img src="@/assets/icons/mind.svg" width="40" height="40" alt="Logotype">
                 <img src="@/assets/icons/logo.svg" alt="Logotype">
             </NuxtLink>
 
