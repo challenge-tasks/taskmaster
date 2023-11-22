@@ -9,7 +9,12 @@
 
         <SignInModal />
         <SignUpModal />
-        <UNotifications />
+        
+        <UNotifications>
+            <template v-slot:description="{ description }">
+                <span v-html="description" />
+            </template>
+        </UNotifications>
     </div>
 </template>
 

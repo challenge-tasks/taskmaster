@@ -1,4 +1,9 @@
 <template>
+
+    <Head>
+        <Title>Главная</Title>
+    </Head>
+
     <section class="my-10">
         <div class="mx-auto tm-container">
             <div class="intro">
@@ -46,6 +51,9 @@
 
 <script setup lang="ts">
 
+const route = useRoute()
+const toast = useToast()
+
 const { getTasks } = useTasks()
 const { limitedTasks } = storeToRefs(useTaskStore())
 
@@ -53,5 +61,24 @@ const { showSignupModal } = useModals()
 const { isAuthenticated } = storeToRefs(useAuthStore())
 
 await getTasks()
+
+onMounted(() => {
+
+    if (route.query.verify === 'success') {
+    
+        toast.add({ title: 'Вы успешно подтвердили Email', closeButton: { variant: 'ghost' } })
+    
+    } else if (route.query.verify === 'fail') {
+    
+        toast.add({ 
+            color: 'red',
+            closeButton: { variant: 'ghost' },
+            title: 'Что-то пошло не так при подтверждении',
+            description: 'Произошла непредвиденная ошибка при подтверждении Email, пожалуйста сообщите разработчикам в группе <a href="https://t.me/+sNukVGsJnzFjYzcy" class="text-blue-500">Telegram</a>' 
+        })
+    
+    }
+    
+})
 
 </script>

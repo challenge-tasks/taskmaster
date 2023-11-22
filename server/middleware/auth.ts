@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig(event)
 
     async function getUserAccessToken(): Promise<GithubResponse> {
-        
+
         try {
 
             const res = await $fetch<GithubResponse>('https://github.com/login/oauth/access_token', {
@@ -36,11 +36,11 @@ export default defineEventHandler(async (event) => {
 
             if (res.access_token) {
                 const user = await getUserFromGithub(res.access_token)
-                const response = await authUserOnServer({ 
-                    username: user.login, 
+                const response = await authUserOnServer({
+                    username: user.login,
                     email: user.email,
-                    avatar: user.avatar_url, 
-                    github_id: user.id 
+                    avatar: user.avatar_url,
+                    github_id: user.id
                 })
 
                 username = response.data.user.username
@@ -49,9 +49,9 @@ export default defineEventHandler(async (event) => {
             }
 
             return res
-            
+
         } catch (error: any) {
-            
+
             console.log(error)
 
             return error
@@ -70,22 +70,20 @@ export default defineEventHandler(async (event) => {
                 }
             })
 
-            console.log(res)
-
             return res
-            
+
         } catch (error: any) {
-            
+
             console.log(error)
             return error
 
         }
-        
+
     }
 
     async function authUserOnServer(data: GithubDataServerPayload): Promise<AuthResponse> {
         try {
-            
+
 
             const res = await $fetch<AuthResponse>(config.public.apiBaseUrl + '/github/login', {
                 method: 'POST',
@@ -98,12 +96,39 @@ export default defineEventHandler(async (event) => {
             })
 
             return res
-            
+
         } catch (error: any) {
             console.log(error)
 
             return error
         }
+    }
+
+    async function verifyEmail({ id, hash }: { id: any, hash: any }): Promise<{ success: boolean }> {
+        
+        const token = getCookie(event, 'token')
+        
+        try {
+
+            return await $fetch<{ success: boolean }>(config.public.apiBaseUrl + '/verify-email', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                params: { id, hash }
+            })
+            
+        } catch (error: any) {
+            console.log(error)
+
+            return error
+
+        }
+    }
+
+    if (query.hash && query.id) {
+        const response = await verifyEmail({ hash: query.hash, id: query.id })
+        response.success ? await sendRedirect(event, `?verify=success`, 302) : await sendRedirect(event, `?verify=fail`, 302)
     }
 
     if (query.code) {
