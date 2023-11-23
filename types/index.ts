@@ -31,6 +31,7 @@ export interface IUser {
     is_email_verified: boolean
     updated_at: number
     username: string
+    last_confirmation_notification_sent_at: number
 }
 
 export interface IAuthResponse {

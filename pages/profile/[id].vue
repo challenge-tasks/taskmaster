@@ -6,7 +6,6 @@
 
     <section class="section">
         <div class="mx-auto tm-container">
-
             <div class="grid lg:grid-cols-[300px_1fr] gap-5">
 
                 <div class="w-full sm:w-80 lg:w-auto">
@@ -87,7 +86,6 @@
                 </div>
 
             </div>
-
         </div>
     </section>
 
@@ -115,6 +113,7 @@ const { isUserTasksFetching, userTasks } = storeToRefs(useTaskStore())
 
 const uploadingTaskSlug = ref<string>('')
 const taskReviewData = ref({} as ITaskReview)
+const remainTimeToRequestEmail = ref<string>('')
 const isSolutionReviewModalVisible = ref<boolean>(false)
 const isSolutionUploadModalVisible = ref<boolean>(false)
 
@@ -163,6 +162,28 @@ async function emailVerifyRequest() {
         })
     }
 
+}
+
+function startTimer(lastConfirmationNotificationSentAt: number) {
+
+    let timer: any = null
+    const timeStampToSeconds = Math.floor(lastConfirmationNotificationSentAt / 1000)
+
+    let endTime = new Date().getTime() + timeStampToSeconds * 1000
+
+    timer = setInterval(function () {
+        let now = new Date().getTime()
+        let timeLeft = endTime - now
+
+        let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
+        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
+
+        remainTimeToRequestEmail.value = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+
+        if (timeLeft < 0) {
+            clearInterval(timer)
+        }
+    }, 1000)
 }
 
 function onSolutionUpload(taskSlug: string) {
