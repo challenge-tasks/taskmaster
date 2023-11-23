@@ -40,7 +40,7 @@
                         <span class="mb-2 block font-medium text-slate-700 text-sm">Ваш Email не подтвержден</span>
                         <span class="text-slate-500 text-xs">
                             <span>Чтобы завершить регистрацию потдвердите свой Email. Чтобы запросить письмо еще раз нажмите эту </span>
-                            <UButton @click="requestEmailVerify" variant="link" size="xs" class="px-0">ссылку</UButton>
+                            <UButton @click="emailVerifyRequest" variant="link" size="xs" class="px-0">ссылку</UButton>
                         </span>
                     </div>
 
@@ -139,6 +139,27 @@ async function updateProfile(data: IUserData): Promise<void> {
         toast.add({ 
             title: 'Пользовательские данные успешно обновлены',
             closeButton: { variant: 'ghost' }, 
+        })
+    }
+
+}
+
+async function emailVerifyRequest() {
+    const { status, error } = await requestEmailVerify()
+
+    if (status.value === 'success') {
+        toast.add({
+            title: 'Письмо успешно отправлено',
+            closeButton: { variant: 'ghost' },
+            description: 'Письмо с ссылкой для подтверждения Email успешно отправлено на вашу электронную почту'
+        })
+    }
+
+    if (error.value) {
+        toast.add({
+            title: 'Не удалось отправить письмо',
+            closeButton: { variant: 'ghost' },
+            description: 'Что-то пошло не так при отправке письма для подтверждения вашего аккаунта, обратитесь в поддержку'
         })
     }
 
