@@ -15,6 +15,9 @@ export default defineAppConfig({
         },
 
         notification: {
+
+            description: 'leading-5',
+
             default: {
                 color: 'green',
                 

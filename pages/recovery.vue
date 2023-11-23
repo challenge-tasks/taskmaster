@@ -23,6 +23,7 @@
                     <div class="mb-4">
                         <span class="form-label">Пароль <sup class="text-red-500">*</sup></span> 
                         <UInput
+                            required
                             size="lg"
                             type="password"
                             v-model="form.newPassword"
@@ -32,15 +33,15 @@
                     </div>
 
 
-                    <UButton block trailing size="lg" class="btn" icon="i-ion-lock-closed-outline">
+                    <UButton @click="recoverPassword" block trailing :loading="isRecoveryRequesting" size="lg" class="btn" icon="i-ion-lock-closed-outline">
                         Изменить пароль
                     </UButton>
                 
-                    <!-- <transition-fade>
+                    <transition-fade>
                         <div v-if="errors.type" class="mt-4 flex justify-center">
                             <span class="text-sm text-red-500 text-center">{{ $t(`authorization.${[errors.type]}`) }}</span>
                         </div>
-                    </transition-fade> -->
+                    </transition-fade>
                 </Form>
             </div>
         </div>
@@ -48,10 +49,45 @@
 </template>
 
 <script setup lang="ts">
+import { IBaseErrorResponse } from '@/types'
+
+const route = useRoute()
+const toast = useToast()
+const router = useRouter()
+const errors = ref({ type: '' })
+const { changePassword } = useAuth()
+const { isRecoveryRequesting } = storeToRefs(useAuthStore())
 
 const form = ref({
     email: '',
     newPassword: ''
+})
+
+async function recoverPassword() {
+    const payload = {
+        email: form.value.email,
+        token: String(route.query.token),
+        password: form.value.newPassword,
+    }
+
+    const { error, status } = await changePassword(payload)
+
+    if (error.value) {
+        errors.value.type = error.value.data.type
+
+        setTimeout(() => {
+            errors.value.type = ''
+        }, 2500)
+    }
+
+    if (!error.value && status.value === 'success') {
+        router.push('/')
+        toast.add({ title: 'Пароль успешно обновлен', description: 'Ваш пароль успешно обновлен, попробуйте войти в свой аккаунт с новым паролем' })
+    }
+}
+
+onMounted(() => {
+    form.value.email = String(route.query.email)
 })
 
 </script>

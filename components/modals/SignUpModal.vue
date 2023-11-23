@@ -119,7 +119,7 @@ async function handleSignupFormSubmit() {
     const { error } = await signUp(payload)
 
     if (error.value) {
-        errors.type =  error.value?.data.type
+        errors.type =  error.value.data.type
     }
 
 

@@ -4,6 +4,7 @@ export const useAuthStore = defineStore('auth-store', () => {
 
     const isAuthorizing = ref<boolean>(false)
     const isAuthenticated = ref<boolean>(false)
+    const isRecoveryRequesting = ref<boolean>(false)
 
     if (userToken.value) {
         isAuthenticated.value = true
@@ -17,10 +18,16 @@ export const useAuthStore = defineStore('auth-store', () => {
         isAuthorizing.value = payload
     }
 
+    function setRecoveryRequesting(payload: boolean) {
+        isRecoveryRequesting.value = payload
+    }
+
     return {
         isAuthorizing,
         isAuthenticated,
+        isRecoveryRequesting,
         setAuthorizingState,
-        setAuthenticatedState
+        setAuthenticatedState,
+        setRecoveryRequesting
     }
 })

@@ -93,10 +93,10 @@ function swapModals() {
 }
 
 async function handleSignInFormSubmit() {
-    const res = await signIn({ email: form.email, password: form.password })
+    const { error, data } = await signIn({ email: form.email, password: form.password })
     
-    if (res.error.value) {
-        errors.type = res.error.value.data.type
+    if (error.value) {
+        errors.type = error.value.data.type
     }
     
 

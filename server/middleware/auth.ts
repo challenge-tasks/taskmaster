@@ -1,4 +1,4 @@
-import { AuthResponse, GithubUserData } from "@/types"
+import { IAuthResponse, IGithubUserData } from "@/types"
 
 export default defineEventHandler(async (event) => {
 
@@ -62,11 +62,11 @@ export default defineEventHandler(async (event) => {
 
     }
 
-    async function getUserFromGithub(token: string): Promise<GithubUserData> {
+    async function getUserFromGithub(token: string): Promise<IGithubUserData> {
 
         try {
 
-            const res = await $fetch<GithubUserData>('https://api.github.com/user', {
+            const res = await $fetch<IGithubUserData>('https://api.github.com/user', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -83,11 +83,11 @@ export default defineEventHandler(async (event) => {
 
     }
 
-    async function authUserOnServer(data: GithubDataServerPayload): Promise<AuthResponse> {
+    async function authUserOnServer(data: GithubDataServerPayload): Promise<IAuthResponse> {
         try {
 
 
-            const res = await $fetch<AuthResponse>(config.public.apiBaseUrl + '/github/login', {
+            const res = await $fetch<IAuthResponse>(config.public.apiBaseUrl + '/github/login', {
                 method: 'POST',
                 body: {
                     email: data.email,

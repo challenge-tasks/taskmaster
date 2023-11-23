@@ -1,5 +1,5 @@
 import { AsyncData } from "nuxt/app"
-import { IAuthPayload, AuthResponse, IAuthError, IUser, SimpleSuccessResponse } from "types"
+import { IAuthPayload, IAuthResponse, IUser, ISimpleSuccessResponse, IPasswordRecoveryBody, IBaseErrorResponse } from "types"
 
 export function useAuth() {
     
@@ -8,17 +8,16 @@ export function useAuth() {
 
     const { setUser, setUserToken } = useUserStore()
     const { userToken } = storeToRefs(useUserStore())
-    const { userGToken } = storeToRefs(useUserStore())
     const { setSignUpModalState, setSignInModalState } = useModalsStore()
-    const { setAuthenticatedState, setAuthorizingState } = useAuthStore()
+    const { setAuthenticatedState, setAuthorizingState, setRecoveryRequesting } = useAuthStore()
 
-    async function signUp(payload: IAuthPayload): Promise<AsyncData<AuthResponse | null, IAuthError | null>> {
+    async function signUp(payload: IAuthPayload): Promise<AsyncData<IAuthResponse | null, IBaseErrorResponse | null>> {
 
         try {
 
             setAuthorizingState(true)
 
-            const res = await useAsyncData<AuthResponse, IAuthError>('register', () => $api('/register', { method: 'POST', body: { ...payload } }))
+            const res = await useAsyncData<IAuthResponse, IBaseErrorResponse>('register', () => $api('/register', { method: 'POST', body: { ...payload } }))
 
             if (res.data.value && res.status.value === 'success') {
                 setSignUpModalState(false)
@@ -39,13 +38,13 @@ export function useAuth() {
         }
     }
 
-    async function signIn(payload: IAuthPayload): Promise<AsyncData<AuthResponse | null, IAuthError | null>> {
+    async function signIn(payload: IAuthPayload): Promise<AsyncData<IAuthResponse | null, IBaseErrorResponse | null>> {
 
         try {
 
             setAuthorizingState(true)
 
-            const res = await useAsyncData<AuthResponse, IAuthError>('login', () => $api('/login', { method: 'POST', body: { ...payload } }))
+            const res = await useAsyncData<IAuthResponse, IBaseErrorResponse>('login', () => $api('/login', { method: 'POST', body: { ...payload } }))
 
             if (res.data.value && res.status.value === 'success') {
                 setSignInModalState(false)
@@ -56,7 +55,7 @@ export function useAuth() {
 
             return res
 
-        } catch (error: IAuthError | any) {
+        } catch (error: any) {
 
             console.log(error)
             return error
@@ -66,11 +65,13 @@ export function useAuth() {
         }
     }
 
-    async function requestPasswordRecovery(email: string): Promise<AsyncData<SimpleSuccessResponse | null, Error | null>>  {
+    async function requestPasswordRecovery(email: string): Promise<AsyncData<ISimpleSuccessResponse | null, IBaseErrorResponse | null>>  {
         
         try {
+            
+            setRecoveryRequesting(true)
 
-            const res = await useAsyncData<SimpleSuccessResponse>('password-recovery-request', () => $api('/password-recovery', { 
+            const res = await useAsyncData<ISimpleSuccessResponse, IBaseErrorResponse>('password-recovery-request', () => $api('/password-recovery', { 
                 method: 'GET', 
                 params: {
                     email
@@ -80,8 +81,38 @@ export function useAuth() {
             return res
             
         } catch (error: any) {
+            
             console.log(error)
             return error
+
+        } finally {
+            setRecoveryRequesting(false)
+        }
+
+    }
+
+    async function changePassword(payload: IPasswordRecoveryBody ): Promise<AsyncData<ISimpleSuccessResponse | null, IBaseErrorResponse | null>> {
+
+        try {
+            
+            setRecoveryRequesting(true)
+
+            const res = await useAsyncData<ISimpleSuccessResponse, IBaseErrorResponse>('password-recovery', () => $api('/password-recovery', {
+                method: 'POST', 
+                body: {
+                    ...payload
+                }
+            }))
+
+            return res
+            
+        } catch (error: any) {
+            
+            console.log(error)
+            return error
+
+        } finally {
+            setRecoveryRequesting(false)
         }
 
     }
@@ -113,6 +144,7 @@ export function useAuth() {
         logOut,
         signUp,
         signIn,
+        changePassword,
         requestPasswordRecovery
     }
 }

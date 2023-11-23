@@ -28,11 +28,17 @@
                 </transition-slide>
             </div>
 
+            <transition-fade>
+                <div v-if="errors.type" class="my-3 flex justify-center">
+                    <span class="text-sm text-red-500 text-center">{{ $t(`authorization.${[errors.type]}`) }}</span>
+                </div>
+            </transition-fade>
+
             <div class="space-y-2">
-                <UButton @click="requestRecovery" block trailing class="btn py-3" icon="i-ion-refresh-outline">
+                <UButton @click="requestRecovery" :loading="isRecoveryRequesting" block trailing class="btn py-3" icon="i-ion-refresh-outline">
                     Запросить восстановление
                 </UButton>
-                <UButton @click="isRecoveryModalVisible = false" block trailing variant="ghost" class="btn py-3">
+                <UButton @click="isRecoveryModalVisible = false" block trailing variant="soft" class="btn py-3">
                     Отменить
                 </UButton>
             </div>
@@ -46,20 +52,30 @@
 
 const toast = useToast()
 const rules = validationRules
+const errors = ref({ type: '' })
 const recoveryEmail = ref<string>('')
 const { hideRecoveryModal } = useModals()
 const { requestPasswordRecovery } = useAuth()
+const { isRecoveryRequesting } = storeToRefs(useAuthStore())
 const { isRecoveryModalVisible } = storeToRefs(useModalsStore())
 
 async function requestRecovery() {
-    const recoveryResp = await requestPasswordRecovery(recoveryEmail.value)
+    const { status, error } = await requestPasswordRecovery(recoveryEmail.value)
 
-    if (recoveryResp.status.value === 'success') {
+    if (error.value) {
+        errors.value.type = error.value.data.type
+
+        setTimeout(() => {
+            errors.value.type = ''
+        }, 2500)
+    }
+
+    if (status.value === 'success') {
         hideRecoveryModal()
         toast.add({ 
             title: 'Проверьте Email',
             closeButton: { variant: 'ghost' },
-            description: '<p class="leading-5">Запрос на восстановление пароля успешно отправлен, проверьте свою электронную почту</p>' 
+            description: 'Запрос на восстановление пароля успешно отправлен, проверьте свою электронную почту' 
         })
     }
 

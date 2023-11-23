@@ -31,17 +31,10 @@ export interface IUser {
     username: string
 }
 
-export interface AuthResponse {
+export interface IAuthResponse {
     data: {
         token: string
         user: IUser
-    }
-}
-
-export interface IAuthError {
-    data: {
-        type: string
-        message: string
     }
 }
 
@@ -102,7 +95,7 @@ export interface ITaskSolutionUploadSuccess {
     success: boolean
 }
 
-export interface GithubUserData {
+export interface IGithubUserData {
     login: string
     id: number
     node_id: string
@@ -149,6 +142,19 @@ export interface GithubUserData {
     }
 }
 
-export interface SimpleSuccessResponse {
+export interface ISimpleSuccessResponse {
     success: boolean
+}
+
+export interface IPasswordRecoveryBody {
+    email: string
+    token: string
+    password: string
+}
+
+export interface IBaseErrorResponse {
+    data: {
+        type: string
+        message: string
+    }
 }
