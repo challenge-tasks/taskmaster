@@ -66,6 +66,11 @@ export interface ITaskDetail {
     data: ITaskType
 }
 
+export interface ITaskReview {
+    comment: string
+    rating: number
+}
+
 export interface ITagType {
     id: number
     slug: string

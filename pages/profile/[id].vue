@@ -1,4 +1,9 @@
 <template>
+
+    <Head>
+        <Title>Профиль</Title>
+    </Head>
+
     <section class="section">
         <div class="mx-auto tm-container">
 
@@ -83,19 +88,13 @@
 </template>
 
 <script setup lang="ts">
-
-useHead({ title: 'Профиль' })
+import { ITaskReview } from '@/types'
 
 const toast = useToast()
 
 interface IUserData {
     email: string
     username: string
-}
-
-interface ITaskReview {
-    comment: string
-    rating: number
 }
 
 const { logOut } = useAuth()
