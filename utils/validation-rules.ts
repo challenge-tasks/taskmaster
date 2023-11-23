@@ -5,5 +5,7 @@ export const validationRules = object().shape({
 
     password: string().min(8, 'Длина пароля должна быть не меньше 8 символов').required('Поле пароля обязательно к заполнению'),
 
-    username: string().min(5, 'Длина имени пользователя должно быть больше 5 символов').required('Имя пользователя обязательно')
+    username: string().min(5, 'Длина имени пользователя должно быть больше 5 символов').required('Имя пользователя обязательно'),
+    
+    passwordConfirmation: string().required('Повторное поле поа обазятельно к заполнению')
 })
