@@ -129,7 +129,10 @@ async function uploadFileToServer() {
     if (res.data.value && res.status.value === 'success') {
         emit('upload-success')
         isModalVisible.value = false
-        toast.add({ title: 'Решение для задачи успешно загружено' })
+        toast.add({ 
+            title: 'Решение для задачи успешно загружено',
+            closeButton: { variant: 'ghost' } 
+        })
     }
 }
 

@@ -112,7 +112,10 @@ async function deleteTask() {
 
         await getUserTasks({ customParams: { username: user.value.username } })
 
-        toast.add({ title: 'Задача успешно удалена из профиля пользователя' })
+        toast.add({ 
+            title: 'Задача успешно удалена из профиля пользователя',
+            closeButton: { variant: 'ghost' } 
+        })
     }
 
 }

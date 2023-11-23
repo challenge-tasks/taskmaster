@@ -20,21 +20,29 @@
                     </div>
 
                     <div class="mb-4 form-field">
-                        <span class="form-label">E-mail</span>
+                        <span class="form-label inline-flex items-center">E-mail</span>
                         <UInput size="lg" type="email" color="white" icon="i-octicon-mail-24" placeholder="Введите электронную почту" v-model:model-value="user.email" />
                     </div>
 
                     <ClientOnly>
                         <div class="flex flex-col gap-2">
-                            <UButton @click="updateProfile(userData)" trailing block :loading="isUserUpdating" size="lg" class="btn rounded-lg">
+                            <UButton trailing block @click="updateProfile(userData)" :loading="isUserUpdating" size="lg" class="btn rounded-lg">
                                 Сохранить
                             </UButton>
 
-                            <UButton @click="logOut" block variant="soft" size="lg" class="btn rounded-lg">
+                            <UButton block @click="logOut" :disabled="isLoggingOut" variant="soft" size="lg" class="btn rounded-lg">
                                 Выйти из аккаунта
                             </UButton>
                         </div>
                     </ClientOnly>
+
+                    <div v-if="!user.is_email_verified" class="mt-5 bg-slate-50 rounded-md p-3">
+                        <span class="mb-2 block font-medium text-slate-700 text-sm">Ваш Email не подтвержден</span>
+                        <span class="text-slate-500 text-xs">
+                            <span>Чтобы завершить регистрацию потдвердите свой Email. Чтобы запросить письмо еще раз нажмите эту </span>
+                            <UButton @click="requestEmailVerify" variant="link" size="xs" class="px-0">ссылку</UButton>
+                        </span>
+                    </div>
 
                 </div>
 
@@ -90,17 +98,17 @@
 <script setup lang="ts">
 import { ITaskReview } from '@/types'
 
-const toast = useToast()
-
 interface IUserData {
     email: string
     username: string
 }
 
-const { logOut } = useAuth()
+const toast = useToast()
 const { updateUser } = useUser()
 const { getUserTasks } = useTasks()
 const { user } = storeToRefs(useUserStore())
+const { logOut, requestEmailVerify } = useAuth()
+const { isLoggingOut } = storeToRefs(useAuthStore())
 
 const { isUserUpdating } = storeToRefs(useUserStore())
 const { isUserTasksFetching, userTasks } = storeToRefs(useTaskStore())
@@ -128,7 +136,10 @@ async function updateProfile(data: IUserData): Promise<void> {
     const response = await updateUser({ body: { ...data } })
 
     if (response.status.value === 'success') {
-        toast.add({ title: 'Пользовательские данные успешно обновлены' })
+        toast.add({ 
+            title: 'Пользовательские данные успешно обновлены',
+            closeButton: { variant: 'ghost' }, 
+        })
     }
 
 }

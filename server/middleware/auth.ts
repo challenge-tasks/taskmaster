@@ -1,5 +1,5 @@
 import { getCookieExpirationDate } from "@/utils"
-import { IAuthResponse, IGithubUserData } from "@/types"
+import { IAuthResponse, ISimpleSuccessResponse, IGithubUserData } from "@/types"
 
 export default defineEventHandler(async (event) => {
 
@@ -110,18 +110,18 @@ export default defineEventHandler(async (event) => {
         }
     }
 
-    async function verifyEmail({ id, hash }: { id: any, hash: any }): Promise<{ success: boolean }> {
+    async function verifyEmail({ id, hash }: { id: any, hash: any }): Promise<ISimpleSuccessResponse> {
         
         const token = getCookie(event, 'token')
         
         try {
 
-            return await $fetch<{ success: boolean }>(config.public.apiBaseUrl + '/verify-email', {
+            return await $fetch<ISimpleSuccessResponse>(config.public.apiBaseUrl + '/email-verification/verify', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
-                params: { id, hash }
+                body: { id, hash }
             })
             
         } catch (error: any) {

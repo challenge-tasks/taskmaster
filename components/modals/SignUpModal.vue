@@ -89,6 +89,8 @@
 
 <script setup lang="ts">
 
+const toast = useToast()
+
 const form = reactive({
     email: '',
     username: '',
@@ -116,10 +118,18 @@ async function handleSignupFormSubmit() {
         password: form.password
     }
 
-    const { error } = await signUp(payload)
+    const { error, status } = await signUp(payload)
 
     if (error.value) {
         errors.type =  error.value.data.type
+    }
+
+    if (status.value === 'success') {
+        toast.add({ 
+            title: 'Подтвердите Email',
+            closeButton: { variant: 'ghost' },
+            description: 'Регистрация прошла успешно, перейдите в почту и подтвердите Email'
+        })
     }
 
 

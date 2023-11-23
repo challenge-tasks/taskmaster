@@ -2,6 +2,7 @@ export const useAuthStore = defineStore('auth-store', () => {
 
     const { userToken } = storeToRefs(useUserStore())
 
+    const isLoggingOut = ref<boolean>(false)
     const isAuthorizing = ref<boolean>(false)
     const isAuthenticated = ref<boolean>(false)
     const isRecoveryRequesting = ref<boolean>(false)
@@ -22,10 +23,16 @@ export const useAuthStore = defineStore('auth-store', () => {
         isRecoveryRequesting.value = payload
     }
 
+    function setLoggingOutState(payload: boolean) {
+        isLoggingOut.value = payload
+    }
+
     return {
+        isLoggingOut,
         isAuthorizing,
         isAuthenticated,
         isRecoveryRequesting,
+        setLoggingOutState,
         setAuthorizingState,
         setAuthenticatedState,
         setRecoveryRequesting

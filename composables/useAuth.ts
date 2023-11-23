@@ -9,7 +9,7 @@ export function useAuth() {
     const { setUser, setUserToken } = useUserStore()
     const { userToken } = storeToRefs(useUserStore())
     const { setSignUpModalState, setSignInModalState } = useModalsStore()
-    const { setAuthenticatedState, setAuthorizingState, setRecoveryRequesting } = useAuthStore()
+    const { setAuthenticatedState, setAuthorizingState, setRecoveryRequesting, setLoggingOutState } = useAuthStore()
 
     async function signUp(payload: IAuthPayload): Promise<AsyncData<IAuthResponse | null, IBaseErrorResponse | null>> {
 
@@ -117,27 +117,60 @@ export function useAuth() {
 
     }
 
+    async function requestEmailVerify(): Promise<AsyncData<ISimpleSuccessResponse | null, IBaseErrorResponse | null>> {
+        try {
+
+            const res = await useAsyncData<ISimpleSuccessResponse, IBaseErrorResponse>('', () => $api('/email-verification/resend', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${userToken.value}`
+                }
+            }))
+
+            return res
+            
+        } catch (error: any) {
+            
+            console.log(error)
+            return error
+
+        }
+    }
+
     async function logOut(): Promise<AsyncData<unknown | null, Error | null>> {
 
-        const router = useRouter()
+        try {
+            setLoggingOutState(true)
 
-        const res = await useFetch(config.public.apiBaseUrl + '/logout', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${userToken.value}`
-            },
-            server: false
-        })
+            const router = useRouter()
 
-        if (res.status.value === 'success') {
-            setUserToken('')
-            setUser({} as IUser)
-            setAuthenticatedState(false)
+            const res = await useFetch(config.public.apiBaseUrl + '/logout', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${userToken.value}`
+                },
+                server: false
+            })
+
+            if (res.status.value === 'success') {
+                setUserToken('')
+                setUser({} as IUser)
+                setAuthenticatedState(false)
+            }
+
+            router.push('/')
+
+            return res
+            
+        } catch (error: any) {
+        
+            console.log(error)
+            return error
+        
+        } finally {
+            setLoggingOutState(false)
         }
 
-        router.push('/')
-
-        return res
     }
 
     return {
@@ -145,6 +178,7 @@ export function useAuth() {
         signUp,
         signIn,
         changePassword,
+        requestEmailVerify,
         requestPasswordRecovery
     }
 }

@@ -27,6 +27,8 @@ export interface IUser {
     created_at: number
     email: string
     id: number
+    github_url: string
+    is_email_verified: boolean
     updated_at: number
     username: string
 }

@@ -126,7 +126,11 @@ async function recoverPassword() {
 
     if (!error.value && status.value === 'success') {
         router.push('/')
-        toast.add({ title: 'Пароль успешно обновлен', description: 'Ваш пароль успешно обновлен, попробуйте войти в свой аккаунт с новым паролем' })
+        toast.add({ 
+            title: 'Пароль успешно обновлен',
+            closeButton: { variant: 'ghost' },
+            description: 'Ваш пароль успешно обновлен, попробуйте войти в свой аккаунт с новым паролем' 
+        })
     }
 
     timeout()
