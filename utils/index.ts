@@ -64,3 +64,10 @@ export function badgeClassesBasedOnDifficultyLevel(difficulty: string) {
             return 'inline-flex items-center font-medium rounded-full text-xs px-2 py-1 ring-1 ring-inset ring-gray-300 text-gray-700 bg-gray-50'
     }
 }
+
+export function getCookieExpirationDate(days: number): Date {
+    const date = new Date()
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
+
+    return date
+}

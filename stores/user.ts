@@ -1,12 +1,13 @@
-import { ITaskType, IUser } from "types"
+import { IUser } from "@/types"
+import { getCookieExpirationDate } from "@/utils"
 
 export const useUserStore = defineStore('user-store', () => {
 
+    const config = useRuntimeConfig()
+
     const user = ref({} as IUser)
-    const userToken = useCookie<string>('token')
-    const userGToken = useCookie<string>('gToken')
-    
     const isUserUpdating = ref<boolean>(false)
+    const userToken = useCookie<string>('token', { expires: getCookieExpirationDate(+config.public.cookieExpiresAfter) })
 
     function setUser(payload: IUser) {
         user.value = payload
@@ -29,7 +30,6 @@ export const useUserStore = defineStore('user-store', () => {
         user,
         setUser,
         userToken,
-        userGToken,
         logOutUser,
         setUserToken,
         isUserUpdating,

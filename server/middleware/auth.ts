@@ -1,3 +1,4 @@
+import { getCookieExpirationDate } from "@/utils"
 import { IAuthResponse, IGithubUserData } from "@/types"
 
 export default defineEventHandler(async (event) => {
@@ -47,7 +48,9 @@ export default defineEventHandler(async (event) => {
 
                 username = response.data.user.username
 
-                setCookie(event, 'token', response.data.token)
+                setCookie(event, 'token', response.data.token, {
+                    expires: getCookieExpirationDate(+config.public.cookieExpiresAfter)
+                })
             }
 
             return res
