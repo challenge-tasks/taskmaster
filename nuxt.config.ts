@@ -50,7 +50,8 @@ export default defineNuxtConfig({
       apiBaseUrl: process.env.API_BASE_URL,
       github_client_id: process.env.GITHUB_CLIENT_ID,
       cookieExpiresAfter: process.env.COOKIE_EXPIRES_AFTER,
-      github_oauth_redirect_url: process.env.GITHUB_OAUTH_REDIRECT_URL
+      github_oauth_redirect_url: process.env.GITHUB_OAUTH_REDIRECT_URL,
+      emailVerificationTimeout: process.env.EMAIL_VERIFICATION_REQUEST_TIMEOUT
     }
   },
 
