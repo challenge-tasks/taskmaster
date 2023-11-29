@@ -9,7 +9,7 @@ export function useAuth() {
     const { setUser, setUserToken } = useUserStore()
     const { userToken } = storeToRefs(useUserStore())
     const { setSignUpModalState, setSignInModalState } = useModalsStore()
-    const { setAuthenticatedState, setAuthorizingState, setRecoveryRequesting, setLoggingOutState } = useAuthStore()
+    const { setAuthenticatedState, setAuthorizingState, setRecoveryRequesting, setLoggingOutState, setEmailRefetchingState } = useAuthStore()
 
     async function signUp(payload: IAuthPayload): Promise<AsyncData<IAuthResponse | null, IBaseErrorResponse | null>> {
 
@@ -117,10 +117,12 @@ export function useAuth() {
 
     }
 
-    async function requestEmailVerify(): Promise<AsyncData<ISimpleSuccessResponse | null, IBaseErrorResponse | null>> {
+    async function requestEmailVerify(): Promise<AsyncData<{ success: boolean, last_confirmation_notification_sent_at: number } | null, IBaseErrorResponse | null>> {
         try {
 
-            const res = await useAsyncData<ISimpleSuccessResponse, IBaseErrorResponse>('', () => $api('/email-verification/resend', {
+            setEmailRefetchingState(true)
+
+            const res = await useAsyncData<{ success: boolean, last_confirmation_notification_sent_at: number }, IBaseErrorResponse>('', () => $api('/email-verification/resend', {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${userToken.value}`
@@ -134,6 +136,8 @@ export function useAuth() {
             console.log(error)
             return error
 
+        } finally {
+            setEmailRefetchingState(false)
         }
     }
 

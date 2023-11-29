@@ -5,6 +5,7 @@ export const useAuthStore = defineStore('auth-store', () => {
     const isLoggingOut = ref<boolean>(false)
     const isAuthorizing = ref<boolean>(false)
     const isAuthenticated = ref<boolean>(false)
+    const isEmailRefetching = ref<boolean>(false)
     const isRecoveryRequesting = ref<boolean>(false)
 
     if (userToken.value) {
@@ -27,14 +28,20 @@ export const useAuthStore = defineStore('auth-store', () => {
         isLoggingOut.value = payload
     }
 
+    function setEmailRefetchingState(payload: boolean) {
+        isEmailRefetching.value = payload
+    }
+
     return {
         isLoggingOut,
         isAuthorizing,
         isAuthenticated,
+        isEmailRefetching,
         isRecoveryRequesting,
         setLoggingOutState,
         setAuthorizingState,
         setAuthenticatedState,
-        setRecoveryRequesting
+        setRecoveryRequesting,
+        setEmailRefetchingState
     }
 })

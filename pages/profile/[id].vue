@@ -1,5 +1,4 @@
 <template>
-
     <Head>
         <Title>Профиль</Title>
     </Head>
@@ -15,21 +14,25 @@
 
                     <div class="mb-4 form-field">
                         <span class="form-label">Имя пользователя</span>
-                        <UInput size="lg" type="text" color="white" icon="i-octicon-link-24" placeholder="Введите имя пользователя" v-model:model-value="user.username" />
+                        <UInput size="lg" type="text" color="white" icon="i-octicon-link-24"
+                            placeholder="Введите имя пользователя" v-model:model-value="user.username" />
                     </div>
 
                     <div class="mb-4 form-field">
                         <span class="form-label inline-flex items-center">E-mail</span>
-                        <UInput size="lg" type="email" color="white" icon="i-octicon-mail-24" placeholder="Введите электронную почту" v-model:model-value="user.email" />
+                        <UInput size="lg" type="email" color="white" icon="i-octicon-mail-24"
+                            placeholder="Введите электронную почту" v-model:model-value="user.email" />
                     </div>
 
                     <ClientOnly>
                         <div class="flex flex-col gap-2">
-                            <UButton trailing block @click="updateProfile(userData)" :loading="isUserUpdating" size="lg" class="btn rounded-lg">
+                            <UButton trailing block @click="updateProfile(userData)" :loading="isUserUpdating" size="lg"
+                                class="btn rounded-lg">
                                 Сохранить
                             </UButton>
 
-                            <UButton block @click="logOut" :disabled="isLoggingOut" variant="soft" size="lg" class="btn rounded-lg">
+                            <UButton block @click="logOut" :disabled="isLoggingOut" variant="soft" size="lg"
+                                class="btn rounded-lg">
                                 Выйти из аккаунта
                             </UButton>
                         </div>
@@ -38,9 +41,11 @@
                     <div v-if="!user.is_email_verified" class="mt-5 bg-slate-50 rounded-md p-3">
                         <span class="mb-2 block font-medium text-slate-700 text-sm">Ваш Email не подтвержден</span>
                         <span class="text-slate-500 text-xs">
-                            <span>Чтобы завершить регистрацию потдвердите свой Email. Чтобы запросить письмо еще раз нажмите эту </span>
-                            <UButton @click="emailVerifyRequest" variant="link" size="xs" class="px-0">ссылку</UButton>
+                            <span>Чтобы завершить регистрацию потдвердите свой Email. </span>
+                            <span v-show="isTimedOut">Чтобы запросить письмо еще раз нажмите эту </span>
+                            <span v-show="!isTimedOut">Письмо подтверждения можно запросить повторно через: <span class="text-royalBlue-500">{{ timeRemain }}</span></span>
                         </span>
+                        <UButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" variant="link" size="xs" class="px-0">ссылку</UButton>
                     </div>
 
                 </div>
@@ -53,30 +58,29 @@
 
                         <ClientOnly>
 
-                            <div v-show="isUserTasksFetching" class="py-7 flex flex-col items-center justify-center" :class="{ 'absolute z-50 h-full w-full bg-white': hasUserActiveTasks }">
+                            <div v-show="isUserTasksFetching" class="py-7 flex flex-col items-center justify-center"
+                                :class="{ 'absolute z-50 h-full w-full bg-white': hasUserActiveTasks }">
                                 <div class="w-20 h-20">
                                     <img src="../../assets/images/search.gif" alt="">
                                 </div>
                                 <h4 class="mb-2 text-xl text-slate-600">Достаем ваши задачи...</h4>
-                                <p class="max-w-md text-center text-slate-400">Загружаем ваши задачи, пожалуйста подождите</p>
+                                <p class="max-w-md text-center text-slate-400">Загружаем ваши задачи, пожалуйста подождите
+                                </p>
                             </div>
 
-                            <div v-if="!isUserTasksFetching && !hasUserActiveTasks" class="py-7 px-3 sm:px-0 flex flex-col items-center justify-center">
+                            <div v-if="!isUserTasksFetching && !hasUserActiveTasks"
+                                class="py-7 px-3 sm:px-0 flex flex-col items-center justify-center">
                                 <div class="w-20 h-20">
                                     <img src="../../assets/images/no-data.gif" alt="">
                                 </div>
                                 <h4 class="mb-2 text-xl text-slate-600">У вас еще нет задач :(</h4>
-                                <p class="max-w-md text-center text-slate-400">У вас еще нет ни одной задачи на выполнении, перейдите на страницу всех задач и возьмите на выполнение задачу...</p>
+                                <p class="max-w-md text-center text-slate-400">У вас еще нет ни одной задачи на выполнении,
+                                    перейдите на страницу всех задач и возьмите на выполнение задачу...</p>
                             </div>
 
                             <div v-else class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-3 p-3">
-                                <UserTask 
-                                    :task="task" 
-                                    :key="task.id" 
-                                    v-for="task in userTasks" 
-                                    @review-request="onReviewRequest" 
-                                    @solution-upload="onSolutionUpload(task.slug)" 
-                                />
+                                <UserTask :task="task" :key="task.id" v-for="task in userTasks"
+                                    @review-request="onReviewRequest" @solution-upload="onSolutionUpload(task.slug)" />
                             </div>
 
                         </ClientOnly>
@@ -104,16 +108,18 @@ interface IUserData {
 const toast = useToast()
 const { updateUser } = useUser()
 const { getUserTasks } = useTasks()
+const { startTimer } = useCountDown()
 const { user } = storeToRefs(useUserStore())
 const { logOut, requestEmailVerify } = useAuth()
-const { isLoggingOut } = storeToRefs(useAuthStore())
+const { setIsTimeExpired } = useCountDownStore()
+const { isTimedOut, timeRemain } = storeToRefs(useCountDownStore())
+const { isLoggingOut, isEmailRefetching } = storeToRefs(useAuthStore())
 
 const { isUserUpdating } = storeToRefs(useUserStore())
 const { isUserTasksFetching, userTasks } = storeToRefs(useTaskStore())
 
 const uploadingTaskSlug = ref<string>('')
 const taskReviewData = ref({} as ITaskReview)
-const remainTimeToRequestEmail = ref<string>('')
 const isSolutionReviewModalVisible = ref<boolean>(false)
 const isSolutionUploadModalVisible = ref<boolean>(false)
 
@@ -135,23 +141,26 @@ async function updateProfile(data: IUserData): Promise<void> {
     const response = await updateUser({ body: { ...data } })
 
     if (response.status.value === 'success') {
-        toast.add({ 
+        toast.add({
             title: 'Пользовательские данные успешно обновлены',
-            closeButton: { variant: 'ghost' }, 
+            closeButton: { variant: 'ghost' },
         })
     }
 
 }
 
 async function emailVerifyRequest() {
-    const { status, error } = await requestEmailVerify()
+    const { status, data, error, pending } = await requestEmailVerify()
 
-    if (status.value === 'success') {
+    if (status.value === 'success' && data.value) {
         toast.add({
             title: 'Письмо успешно отправлено',
             closeButton: { variant: 'ghost' },
             description: 'Письмо с ссылкой для подтверждения Email успешно отправлено на вашу электронную почту'
         })
+
+        setIsTimeExpired(false)
+        startTimer(data.value.last_confirmation_notification_sent_at)
     }
 
     if (error.value) {
@@ -162,28 +171,6 @@ async function emailVerifyRequest() {
         })
     }
 
-}
-
-function startTimer(lastConfirmationNotificationSentAt: number) {
-
-    let timer: any = null
-    const timeStampToSeconds = Math.floor(lastConfirmationNotificationSentAt / 1000)
-
-    let endTime = new Date().getTime() + timeStampToSeconds * 1000
-
-    timer = setInterval(function () {
-        let now = new Date().getTime()
-        let timeLeft = endTime - now
-
-        let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
-        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
-
-        remainTimeToRequestEmail.value = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
-
-        if (timeLeft < 0) {
-            clearInterval(timer)
-        }
-    }, 1000)
 }
 
 function onSolutionUpload(taskSlug: string) {
@@ -201,5 +188,11 @@ function onReviewRequest(payload: ITaskReview) {
 }
 
 getUserTasks({ customParams: { username: user.value.username } })
+
+watch(user, (newVal) => {
+
+    startTimer(newVal.last_confirmation_notification_sent_at)
+
+}, { deep: true, immediate: true })
 
 </script>
