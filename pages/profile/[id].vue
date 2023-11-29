@@ -195,4 +195,12 @@ watch(user, (newVal) => {
 
 }, { deep: true, immediate: true })
 
+watch(timeRemain, (newVal) => {
+    if (newVal === '00:00' || newVal === '') {
+        setIsTimeExpired(true)
+    } else {
+        setIsTimeExpired(false)
+    }
+})
+
 </script>

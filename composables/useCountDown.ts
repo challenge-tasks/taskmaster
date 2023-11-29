@@ -56,7 +56,7 @@ export function useCountDown() {
     }
 
     watch(timeRemain, (newVal) => {
-        if (newVal === '00:00') {
+        if (newVal === '00:00' || newVal === '') {
             setIsTimeExpired(true)
         }
     })
