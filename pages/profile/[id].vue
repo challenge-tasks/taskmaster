@@ -40,12 +40,12 @@
 
                     <div v-if="!user.is_email_verified" class="mt-5 bg-slate-50 rounded-md p-3">
                         <span class="mb-2 block font-medium text-slate-700 text-sm">Ваш Email не подтвержден</span>
-                        <span class="text-slate-500 text-xs">
+                        <span class="inline-block text-slate-500 text-xs leading-5" :class="{ 'mb-2': isTimedOut }">
                             <span>Чтобы завершить регистрацию потдвердите свой Email. </span>
-                            <span v-show="isTimedOut">Чтобы запросить письмо еще раз нажмите эту </span>
+                            <span v-show="isTimedOut">Чтобы запросить письмо еще раз нажмите кнопку ниже </span>
                             <span v-show="!isTimedOut">Письмо подтверждения можно запросить повторно через: <span class="text-royalBlue-500">{{ timeRemain }}</span></span>
                         </span>
-                        <UButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" variant="link" size="xs" class="px-0">ссылку</UButton>
+                        <UButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" block trailing variant="soft" size="xs">Получить письмо</UButton>
                     </div>
 
                 </div>
@@ -108,10 +108,9 @@ interface IUserData {
 const toast = useToast()
 const { updateUser } = useUser()
 const { getUserTasks } = useTasks()
-const { startTimer } = useCountDown()
+const { startCountdown } = useCountdown()
 const { user } = storeToRefs(useUserStore())
 const { logOut, requestEmailVerify } = useAuth()
-const { setIsTimeExpired } = useCountDownStore()
 const { isTimedOut, timeRemain } = storeToRefs(useCountDownStore())
 const { isLoggingOut, isEmailRefetching } = storeToRefs(useAuthStore())
 
@@ -150,7 +149,7 @@ async function updateProfile(data: IUserData): Promise<void> {
 }
 
 async function emailVerifyRequest() {
-    const { status, data, error, pending } = await requestEmailVerify()
+    const { status, data, error } = await requestEmailVerify()
 
     if (status.value === 'success' && data.value) {
         toast.add({
@@ -159,8 +158,7 @@ async function emailVerifyRequest() {
             description: 'Письмо с ссылкой для подтверждения Email успешно отправлено на вашу электронную почту'
         })
 
-        setIsTimeExpired(false)
-        startTimer(data.value.last_confirmation_notification_sent_at)
+        startCountdown(data.value.last_confirmation_notification_sent_at)
     }
 
     if (error.value) {
@@ -189,18 +187,8 @@ function onReviewRequest(payload: ITaskReview) {
 
 getUserTasks({ customParams: { username: user.value.username } })
 
-watch(user, (newVal) => {
-
-    startTimer(newVal.last_confirmation_notification_sent_at)
-
-}, { deep: true, immediate: true })
-
-watch(timeRemain, (newVal) => {
-    if (newVal === '00:00' || newVal === '') {
-        setIsTimeExpired(true)
-    } else {
-        setIsTimeExpired(false)
-    }
-})
+watch(() => user.value.last_confirmation_notification_sent_at, (newVal) => {
+    startCountdown(newVal)
+}, { immediate: true })
 
 </script>

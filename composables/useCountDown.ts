@@ -1,67 +1,58 @@
-export function useCountDown() {
+export function useCountdown() {
+    let timer: any = null
+    const isCountdownRunning = ref(false)
+    const countdownDurationInSeconds = 1 * 10 // 5 minutes * 60 seconds
 
-    const { timeRemain } = storeToRefs(useCountDownStore())
-    const { setTimeRemain, setIsTimeExpired } = useCountDownStore() 
+    const { setTimeRemain, setIsTimedOutState } = useCountDownStore()
 
-    const currentTime = ref<number>(0)
-    const countDownTime = ref<number>(5) // time in minutes
-    const timeDifference = ref<number>(0)
-    const duration = ref<number>(countDownTime.value * 60) // 5 minutes in seconds
+    function startCountdown(fromTime: number) {
+        
+        let currentTimeUnixTimestamp = Math.floor(new Date().getTime() / 1000)
+        let timeDifference = currentTimeUnixTimestamp - fromTime
 
-    function startTimer(lastConfirmationTime: number) {
+        if (timeDifference < countdownDurationInSeconds) {
+            setIsTimedOutState(false)
+        } else {
+            setIsTimedOutState(true)
+        }
 
-        const updateTimer = () => {
-            currentTime.value = Math.floor(new Date().getTime() / 1000)
-            timeDifference.value = currentTime.value - lastConfirmationTime
+        if (!isCountdownRunning.value) {
+            isCountdownRunning.value = true
+        }
 
-            if (timeDifference.value < duration.value) {
-                const remainingTime = duration.value - timeDifference.value
-                start(remainingTime)
-            }
+        if (timer) {
+            clearInterval(timer)
+            timer = null
         }
         
-        updateTimer()
+        timer = setInterval(() => {
+            let currentTimeUnixTimestamp = Math.floor(new Date().getTime() / 1000)
+            let timeDifference = currentTimeUnixTimestamp - fromTime
 
-        if (timeDifference.value >= duration.value) {
-            setIsTimeExpired(true)
-        } else {
-            setIsTimeExpired(false)
-        }
+            if (timeDifference <= countdownDurationInSeconds) {
+                let remainingTime = countdownDurationInSeconds - timeDifference
+                let minutes: string | number = Math.floor(remainingTime / 60)
+                let seconds: string | number = remainingTime % 60
+                
+                minutes < 10 ? minutes = '0' + minutes : minutes
+                seconds < 10 ? seconds = '0' + seconds : minutes
 
-        // Update timer every 1000 milliseconds
-        setInterval(() => {
-            updateTimer()
+                remainingTime -= 1
+
+                setTimeRemain(`${minutes}:${seconds}`)
+
+                if (remainingTime < 0) {
+                    clearInterval(timer)
+                    setIsTimedOutState(true)
+                    isCountdownRunning.value = false
+                }
+            }
+
         }, 1000)
     }
 
-    function start(remainingTime: number) {
-        const timerInterval = 1000 // update interval of timer in milliseconds
-
-        const timer = setInterval(() => {
-            let minutes: string | number = Math.floor(remainingTime / 60)
-            let seconds: string | number = remainingTime % 60
-
-            minutes = minutes < 10 ? '0' + minutes : minutes
-            seconds = seconds < 10 ? '0' + seconds : seconds
-
-            setTimeRemain(`${minutes}:${seconds}`)
-
-            remainingTime -= 1
-
-            if (remainingTime < 0) {
-                clearInterval(timer)
-            }
-            
-        }, timerInterval)
-    }
-
-    watch(timeRemain, (newVal) => {
-        if (newVal === '00:00' || newVal === '') {
-            setIsTimeExpired(true)
-        }
-    })
 
     return {
-        startTimer
+        startCountdown
     }
 }
