@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { ITaskReview } from '@/types'
+import type { ITaskReview } from '@/types'
 
 interface IUserData {
     email: string

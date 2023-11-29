@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ITaskType } from '@/types'
+import type { ITaskType } from '@/types'
 import { badgeClassesBasedOnDifficultyLevel } from '@/utils'
 
 let task = ref({} as ITaskType)

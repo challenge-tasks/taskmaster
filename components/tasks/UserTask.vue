@@ -33,8 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import { ITaskType } from 'types'
 import { trimText } from '@/utils'
+import type { ITaskType } from '@/types'
 
 const toast = useToast()
 const config = useRuntimeConfig()

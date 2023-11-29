@@ -1,5 +1,16 @@
 export default defineNuxtConfig({
 
+  site: {
+    url: 'https://taskmaster.uz',
+    name: 'Taskmaster.uz',
+    description: 'Taskmaster - complete tasks and increase your skills',
+    defaultLocale: 'ru',
+    identity: {
+      type: 'Organization'
+    },
+    telegram: 'https://t.me/taskmasteruz',
+  },
+
   app: {
     head: {
       link: [
@@ -60,6 +71,7 @@ export default defineNuxtConfig({
     'nuxt-swiper',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
+    '@nuxtseo/module',
     '@vee-validate/nuxt',
     '@morev/vue-transitions/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]

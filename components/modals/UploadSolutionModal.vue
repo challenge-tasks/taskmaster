@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { IFetchOptions } from 'types'
+import type { IFetchOptions } from '@/types'
 
 const toast = useToast()
 
