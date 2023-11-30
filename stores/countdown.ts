@@ -11,10 +11,6 @@ export const useCountDownStore = defineStore('countdown-store', () => {
         isTimedOut.value = payload
     }
 
-    watch(isTimedOut, (newVal) => {
-        console.log(newVal)
-    })
-
     return {
         isTimedOut,
         timeRemain,

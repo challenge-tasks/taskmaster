@@ -10,12 +10,14 @@
         <SignInModal />
         <SignUpModal />
         <RecoveryModal />
-        
-        <UNotifications>
+
+        <LazyUNotifications>
             <template v-slot:description="{ description }">
                 <span v-html="description" />
             </template>
-        </UNotifications>
+        </LazyUNotifications>
+
+        <NuxtLoadingIndicator color="#4f46e5" class="nuxt-loading-indicator" />
     </div>
 </template>
 
@@ -23,6 +25,8 @@
 
 const { getUser } = useUser()
 const { getUserTasks } = useTasks()
+const { startCountdown } = useCountdown()
+const { user } = storeToRefs(useUserStore())
 const { isAuthenticated } = storeToRefs(useAuthStore())
 
 onBeforeMount(async () => {
@@ -36,5 +40,11 @@ onBeforeMount(async () => {
         })
     }
 })
+
+watch(() => user.value.last_confirmation_notification_sent_at, (newVal) => {
+    if (Object.keys(user.value).length) {
+        startCountdown(newVal)
+    }
+}, { immediate: true })
 
 </script>

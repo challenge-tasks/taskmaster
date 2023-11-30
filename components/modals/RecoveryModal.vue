@@ -1,5 +1,5 @@
 <template>
-    <UModal v-model="isRecoveryModalVisible">
+    <LazyUModal v-model="isRecoveryModalVisible">
 
         <Form class="px-4 pt-4 pb-8">
 
@@ -45,7 +45,7 @@
 
         </Form>
 
-    </UModal>
+    </LazyUModal>
 </template>
 
 <script setup lang="ts">

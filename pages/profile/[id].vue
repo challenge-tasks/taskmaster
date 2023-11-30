@@ -187,10 +187,4 @@ function onReviewRequest(payload: ITaskReview) {
 
 getUserTasks({ customParams: { username: user.value.username } })
 
-watch(() => user.value.last_confirmation_notification_sent_at, (newVal) => {
-    if (Object.keys(user.value).length) {
-        startCountdown(newVal)
-    }
-}, { immediate: true })
-
 </script>

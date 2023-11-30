@@ -1,5 +1,5 @@
 <template>
-    <UModal v-model="isModalVisible">
+    <LazyUModal v-model="isModalVisible">
 
         <div class="flex gap-5 flex-col p-4">
 
@@ -30,7 +30,7 @@
             
         </div>
         
-    </UModal>
+    </LazyUModal>
 </template>
 
 <script setup lang="ts">

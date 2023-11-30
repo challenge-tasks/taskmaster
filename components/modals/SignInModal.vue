@@ -1,5 +1,5 @@
 <template>
-    <UModal v-model="isSigninModalShown" @closed="eraseFilledData(form)">
+    <LazyUModal v-model="isSigninModalShown" @closed="eraseFilledData(form)">
         <div class="p-4">
             <div class="mb-5 modal-content__header">
                 <h2 class="mb-2 font-medium text-center text-xl text-black">Вход в аккаунт</h2>
@@ -67,7 +67,7 @@
 
             <AuthOptions />
         </div>  
-    </UModal>
+    </LazyUModal>
 </template>
 
 <script setup lang="ts">

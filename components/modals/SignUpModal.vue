@@ -1,5 +1,5 @@
 <template>
-    <UModal v-model="isSignupModalShown" @closed="eraseFilledData(form)">
+    <LazyUModal v-model="isSignupModalShown" @closed="eraseFilledData(form)">
 
         <div class="p-4">
 
@@ -84,7 +84,7 @@
 
             <AuthOptions />
         </div>
-    </UModal>
+    </LazyUModal>
 </template>
 
 <script setup lang="ts">

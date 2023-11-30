@@ -149,6 +149,10 @@
     }
 }
 
+.nuxt-loading-indicator {
+    top: 76px !important;
+}
+
 @media (max-width: 1440px) {
     .tm-container {
         padding: 0 15px;
@@ -258,5 +262,9 @@
             position: static;
             transform: translateY(0);
         }
+    }
+
+    .nuxt-loading-indicator {
+        top: 61px !important;
     }
 }
