@@ -45,7 +45,7 @@
                             <span v-show="isTimedOut">Чтобы запросить письмо еще раз нажмите кнопку ниже </span>
                             <span v-show="!isTimedOut">Письмо подтверждения можно запросить повторно через: <span class="text-royalBlue-500">{{ timeRemain }}</span></span>
                         </span>
-                        <UButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" block trailing variant="soft" size="xs">Получить письмо</UButton>
+                        <LazyUButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" block trailing variant="soft" size="xs">Получить письмо</LazyUButton>
                     </div>
 
                 </div>
