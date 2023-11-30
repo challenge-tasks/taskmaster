@@ -14,12 +14,6 @@ export function useCountdown() {
         let currentTimeUnixTimestamp = Math.floor(new Date().getTime() / 1000)
         let timeDifference = currentTimeUnixTimestamp - fromTime
 
-        if (timeDifference < countdownDurationInSeconds) {
-            setIsTimedOutState(false)
-        } else {
-            setIsTimedOutState(true)
-        }
-
         if (!isCountdownRunning.value) {
             isCountdownRunning.value = true
         }
@@ -53,6 +47,14 @@ export function useCountdown() {
             }
 
         }, 1000)
+
+        if (timeDifference < countdownDurationInSeconds) {
+            setIsTimedOutState(false)
+        } else {
+            // setTimeout(() => {
+                setIsTimedOutState(true)
+            // }, 1000)
+        }
     }
 
 

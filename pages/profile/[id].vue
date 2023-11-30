@@ -189,6 +189,6 @@ getUserTasks({ customParams: { username: user.value.username } })
 
 watch(() => user.value.last_confirmation_notification_sent_at, (newVal) => {
     startCountdown(newVal)
-}, { immediate: true })
+})
 
 </script>
