@@ -1,4 +1,4 @@
-import { IUser } from "@/types"
+import type { IUser } from "@/types"
 import { getCookieExpirationDate } from "@/utils"
 
 export const useUserStore = defineStore('user-store', () => {
