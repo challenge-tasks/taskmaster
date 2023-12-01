@@ -1,5 +1,5 @@
 export function useModals() {
-    const { setSignInModalState, setSignUpModalState, setRecoveryModalState } = useModalsStore()
+    const { setSignInModalState, setSignUpModalState, setRecoveryModalState, setProviderAuthErrorModalState } = useModalsStore()
 
     function showSignupModal() {
         setSignUpModalState(true)
@@ -16,13 +16,21 @@ export function useModals() {
     function hideSigninModal() {
         setSignInModalState(false)
     }
-    
+
     function showRecoveryModal() {
         setRecoveryModalState(true)
     }
-    
+
     function hideRecoveryModal() {
         setRecoveryModalState(false)
+    }
+
+    function showProviderAuthErrorModal() {
+        setProviderAuthErrorModalState(true)
+    }
+
+    function hideProviderAuthErrorModal() {
+        setProviderAuthErrorModalState(false)
     }
 
     return {
@@ -31,7 +39,8 @@ export function useModals() {
         showSigninModal,
         hideSigninModal,
         hideRecoveryModal,
-        showRecoveryModal
-
+        showRecoveryModal,
+        showProviderAuthErrorModal,
+        hideProviderAuthErrorModal
     }
 }

@@ -1,5 +1,6 @@
 import { getCookieExpirationDate } from "@/utils"
-import { IAuthResponse, ISimpleSuccessResponse, IGithubUserData } from "@/types"
+import { IAuthResponse, ISimpleSuccessResponse, IGithubUserData, IBaseErrorResponse } from "@/types"
+import { AsyncData } from "nuxt/app"
 
 export default defineEventHandler(async (event) => {
 
@@ -22,7 +23,7 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const config = useRuntimeConfig(event)
 
-    async function getUserAccessToken(): Promise<GithubResponse> {
+    async function getUserAccessToken(): Promise<GithubResponse | IBaseErrorResponse> {
 
         try {
 
@@ -87,33 +88,25 @@ export default defineEventHandler(async (event) => {
     }
 
     async function authUserOnServer(data: GithubDataServerPayload): Promise<IAuthResponse> {
-        try {
 
+        const res = await $fetch<IAuthResponse>(config.public.apiBaseUrl + '/github/login', {
+            method: 'POST',
+            body: {
+                email: data.email,
+                avatar: data.avatar,
+                github_url: data.github_url,
+                username: data.username,
+                github_id: data.github_id
+            }
+        })
 
-            const res = await $fetch<IAuthResponse>(config.public.apiBaseUrl + '/github/login', {
-                method: 'POST',
-                body: {
-                    email: data.email,
-                    avatar: data.avatar,
-                    github_url: data.github_url,
-                    username: data.username,
-                    github_id: data.github_id
-                }
-            })
-
-            return res
-
-        } catch (error: any) {
-            console.log(error)
-
-            return error
-        }
+        return res
     }
 
     async function verifyEmail({ id, hash }: { id: any, hash: any }): Promise<ISimpleSuccessResponse> {
-        
+
         const token = getCookie(event, 'token')
-        
+
         try {
 
             return await $fetch<ISimpleSuccessResponse>(config.public.apiBaseUrl + '/email-verification/verify', {
@@ -123,7 +116,7 @@ export default defineEventHandler(async (event) => {
                 },
                 body: { id, hash }
             })
-            
+
         } catch (error: any) {
             console.log(error)
 
@@ -138,7 +131,12 @@ export default defineEventHandler(async (event) => {
     }
 
     if (query.code) {
-        await getUserAccessToken()
+        const response = await getUserAccessToken()
+
+        if (response?.data?.type) {
+            await sendRedirect(event, '?fail_reason=' + response.data.type)
+            return false
+        }
 
         if (username) {
             await sendRedirect(event, `/profile/${username}`, 302)

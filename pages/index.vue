@@ -99,6 +99,7 @@
         </div>
     </section>
 
+    <ProviderAuthFailModal />
 </template>
 
 <script setup lang="ts">
@@ -109,12 +110,16 @@ const toast = useToast()
 const { getTasks } = useTasks()
 const { limitedTasks } = storeToRefs(useTaskStore())
 
-const { showSignupModal } = useModals()
+const { showSignupModal, showProviderAuthErrorModal } = useModals()
 const { isAuthenticated } = storeToRefs(useAuthStore())
 
 await getTasks()
 
 onMounted(() => {
+
+    if (route.query.fail_reason === 'sign_in_with_provider_failed') {
+        showProviderAuthErrorModal()
+    }
 
     if (route.query.verify === 'success') {
     
