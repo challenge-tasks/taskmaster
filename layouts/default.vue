@@ -7,6 +7,8 @@
             <slot />
         </main>
 
+        <Footer />
+
         <SignInModal />
         <SignUpModal />
         <RecoveryModal />

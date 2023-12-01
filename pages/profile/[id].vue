@@ -51,7 +51,7 @@
                 </div>
 
 
-                <div class="div">
+                <div class="w-full">
                     <h2 class="mb-4 font-medium text-2xl text-slate-600">Задачи пользователя</h2>
 
                     <div class="user-tasks relative" :style="tasksContainerStyle">

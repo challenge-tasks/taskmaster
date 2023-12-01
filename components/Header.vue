@@ -1,36 +1,42 @@
 <template>
     <header class="header">
-        <div class="header__inner">
+        <div class="tm-container mx-auto">
+            <div class="header__inner">
 
-            <NuxtLink to="/" class="inline-flex items-center gap-1">
-                <img src="@/assets/icons/mind.svg" width="40" height="40" alt="Logotype">
-                <img src="@/assets/icons/logo.svg" alt="Logotype">
-            </NuxtLink>
+                <NuxtLink to="/" class="inline-flex items-center gap-1">
+                    <img src="@/assets/icons/mind.svg" class="hidden md:inline" width="40" height="40" alt="Logotype">
+                    <img src="@/assets/icons/logo.svg" alt="Logotype">
+                </NuxtLink>
 
-            <span @click="toggleMenu" class="burger" :class="{ 'burger--active': isMenuActive }">
-                <span class="burger__sausage"></span>
-                <span class="burger__sausage"></span>
-                <span class="burger__sausage"></span>
-            </span>
+                <span @click="toggleMenu" class="burger" :class="{ 'burger--active': isMenuActive }">
+                    <span class="burger__sausage"></span>
+                    <span class="burger__sausage"></span>
+                    <span class="burger__sausage"></span>
+                </span>
 
-            <div class="menu" :class="{ 'menu--active': isMenuActive }">
+                <div class="menu" :class="{ 'menu--active': isMenuActive }">
 
-                <ULink v-if="isAuthenticated && user.id" :to="userProfileLink" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">
-                    Профиль
-                </ULink>
+                    <ULink v-if="isAuthenticated && user.id" :to="userProfileLink" class="menu__item"
+                        inactive-class="text-slate-800" active-class="text-royalBlue-500">
+                        Профиль
+                    </ULink>
 
-                <ULink to="/tasks" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">Задания</ULink>
+                    <ULink to="/tasks" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">
+                        Задания</ULink>
 
-                <ULink to="/about" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">О проекте</ULink>
+                    <ULink to="/about" class="menu__item" inactive-class="text-slate-800" active-class="text-royalBlue-500">
+                        О проекте</ULink>
 
-                <UButton v-if="!isAuthenticated" @click="showSigninModal" size="lg" icon="i-octicon-person-24" trailing class="menu__btn btn btn--rounded">
-                    Войти
-                </UButton>
+                    <UButton v-if="!isAuthenticated" @click="showSigninModal" size="lg" icon="i-octicon-person-24" trailing
+                        class="menu__btn btn btn--rounded">
+                        Войти
+                    </UButton>
 
-                <Socials />
+                    <Socials />
+
+                </div>
 
             </div>
-
         </div>
     </header>
 </template>
