@@ -97,7 +97,7 @@ const isTaskDone = computed(() => {
 })
 
 const taskImage = computed(() => {
-    return config.public.baseUrl + '/uploads/' + props.task.image
+    return config.public.baseUrl + '/uploads/resize/' + props.task.image + '/225x160'
 })
 
 function onRateInfoRequest() {
