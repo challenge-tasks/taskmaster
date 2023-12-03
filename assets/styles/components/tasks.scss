@@ -55,7 +55,7 @@
     &__img {
         display: block;
         overflow: hidden;
-        max-height: 225px;
+        max-height: 210px;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
 
@@ -131,6 +131,12 @@
     .tasks {
         &__item {
             flex-basis: calc((100% / 2) - 25px);
+        }
+    }
+
+    .task-card {
+        &__img {
+            max-height: 180px;
         }
     }
 }
