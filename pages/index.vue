@@ -93,7 +93,7 @@
                 <NuxtLink :to="'/task/' + task.slug" v-for="task in limitedTasks" class="tasks__item">
                     <TaskCard :data="task" />
                 </NuxtLink>
-                <div class="spoiler-block"></div>
+                <div v-if="limitedTasks.length > 4" class="spoiler-block"></div>
             </div>
 
         </div>
