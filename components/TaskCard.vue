@@ -16,7 +16,7 @@
 
         <span v-if="data.stacks" class="task-card__bottom">
             <span class="task-card__tags">
-                <span v-for="stack in data.stacks" class="task-card__tag">#{{ stack.name }}</span>
+                <span v-for="tag in data.tags" class="task-card__tag">#{{ tag.name }}</span>
             </span>
         </span>
     </span>
