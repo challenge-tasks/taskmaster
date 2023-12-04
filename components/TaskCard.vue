@@ -35,7 +35,7 @@ const props = defineProps({
 })
 
 const taskMainImage = computed(() => {
-    return config.public.baseUrl + '/uploads/' + props.data.image
+    return config.public.baseUrl + '/uploads/resize/' + props.data.image + '/340x225'
 })
 
 </script>

@@ -1,7 +1,7 @@
 <template>
     <span class="flex flex-col lg:flex-row user-task">
 
-        <span class="lg:mr-3 flex-shrink-0 w-full lg:w-56 sm:max-h-36 overflow-hidden">
+        <span class="lg:mr-3 flex-shrink-0 w-full lg:w-56 max-h-60 sm:max-h-44 md:max-h-36 overflow-hidden">
             <img :src="taskImage" />
         </span>
         
@@ -53,6 +53,8 @@ const props = defineProps({
     }
 })
 
+const { width } = useWindowSize()
+
 const uploadTooltipContent = computed(() => {
     
     if (isTaskReviewing.value) {
@@ -97,7 +99,24 @@ const isTaskDone = computed(() => {
 })
 
 const taskImage = computed(() => {
-    return config.public.baseUrl + '/uploads/' + props.task.image
+
+    const imgUrl = config.public.baseUrl + '/uploads/resize/' + props.task.image
+
+    console.log(width.value)
+
+    if (width.value > 768 && width.value < 992) {
+        return imgUrl + '/380x315'
+    }
+
+    if (width.value > 575 && width.value < 768) {
+        return imgUrl + '/350x285'
+    }
+
+    if (width.value < 575) {
+        return imgUrl + '/500x425'
+    }
+        
+    return imgUrl + '/225x160'
 })
 
 function onRateInfoRequest() {
