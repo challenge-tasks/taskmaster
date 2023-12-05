@@ -63,7 +63,7 @@
                     </div>
 
                     <client-only>
-                        <p class="mb-4 text-slate-500" v-html="task.description"></p>
+                        <div class="mb-4 text-slate-500 task-description" v-html="task.description"></div>
                     </client-only>
                 </div>
 
