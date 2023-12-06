@@ -1,5 +1,5 @@
-import { FetchOptions } from 'ofetch';
-import { AsyncData } from "nuxt/app"
+import type { AsyncData } from "nuxt/app"
+import type { FetchOptions } from 'ofetch'
 import { IFetchOptions, IStartTaskSuccessResponse, ITaskDetail, ITaskSolutionUploadSuccess, ITasksResponse } from "types"
 
 export function useTasks() {

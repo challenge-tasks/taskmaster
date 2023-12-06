@@ -1,4 +1,4 @@
-import { ITaskType } from "types"
+import type { ITaskType } from "@/types"
 
 export const useTaskStore = defineStore('task-store', () => {
     

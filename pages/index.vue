@@ -89,7 +89,11 @@
                 </div>
             </div>
 
-            <div class="tasks relative">
+            <div v-if="isTasksFetching" class="tasks relative">
+                <TaskCardSkeleton class="tasks__item" v-for="i in 8" />
+            </div>
+
+            <div v-else class="tasks relative">
                 <NuxtLink :to="'/task/' + task.slug" v-for="task in limitedTasks" class="tasks__item">
                     <TaskCard :data="task" />
                 </NuxtLink>
@@ -108,12 +112,12 @@ const route = useRoute()
 const toast = useToast()
 
 const { getTasks } = useTasks()
-const { limitedTasks } = storeToRefs(useTaskStore())
+const { limitedTasks, isTasksFetching } = storeToRefs(useTaskStore())
 
 const { showSignupModal, showProviderAuthErrorModal } = useModals()
 const { isAuthenticated } = storeToRefs(useAuthStore())
 
-await getTasks()
+await getTasks() 
 
 onMounted(() => {
 

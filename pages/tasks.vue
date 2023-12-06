@@ -15,7 +15,11 @@
 
             </div>
 
-            <div v-if="tasks.length" class="tasks">
+            <div v-if="isTasksFetching" class="tasks">
+                <TaskCardSkeleton class="tasks__item" v-for="i in 8" />
+            </div>
+
+            <div v-else-if="!isTasksFetching && tasks.length" class="tasks">
                 <NuxtLink :to="'/task/' + task.slug" v-for="task in tasks" class="tasks__item">
                     <TaskCard :data="task" />
                 </NuxtLink>
@@ -38,7 +42,7 @@
 useHead({ title: 'Все задания' })
 
 const { getTasks } = useTasks()
-const { tasks } = storeToRefs(useTaskStore())
+const { tasks, isTasksFetching } = storeToRefs(useTaskStore())
 
 async function handleFilterModelUpdate(payload: number[]) {
     const options = {
