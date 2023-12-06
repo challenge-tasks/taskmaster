@@ -1,7 +1,7 @@
 <template>
     <span class="task-card">
         <span class="task-card__img">
-            <img :src="taskMainImage" :alt="data.description">
+            <UnLazyImage :placeholder-src="placeholderImage" width="340" height="210" :src-set="taskMainImage" />
         </span>
 
         <span class="task-card__middle">
@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import placeholderImage from '@/assets/images/preloader.jpg'
 import { badgeClassesBasedOnDifficultyLevel, trimText } from '@/utils'
 
 const config = useRuntimeConfig()

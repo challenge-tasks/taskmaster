@@ -42,6 +42,7 @@
 .task-image {
     display: flex;
     padding: 5px;
+    min-height: 400px;
     max-height: 400px;
     align-items: flex-start;
     justify-content: center;
@@ -92,7 +93,7 @@
 @media (max-width: 768px) {
     .task-image {
         max-height: 425px;
-        min-height: unset;
+        min-height: 425px;
     }
 
     .task-image-gallery {
@@ -126,5 +127,6 @@
 
     .task-image {
         max-height: 280px;
+        min-height: 280px;
     }
 }

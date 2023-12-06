@@ -69,6 +69,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
     'nuxt-swiper',
+    '@unlazy/nuxt',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@nuxtseo/module',

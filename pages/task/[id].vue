@@ -36,7 +36,8 @@
                     <Swiper v-bind="swiperConfig" class="task__images">
                         <SwiperSlide v-for="(image, key) in allTaskImages" :key="key">
                             <div class="task-image">
-                                <img :src="image" alt="">
+                                <UnLazyImage :placeholder-src="placeholderImage" :src-set="image" />
+                                <!-- <img :src="image" alt=""> -->
                             </div>
                         </SwiperSlide>
                     </Swiper>
@@ -76,6 +77,7 @@
 
 <script setup lang="ts">
 import type { ITaskType } from '@/types'
+import placeholderImage from '@/assets/images/preloader.jpg'
 import { badgeClassesBasedOnDifficultyLevel } from '@/utils'
 
 let task = ref({} as ITaskType)
