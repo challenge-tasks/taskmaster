@@ -83,6 +83,6 @@ defineOptions({
 
 const props = defineProps({
     title: String,
-})s
+})
 
 </script>
