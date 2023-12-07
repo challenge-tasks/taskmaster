@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import placeholderImage from '@/assets/images/preloader.jpg'
+import placeholderImage from '@/assets/images/preloader.svg'
 import { badgeClassesBasedOnDifficultyLevel, trimText } from '@/utils'
 
 const config = useRuntimeConfig()

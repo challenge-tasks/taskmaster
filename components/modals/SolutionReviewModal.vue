@@ -41,7 +41,7 @@ interface PropsInterface {
     taskReview: { comment: string, rating: number }
 }
 
-const glob = import.meta.glob('@/assets/images/*.png', { eager: true })
+const glob = import.meta.glob('@/assets/images/*.webp', { eager: true })
 const images = Object.fromEntries(Object.entries(glob).map(([key, value]) => [filename(key), value.default]))
 
 const ratings = ref([

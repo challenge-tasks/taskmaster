@@ -24,7 +24,7 @@
                     </UButton>
                 </div>
                 <div class="intro__img">
-                    <img src="~/assets/images/trophy-dynamic-premium.png" />
+                    <img src="~/assets/images/trophy-dynamic-premium.webp" />
                 </div>
             </div>
         </div>
