@@ -3,7 +3,7 @@
         <div class="p-4">
             <div class="mb-4 flex items-center justify-between">
                 <h4 class="font-medium">Сообщить о баге</h4>
-                <UButton variant="ghost" @click="setBugReportModalState(false)" icon="i-ion-close-outline" />
+                <UButton variant="ghost" @click="controlBugReportModal(false)" icon="i-ion-close-outline" />
             </div>
             <div class="mb-4">
                 <UTextarea v-model:model-value="report" :rows="5" required placeholder="Опишите проблему которую вы заметили..." autoresize />
@@ -55,8 +55,16 @@ async function sendReport() {
         })
     }
 
-    setBugReportModalState(false)
+    controlBugReportModal(false)
 
+}
+
+function controlBugReportModal(payload: boolean) {
+    setBugReportModalState(payload)
+
+    if (!payload) {
+        report.value = ''
+    } 
 }
 
 </script>
