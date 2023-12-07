@@ -5,7 +5,7 @@
 
                 <NuxtLink to="/" class="inline-flex items-center gap-2">
                     <img src="@/assets/icons/mind.svg" class="hidden md:inline" width="40" height="40" alt="Logotype">
-                    <img src="@/assets/icons/logo.svg" alt="Logotype">
+                    <img src="@/assets/icons/logo.svg" width="165" height="20" alt="Logotype">
                 </NuxtLink>
 
                 <span @click="toggleMenu" class="burger" :class="{ 'burger--active': isMenuActive }">
