@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="max-w-xs md:max-w-sm">
-                        <img src="~/assets/images/puzzle-dynamic-premium.webp" alt="">
+                        <UnLazyImage :placeholder-src="puzzlePreloader" :src-set="puzzleImage" />
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
             <div class="mx-auto tm-container">
                 <div class="gap-y-5 sm:gap-0 flex flex-col md:flex-row items-center justify-around">
                     <div class="max-w-xs md:max-w-sm">
-                        <img src="~/assets/images/lab-dynamic-premium.webp" alt="">
+                        <UnLazyImage :placeholder-src="labPreloader" :src-set="labImage" />
                     </div>
 
                     <div class="md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="max-w-xs md:max-w-sm">
-                        <img src="~/assets/images/gift-dynamic-premium.webp" alt="">
+                        <UnLazyImage :placeholder-src="giftPreloader" :src-set="giftImage" />
                     </div>
                 </div>
             </div>
@@ -84,6 +84,12 @@
 </template>
 
 <script setup>
+import puzzleImage from '@/assets/images/puzzle-dynamic-premium.webp'
+import puzzlePreloader from '@/assets/images/puzzle-preloader.webp'
+import labImage from '@/assets/images/lab-dynamic-premium.webp'
+import labPreloader from '@/assets/images/lab-preloader.webp'
+import giftImage from '@/assets/images/gift-dynamic-premium.webp'
+import giftPreloader from '@/assets/images/gift-preloader.webp'
 
 useHead({
     title: 'О проекте'

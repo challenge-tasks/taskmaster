@@ -11,7 +11,7 @@
             <div class="mb-3 flex gap-2 justify-around items-center">
                 <div v-for="rating in ratings" :key="rating.value" :class="markRating(rating.value)" class="rating flex gap-1 flex-col items-center">
                     <div class="rating__img">
-                        <img :src="images[rating.value]" alt="">
+                        <UnLazyImage :placeholder-src="images[rating.value + '-preloader']" :src-set="images[rating.value]" />
                     </div>
                     <span class="font-medium">{{ rating.value }}</span>
                 </div>
@@ -43,6 +43,9 @@ interface PropsInterface {
 
 const glob = import.meta.glob('@/assets/images/*.webp', { eager: true })
 const images = Object.fromEntries(Object.entries(glob).map(([key, value]) => [filename(key), value.default]))
+
+console.log(images);
+
 
 const ratings = ref([
     { value: 0 },

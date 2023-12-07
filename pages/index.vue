@@ -24,7 +24,7 @@
                     </UButton>
                 </div>
                 <div class="intro__img">
-                    <img src="~/assets/images/trophy-dynamic-premium.webp" />
+                    <UnLazyImage :placeholder-src="trophyPreloader" :src-set="trophy" />
                 </div>
             </div>
         </div>
@@ -107,6 +107,8 @@
 </template>
 
 <script setup lang="ts">
+import trophy from '~/assets/images/trophy-dynamic-premium.webp'
+import trophyPreloader from '~/assets/images/trophy-preloader.webp'
 
 const route = useRoute()
 const toast = useToast()
