@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="max-w-xs md:max-w-sm">
-                        <UnLazyImage :placeholder-src="puzzlePreloader" :src-set="puzzleImage" width="385" height="385" />
+                        <UnLazyImage :placeholder-src="puzzlePreloader" :src-set="puzzleImage" width="385" height="385" alt="Gold puzzle" />
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
             <div class="mx-auto tm-container">
                 <div class="gap-y-5 sm:gap-0 flex flex-col md:flex-row items-center justify-around">
                     <div class="max-w-xs md:max-w-sm">
-                        <UnLazyImage :placeholder-src="labPreloader" :src-set="labImage" width="385" height="385" />
+                        <UnLazyImage :placeholder-src="labPreloader" :src-set="labImage" width="385" height="385" alt="Laboratory image" />
                     </div>
 
                     <div class="md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="max-w-xs md:max-w-sm">
-                        <UnLazyImage :placeholder-src="giftPreloader" :src-set="giftImage" width="385" height="385" />
+                        <UnLazyImage :placeholder-src="giftPreloader" :src-set="giftImage" width="385" height="385" alt="Gift image" />
                     </div>
                 </div>
             </div>

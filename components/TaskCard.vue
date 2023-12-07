@@ -1,7 +1,7 @@
 <template>
     <span class="task-card">
         <span class="task-card__img">
-            <UnLazyImage :placeholder-src="placeholderImage" width="340" height="210" :src-set="taskMainImage" />
+            <UnLazyImage :placeholder-src="placeholderImage" width="340" height="210" :src-set="taskMainImage" :alt="'Image for ' + data.name" />
         </span>
 
         <span class="task-card__middle">

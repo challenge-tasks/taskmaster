@@ -9,7 +9,7 @@
 
                 <div class="w-full sm:w-80 lg:w-auto">
                     <div class="profile-img mx-auto sm:mx-0 mb-4">
-                        <img :src="user.avatar">
+                        <img :src="user.avatar" :alt="'Profile image of ' + user.username">
                     </div>
 
                     <div class="mb-4 form-field">
@@ -64,7 +64,7 @@
 
                             <div v-if="!isUserTasksFetching && !hasUserActiveTasks" class="py-7 px-3 sm:px-0 flex flex-col items-center justify-center">
                                 <div class="w-20 h-20">
-                                    <img src="../../assets/images/no-data.gif" alt="">
+                                    <img src="../../assets/images/no-data.gif" alt="No data gif">
                                 </div>
                                 <h4 class="mb-2 text-xl text-slate-600">У вас еще нет задач :(</h4>
                                 <p class="max-w-md text-center text-slate-400">У вас еще нет ни одной задачи на выполнении, перейдите на страницу всех задач и возьмите на выполнение задачу...</p>

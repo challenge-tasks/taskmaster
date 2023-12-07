@@ -36,8 +36,7 @@
                     <Swiper v-bind="swiperConfig" class="task__images">
                         <SwiperSlide v-for="(image, key) in allTaskImages" :key="key">
                             <div class="task-image">
-                                <UnLazyImage :placeholder-src="placeholderImage" :src-set="image" />
-                                <!-- <img :src="image" alt=""> -->
+                                <UnLazyImage :placeholder-src="placeholderImage" :src-set="image" :alt="task.name" />
                             </div>
                         </SwiperSlide>
                     </Swiper>

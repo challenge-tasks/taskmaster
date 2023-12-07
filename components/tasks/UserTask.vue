@@ -2,7 +2,7 @@
     <span class="flex flex-col lg:flex-row user-task">
 
         <span class="lg:mr-3 flex-shrink-0 w-full lg:w-56 max-h-60 sm:max-h-44 md:max-h-36 overflow-hidden">
-            <img :src="taskImage" />
+            <img :src="taskImage" :alt="task.name" />
         </span>
         
         <span class="lg:px-0 px-2 py-2">

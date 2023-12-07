@@ -24,7 +24,7 @@
                     </UButton>
                 </div>
                 <div class="intro__img">
-                    <UnLazyImage :placeholder-src="trophyPreloader" :src-set="trophy" width="360" height="360" />
+                    <UnLazyImage :placeholder-src="trophyPreloader" :src-set="trophy" width="360" height="360" alt="Gold trophy image" />
                 </div>
             </div>
         </div>

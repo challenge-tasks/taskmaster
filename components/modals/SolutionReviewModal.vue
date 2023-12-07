@@ -11,7 +11,7 @@
             <div class="mb-3 flex gap-2 justify-around items-center">
                 <div v-for="rating in ratings" :key="rating.value" :class="markRating(rating.value)" class="rating flex gap-1 flex-col items-center">
                     <div class="rating__img">
-                        <UnLazyImage :placeholder-src="images[rating.value + '-preloader']" :src-set="images[rating.value]" />
+                        <UnLazyImage :placeholder-src="images[rating.value + '-preloader']" :src-set="images[rating.value]" alt="Rating image as apple emoji" />
                     </div>
                     <span class="font-medium">{{ rating.value }}</span>
                 </div>

@@ -27,7 +27,7 @@
 
             <div v-else class="mt-40 grayscale flex flex-col justify-center items-center">
                 <div class="w-20 h-20">
-                    <img src="@/assets/images/moving-eye.gif" />
+                    <img src="@/assets/images/moving-eye.gif" alt="Moving emoji eye gif" />
                 </div>
                 <span class="block mb-2 font-bold text-slate-600">По вашему запросу задачи не найдены...</span>
                 <p class="max-w-md text-center text-slate-400">Не удалось найти задачи по вашему запросу, попробуйте изменить свой запрос и попробовать заново</p>
