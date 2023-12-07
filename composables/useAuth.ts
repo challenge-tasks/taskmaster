@@ -1,5 +1,5 @@
-import { AsyncData } from "nuxt/app"
-import { IAuthPayload, IAuthResponse, IUser, ISimpleSuccessResponse, IPasswordRecoveryBody, IBaseErrorResponse } from "types"
+import type { AsyncData } from "nuxt/app"
+import type { IAuthPayload, IAuthResponse, IUser, ISimpleSuccessResponse, IPasswordRecoveryBody, IBaseErrorResponse } from "@/types"
 
 export function useAuth() {
     

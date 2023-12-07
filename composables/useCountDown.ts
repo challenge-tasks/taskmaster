@@ -1,7 +1,7 @@
 export function useCountdown() {
 
     const appConfig = useRuntimeConfig()
-    const timeout = +appConfig.public.emailVerificationTimeout
+    const timeout = +appConfig.public.emailVerificationInterval
 
     let timer: any = null
     const isCountdownRunning = ref(false)

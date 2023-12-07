@@ -62,6 +62,8 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    telegram_chat_id: process.env.TELEGRAM_CHAT_ID,
+    telegram_bot_token: process.env.TELEGRAM_BOT_TOKEN,
     github_client_secret: process.env.GITHUB_CLIENT_SECRET,
 
     public: {
@@ -70,7 +72,7 @@ export default defineNuxtConfig({
       github_client_id: process.env.GITHUB_CLIENT_ID,
       cookieExpiresAfter: process.env.COOKIE_EXPIRES_AFTER,
       github_oauth_redirect_url: process.env.GITHUB_OAUTH_REDIRECT_URL,
-      emailVerificationTimeout: process.env.EMAIL_VERIFICATION_REQUEST_TIMEOUT
+      emailVerificationInterval: process.env.EMAIL_VERIFICATION_REQUEST_INTERVAL
     }
   },
 

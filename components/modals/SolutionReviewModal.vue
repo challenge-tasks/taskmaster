@@ -44,9 +44,6 @@ interface PropsInterface {
 const glob = import.meta.glob('@/assets/images/*.webp', { eager: true })
 const images = Object.fromEntries(Object.entries(glob).map(([key, value]) => [filename(key), value.default]))
 
-console.log(images);
-
-
 const ratings = ref([
     { value: 0 },
     { value: 1 },

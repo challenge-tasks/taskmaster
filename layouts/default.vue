@@ -12,6 +12,7 @@
         <SignInModal />
         <SignUpModal />
         <RecoveryModal />
+        <BugReportModal />
 
         <LazyUNotifications>
             <template v-slot:description="{ description }">
