@@ -77,7 +77,7 @@
 
 <script setup lang="ts">
 import type { ITaskType } from '@/types'
-import placeholderImage from '@/assets/images/preloader.jpg'
+import placeholderImage from '@/assets/images/preloader.svg'
 import { badgeClassesBasedOnDifficultyLevel } from '@/utils'
 
 let task = ref({} as ITaskType)
