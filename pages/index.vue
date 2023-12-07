@@ -1,5 +1,4 @@
 <template>
-
     <Head>
         <Title>Главная</Title>
     </Head>
@@ -24,24 +23,26 @@
                     </UButton>
                 </div>
                 <div class="intro__img">
-                    <UnLazyImage :placeholder-src="trophyPreloader" :src-set="trophy" width="360" height="360" alt="Gold trophy image" />
+                    <UnLazyImage :placeholder-src="trophyPreloader" :src-set="trophy" width="360" height="360"
+                        alt="Gold trophy image" />
                 </div>
             </div>
         </div>
     </section>
-    
+
     <section class="my-16 md:my-20">
         <div class="mx-auto tm-container">
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-8 lg:gap-4">
-                
+
                 <div class="mx-auto flex flex-col items-center tm-">
                     <div class="w-14 h-14 mb-3 flex items-center justify-center bg-royalBlue-100 rounded-full">
                         <UIcon name="i-ant-design-code-sandbox-circle-filled" class="text-royalBlue-500 w-10 h-10" />
                     </div>
                     <div class="flex flex-col">
                         <span class="mb-2 block text-center text-slate-700 font-medium">Работа над задачей</span>
-                        <span class="block text-center text-slate-500 text-sm max-w-sm">Выберите задачу, добавьте ее в свой профиль и начните выполнять. Задача будет менять свой статус прямо как в Trello.</span>
+                        <span class="block text-center text-slate-500 text-sm max-w-sm">Выберите задачу, добавьте ее в свой
+                            профиль и начните выполнять. Задача будет менять свой статус прямо как в Trello.</span>
                     </div>
 
                 </div>
@@ -53,7 +54,8 @@
                     <div class="flex flex-col">
                         <span class="mb-2 block text-center text-slate-700 font-medium">Загрузка вашего решения</span>
                         <span class="block text-center text-slate-500 text-sm max-w-sm">
-                            Упакуйте ваше решение в .zip или .rar архив, загрузите свое решение, статус вашей задачи поменяется на 
+                            Упакуйте ваше решение в .zip или .rar архив, загрузите свое решение, статус вашей задачи
+                            поменяется на
                             <br>
                             <b class="text-royalBlue-500">На проверке.</b>
                         </span>
@@ -67,7 +69,8 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="mb-2 block text-center text-slate-700 font-medium">Проверка решения</span>
-                        <span class="block text-center text-slate-500 text-sm max-w-sm">Наши администраторы проверят ваше решение и поставят оценку, может быть даже отпишутся если будут замечания.</span>
+                        <span class="block text-center text-slate-500 text-sm max-w-sm">Наши администраторы проверят ваше
+                            решение и поставят оценку, может быть даже отпишутся если будут замечания.</span>
                     </div>
 
                 </div>
@@ -78,10 +81,10 @@
 
     <section class="section">
         <div class="mx-auto tm-container">
-            
+
             <div class="flex items-center justify-between">
                 <h2 class="text-medium mb-0 text-2xl">Задания</h2>
-                
+
                 <div class="flex justify-center">
                     <UButton to="/tasks" variant="link">
                         <span class="font-medium">Все задания</span>
@@ -113,13 +116,17 @@ import trophyPreloader from '~/assets/images/trophy-preloader.webp'
 const route = useRoute()
 const toast = useToast()
 
+defineOgImage({
+    component: 'OGImageHome',
+})
+
 const { getTasks } = useTasks()
 const { limitedTasks, isTasksFetching } = storeToRefs(useTaskStore())
 
 const { showSignupModal, showProviderAuthErrorModal } = useModals()
 const { isAuthenticated } = storeToRefs(useAuthStore())
 
-await getTasks() 
+await getTasks()
 
 onMounted(() => {
 
@@ -128,24 +135,24 @@ onMounted(() => {
     }
 
     if (route.query.verify === 'success') {
-    
-        toast.add({ 
-            title: 'Вы успешно подтвердили Email', 
+
+        toast.add({
+            title: 'Вы успешно подтвердили Email',
             closeButton: { variant: 'ghost' },
-            description: 'Теперь у вас есть возможность связать свой Github аккаунт на платформе' 
+            description: 'Теперь у вас есть возможность связать свой Github аккаунт на платформе'
         })
-    
+
     } else if (route.query.verify === 'fail') {
-    
-        toast.add({ 
+
+        toast.add({
             color: 'red',
             closeButton: { variant: 'ghost' },
             title: 'Что-то пошло не так при подтверждении',
             description: 'Произошла непредвиденная ошибка при подтверждении Email, пожалуйста сообщите разработчикам в группе <a href="https://t.me/+sNukVGsJnzFjYzcy" class="text-blue-500">Telegram</a>'
         })
-    
+
     }
-    
+
 })
 
 </script>

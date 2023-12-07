@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     name: 'Taskmaster.uz',
     description: 'Taskmaster - complete tasks and increase your skills',
     defaultLocale: 'ru',
+    indexable: true,
     identity: {
       type: 'Organization'
     },
@@ -82,7 +83,9 @@ export default defineNuxtConfig({
     '@unlazy/nuxt',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
+    'nuxt-og-image',
     '@nuxtseo/module',
+    'nuxt-simple-robots',
     '@vee-validate/nuxt',
     '@morev/vue-transitions/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]
