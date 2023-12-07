@@ -53,6 +53,10 @@ export default defineNuxtConfig({
     defaultLocale: 'ru'
   },
 
+  swiper: {
+    modules: ['navigation']
+  },
+
   imports: {
     dirs: ['stores'],
   },
