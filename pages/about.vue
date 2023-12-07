@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="max-w-xs md:max-w-sm">
-                        <img src="~/assets/images/puzzle-dynamic-premium.png" alt="">
+                        <img src="~/assets/images/puzzle-dynamic-premium.webp" alt="">
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
             <div class="mx-auto tm-container">
                 <div class="gap-y-5 sm:gap-0 flex flex-col md:flex-row items-center justify-around">
                     <div class="max-w-xs md:max-w-sm">
-                        <img src="~/assets/images/lab-dynamic-premium.png" alt="">
+                        <img src="~/assets/images/lab-dynamic-premium.webp" alt="">
                     </div>
 
                     <div class="md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="max-w-xs md:max-w-sm">
-                        <img src="~/assets/images/gift-dynamic-premium.png" alt="">
+                        <img src="~/assets/images/gift-dynamic-premium.webp" alt="">
                     </div>
                 </div>
             </div>
