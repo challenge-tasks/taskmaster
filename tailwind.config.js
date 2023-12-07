@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
     theme: {
+
         screens: {
 
             xs: '375px',
@@ -23,6 +24,14 @@ export default {
         },
 
         extend: {
+
+            keyframes: {
+                pulse: {
+                    "0%, 100%": { opacity: 1 },
+                    "50%": { opacity: 0.45 }
+                }
+            },
+
             colors: {
                 royalBlue: {
                     DEFAULT: '#4F46E5',
