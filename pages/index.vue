@@ -116,10 +116,6 @@ import trophyPreloader from '~/assets/images/trophy-preloader.webp'
 const route = useRoute()
 const toast = useToast()
 
-defineOgImage({
-    component: 'OGImageHome',
-})
-
 const { getTasks } = useTasks()
 const { limitedTasks, isTasksFetching } = storeToRefs(useTaskStore())
 

@@ -1,3 +1,5 @@
+@import '../variables';
+
 .task {
     &__images {
         margin-bottom: 20px;
@@ -78,7 +80,7 @@
 
 .task-description {
     a {
-        color: #4f46e5 !important;
+        color: $primary !important;
     }
 }
 

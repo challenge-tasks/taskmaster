@@ -1,3 +1,5 @@
+@import '../variables';
+
 .menu {
     gap: 0 25px;
     display: flex;
@@ -22,7 +24,7 @@
         }
 
         &.text-royalBlue-500::after {
-            background-color: #4F46E5;
+            background-color: $primary;
         }
 
         &:hover::after {

@@ -1,3 +1,5 @@
+@import '../variables';
+
 .btn {
     border: none;
     outline: none;
@@ -20,7 +22,7 @@
     }
 
     &--primary {
-        background-color: #4f46e5;
+        background-color: $primary;
 
         &:hover {
             background-color: #6a62ff;

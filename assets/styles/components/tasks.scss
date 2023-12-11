@@ -1,3 +1,5 @@
+@import '../variables';
+
 .tasks {
     gap: 25px;
     display: flex;
@@ -27,7 +29,7 @@
         position: absolute;
         bottom: 0;
         left: -100%;
-        background-color: #4f46e5;
+        background-color: $primary;
         transition: left 0.2s linear;
     }
 
