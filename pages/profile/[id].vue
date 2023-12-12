@@ -45,7 +45,9 @@
                             <span v-show="isTimedOut">Чтобы запросить письмо еще раз нажмите кнопку ниже </span>
                             <span v-show="!isTimedOut">Письмо подтверждения можно запросить повторно через: <span class="text-royalBlue-500">{{ timeRemain }}</span></span>
                         </span>
-                        <LazyUButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" block trailing variant="soft" size="xs">Получить письмо</LazyUButton>
+                        <ClientOnly>
+                            <UButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" block trailing variant="soft" size="xs">Получить письмо</UButton>
+                        </ClientOnly>
                     </div>
 
                 </div>
@@ -95,6 +97,8 @@ interface IUserData {
     email: string
     username: string
 }
+
+const { t } = useI18n()
 
 const toast = useToast()
 const { updateUser } = useUser()
@@ -148,11 +152,18 @@ async function emailVerifyRequest() {
         startCountdown(data.value.last_confirmation_notification_sent_at)
     }
 
+
+
     if (error.value) {
+
+        const { type, message } = error.value.data;
+        
+
         toast.add({
-            title: 'Не удалось отправить письмо',
+            color: 'red',
             closeButton: { variant: 'ghost' },
-            description: 'Что-то пошло не так при отправке письма для подтверждения вашего аккаунта, обратитесь в поддержку'
+            title: 'Не удалось отправить письмо',
+            description: t(type, { retry_after: message })
         })
     }
 

@@ -31,9 +31,10 @@ export default defineI18nConfig(() => ({
 
             upload: {
                 file_required: 'Загрузите файл для проверки',
-                file_must_be_rar_or_zip: 'Файл проверки должен быть одного из следующих типов: .zip или .rar'
+                file_must_be_rar_or_zip: 'Файл должен быть в одном из следующих форматов: .zip или .rar'
             },
 
+            too_many_requests: 'Слишком много запросов, попробуйте через { retry_after } секунд',
             server_error: 'Ошибка на стороне сервера, попробуйте позже',
             forbidden: 'У вас нет прав на выполнение этих действий',
             not_found: 'Запрашиваемый ресурс не найден'

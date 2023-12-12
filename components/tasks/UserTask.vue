@@ -102,8 +102,6 @@ const taskImage = computed(() => {
 
     const imgUrl = config.public.baseUrl + '/uploads/resize/' + props.task.image
 
-    console.log(width.value)
-
     if (width.value > 768 && width.value < 992) {
         return imgUrl + '/380x315'
     }
