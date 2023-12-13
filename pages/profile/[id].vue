@@ -9,13 +9,12 @@
 
                 <div class="w-full sm:w-80 lg:w-auto">
                     <div class="profile-img mx-auto sm:mx-0 mb-4">
-                        <img :src="user.avatar" alt="Profile image" loading="lazy" />
+                        <UnLazyImage :placeholder-src="preloader" :src-set="user.avatar" />
                     </div>
 
                     <div class="mb-4 form-field">
                         <span class="form-label">Имя пользователя</span>
-                        <UInput size="lg" type="text" color="white" icon="i-octicon-link-24"
-                            placeholder="Введите имя пользователя" v-model:model-value="user.username" />
+                        <UInput size="lg" type="text" color="white" icon="i-octicon-link-24" placeholder="Введите имя пользователя" v-model:model-value="user.username" />
                     </div>
 
                     <div class="mb-4 form-field">
