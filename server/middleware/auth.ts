@@ -133,6 +133,8 @@ export default defineEventHandler(async (event) => {
     if (query.code) {
         const response = await getUserAccessToken()
 
+        console.log(response);
+
         if (response?.data?.type) {
             await sendRedirect(event, '?fail_reason=' + response.data.type)
             return false

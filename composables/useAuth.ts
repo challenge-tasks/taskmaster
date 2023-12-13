@@ -157,7 +157,7 @@ export function useAuth() {
             })
 
             if (res.status.value === 'success') {
-                setUserToken('')
+                setUserToken(null)
                 setUser({} as IUser)
                 setAuthenticatedState(false)
             }

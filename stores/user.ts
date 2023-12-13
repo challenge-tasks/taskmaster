@@ -7,13 +7,13 @@ export const useUserStore = defineStore('user-store', () => {
 
     const user = ref({} as IUser)
     const isUserUpdating = ref<boolean>(false)
-    const userToken = useCookie<string>('token', { expires: getCookieExpirationDate(+config.public.cookieExpiresAfter) })
+    const userToken = useCookie<string | null>('token', { expires: getCookieExpirationDate(+config.public.cookieExpiresAfter) })
 
     function setUser(payload: IUser) {
         user.value = payload
     }
 
-    function setUserToken(payload: string) {
+    function setUserToken(payload: string | null) {
         userToken.value = payload
     }
 

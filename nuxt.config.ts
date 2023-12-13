@@ -87,6 +87,7 @@ export default defineNuxtConfig({
     '@nuxtseo/module',
     'nuxt-simple-robots',
     '@vee-validate/nuxt',
+    // '@nuxtjs/eslint-module',
     '@morev/vue-transitions/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]
   ]
