@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://taskmaster.uz',
     name: 'Taskmaster.uz',
-    description: 'Taskmaster - complete tasks and increase your skills',
+    description: 'Taskmaster - выполняйте задания и улучшайте свои скиллы',
     defaultLocale: 'ru',
     indexable: true,
     identity: {
