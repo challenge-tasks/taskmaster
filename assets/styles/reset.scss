@@ -16,16 +16,13 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 
-body {
-    padding-top: 75px; // Header height
-}
-
 #__nuxt, .wrapper {
     height: 100%;
 }
 
 .wrapper {
     display: flex;
+    padding-top: 75px; // Header height
     flex-direction: column;
 }
 

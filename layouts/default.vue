@@ -20,7 +20,7 @@
             </template>
         </LazyUNotifications>
 
-        <NuxtLoadingIndicator color="#4f46e5" class="nuxt-loading-indicator" />
+        <NuxtLoadingIndicator color="#4f46e5" class="nli" />
     </div>
 </template>
 
