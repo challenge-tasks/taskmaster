@@ -1,6 +1,5 @@
-import { getCookieExpirationDate } from "@/utils"
-import { IAuthResponse, ISimpleSuccessResponse, IGithubUserData, IBaseErrorResponse } from "@/types"
-import { AsyncData } from "nuxt/app"
+import { getCookieExpirationDate, findObjectByProperty } from "@/utils"
+import type { IAuthResponse, ISimpleSuccessResponse, IGithubUserData, IBaseErrorResponse } from "@/types"
 
 export default defineEventHandler(async (event) => {
 
@@ -10,6 +9,13 @@ export default defineEventHandler(async (event) => {
         access_token: string
         token_type: string
         scope: string
+    }
+
+    interface GithubEmailStructure {
+        email: string
+        verified: boolean
+        primary: boolean
+        visibility: string
     }
 
     interface GithubDataServerPayload {
@@ -39,9 +45,13 @@ export default defineEventHandler(async (event) => {
 
             if (res.access_token) {
                 const user = await getUserFromGithub(res.access_token)
+                const email = await getGithubUserPrimaryEmail(res.access_token)
+
+                // const primaryEmail: GithubEmailStructure = 
+
                 const response = await authUserOnServer({
                     username: user.login,
-                    email: user.email,
+                    email: email.email,
                     avatar: user.avatar_url,
                     github_url: user.html_url,
                     github_id: user.id
@@ -54,11 +64,9 @@ export default defineEventHandler(async (event) => {
                 })
             }
 
-            console.log(res)
-
             return res
 
-        } catch (error: any) {
+        } catch (error: IBaseErrorResponse | any) {
 
             console.log(error)
 
@@ -66,6 +74,25 @@ export default defineEventHandler(async (event) => {
 
         }
 
+    }
+
+    async function getGithubUserPrimaryEmail(token: string): Promise<GithubEmailStructure> {
+        try {
+
+            const res: Array<any> = await $fetch('https://api.github.com/user/emails', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            return findObjectByProperty(res, 'primary', true)
+
+        } catch (error: any) {
+
+            console.log(error)
+            return error
+
+        }
     }
 
     async function getUserFromGithub(token: string): Promise<IGithubUserData> {
@@ -134,8 +161,6 @@ export default defineEventHandler(async (event) => {
 
     if (query.code) {
         const response = await getUserAccessToken()
-
-        console.log(response);
 
         if (response?.data?.type) {
             await sendRedirect(event, '?fail_reason=' + response.data.type)

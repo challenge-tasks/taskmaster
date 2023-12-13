@@ -106,6 +106,7 @@
         </div>
     </section>
 
+    <!-- <EmailModal /> -->
     <ProviderAuthFailModal />
 </template>
 
@@ -119,15 +120,24 @@ const toast = useToast()
 const { getTasks } = useTasks()
 const { limitedTasks, isTasksFetching } = storeToRefs(useTaskStore())
 
-const { showSignupModal, showProviderAuthErrorModal } = useModals()
+const { setEmailModalState } = useModalsStore()
 const { isAuthenticated } = storeToRefs(useAuthStore())
+const { showSignupModal, showProviderAuthErrorModal } = useModals()
 
 await getTasks()
 
 onMounted(() => {
 
-    if (route.query.fail_reason === 'sign_in_with_provider_failed') {
-        showProviderAuthErrorModal()
+    switch(route.query.fail_reason) {
+        case 'sign_in_with_provider_failed':
+            showProviderAuthErrorModal()
+            break
+        case 'email_required':
+            setEmailModalState(true)
+            break
+
+        default:
+            break
     }
 
     if (route.query.verify === 'success') {
@@ -143,7 +153,7 @@ onMounted(() => {
         toast.add({
             color: 'red',
             closeButton: { variant: 'ghost' },
-            title: 'Что-то пошло не так при подтверждении',
+            title: 'Что-то пошло не так при подтверждении почты',
             description: 'Произошла непредвиденная ошибка при подтверждении Email, пожалуйста сообщите разработчикам в группе <a href="https://t.me/+sNukVGsJnzFjYzcy" class="text-blue-500">Telegram</a>'
         })
 
