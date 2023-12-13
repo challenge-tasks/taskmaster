@@ -42,8 +42,9 @@
 }
 
 .task-image {
-    display: flex;
+    width: 100%;
     padding: 5px;
+    display: flex;
     min-height: 400px;
     max-height: 400px;
     align-items: flex-start;
@@ -72,9 +73,12 @@
     }
 
     img {
-        width: 100%;
-        object-fit: cover;
         border-radius: 10px;
+
+        &[data-srcset] {
+            width: 100%;
+            height: 100%;
+        }
     }
 }
 

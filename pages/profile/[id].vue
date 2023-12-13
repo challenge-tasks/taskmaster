@@ -9,7 +9,7 @@
 
                 <div class="w-full sm:w-80 lg:w-auto">
                     <div class="profile-img mx-auto sm:mx-0 mb-4">
-                        <img :src="user.avatar" :alt="'Profile image of ' + user.username">
+                        <img :src="user.avatar" alt="Profile image" loading="lazy" />
                     </div>
 
                     <div class="mb-4 form-field">
@@ -92,6 +92,7 @@
 
 <script setup lang="ts">
 import type { ITaskReview } from '@/types'
+import preloader from '@/assets/images/preloader.svg'
 
 interface IUserData {
     email: string

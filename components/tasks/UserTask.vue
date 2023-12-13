@@ -1,7 +1,7 @@
 <template>
     <span class="flex flex-col lg:flex-row user-task">
 
-        <span class="lg:mr-3 flex-shrink-0 w-full lg:w-56 max-h-60 sm:max-h-44 md:max-h-36 overflow-hidden">
+        <span class="lg:mr-3 flex items-center justify-center flex-shrink-0 w-full lg:w-56 max-h-60 sm:max-h-44 md:max-h-36 overflow-hidden">
             <UnLazyImage :placeholder-src="preloader" :src-set="taskImage" :alt="task.name" style="min-height: 160px;" />
         </span>
         
