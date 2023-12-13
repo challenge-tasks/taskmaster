@@ -105,8 +105,7 @@
 
         </div>
     </section>
-
-    <!-- <EmailModal /> -->
+    
     <ProviderAuthFailModal />
 </template>
 
@@ -118,11 +117,9 @@ const route = useRoute()
 const toast = useToast()
 
 const { getTasks } = useTasks()
-const { limitedTasks, isTasksFetching } = storeToRefs(useTaskStore())
-
-const { setEmailModalState } = useModalsStore()
 const { isAuthenticated } = storeToRefs(useAuthStore())
 const { showSignupModal, showProviderAuthErrorModal } = useModals()
+const { limitedTasks, isTasksFetching } = storeToRefs(useTaskStore())
 
 await getTasks()
 
@@ -132,31 +129,33 @@ onMounted(() => {
         case 'sign_in_with_provider_failed':
             showProviderAuthErrorModal()
             break
-        case 'email_required':
-            setEmailModalState(true)
-            break
 
         default:
             break
     }
 
-    if (route.query.verify === 'success') {
+    switch(route.query.verify) {
+        case 'success':
+            toast.add({
+                title: 'Вы успешно подтвердили Email',
+                closeButton: { variant: 'ghost' },
+                description: 'Теперь у вас есть возможность связать свой Github аккаунт на платформе'
+            })
 
-        toast.add({
-            title: 'Вы успешно подтвердили Email',
-            closeButton: { variant: 'ghost' },
-            description: 'Теперь у вас есть возможность связать свой Github аккаунт на платформе'
-        })
+            break
 
-    } else if (route.query.verify === 'fail') {
+        case 'fail':
+            toast.add({
+                color: 'red',
+                closeButton: { variant: 'ghost' },
+                title: 'Что-то пошло не так при подтверждении почты',
+                description: 'Произошла непредвиденная ошибка при подтверждении Email, пожалуйста сообщите разработчикам в группе <a href="https://t.me/+sNukVGsJnzFjYzcy" class="text-blue-500">Telegram</a>'
+            })
 
-        toast.add({
-            color: 'red',
-            closeButton: { variant: 'ghost' },
-            title: 'Что-то пошло не так при подтверждении почты',
-            description: 'Произошла непредвиденная ошибка при подтверждении Email, пожалуйста сообщите разработчикам в группе <a href="https://t.me/+sNukVGsJnzFjYzcy" class="text-blue-500">Telegram</a>'
-        })
+            break
 
+        default: 
+            break
     }
 
 })
