@@ -86,7 +86,7 @@
     </section>
 
     <SolutionReviewModal v-model="isSolutionReviewModalVisible" :task-review="taskReviewData" />
-    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="uploadingTaskSlug" @closed="onSolutionUploadModalClose" />
+    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="uploadingTaskSlug" @upload-success="handleSuccessfullSolutionUpload" @closed="onSolutionUploadModalClose" />
 </template>
 
 <script setup lang="ts">
@@ -181,6 +181,10 @@ function onSolutionUploadModalClose() {
 function onReviewRequest(payload: ITaskReview) {
     taskReviewData.value = payload
     isSolutionReviewModalVisible.value = true
+}
+
+function handleSuccessfullSolutionUpload() {
+    getUserTasks({ customParams: { username: user.value.username } })
 }
 
 getUserTasks({ customParams: { username: user.value.username } })
