@@ -44,16 +44,6 @@ export function useTasks() {
         try {
 
             const slug = options.customParams?.slug
-
-            if (userToken.value) {
-                if (!options.fetcherOptions) {
-                    options.fetcherOptions = {}
-                }
-
-                options.fetcherOptions.headers = {
-                    Authorization: `Bearer ${userToken.value}`
-                }
-            }
             
             const res = await useAsyncData<ITaskDetail>('tasks', () => $api(`/tasks/${slug}`, { ...options.fetcherOptions }))
 
@@ -77,9 +67,6 @@ export function useTasks() {
 
             const res = await useAsyncData<ITaskSolutionUploadSuccess>('task-uploading', () => $api(`/users/${username}/tasks/${slug}/solutions`, {
                 method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${userToken.value}`
-                },
                 ...options.fetcherOptions
             }))
             
@@ -105,11 +92,6 @@ export function useTasks() {
 
             const res = await useAsyncData<ITasksResponse>('user-tasks', () => $api(`/users/${username}/tasks`, { 
                 method: 'GET',
-
-                headers: {
-                    Authorization: `Bearer ${userToken.value}`
-                },
-
                 ...options?.fetcherOptions 
             }))
            
@@ -140,11 +122,6 @@ export function useTasks() {
 
             const res = await useAsyncData('user-tasks', () => $api(`/users/${username}/tasks/${taskSlug}`, { 
                 method: 'DELETE',
-
-                headers: {
-                    Authorization: `Bearer ${userToken.value}`
-                },
-
                 ...options?.fetcherOptions
             }))
            
@@ -172,9 +149,6 @@ export function useTasks() {
             const username = options.customParams?.username
             const res = await useAsyncData<IStartTaskSuccessResponse>('start-task', () => $api(`/users/${username}/tasks`, { 
                 method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${userToken.value}`
-                },
                 ...options.fetcherOptions
             }))
 

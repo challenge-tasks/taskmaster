@@ -1,6 +1,6 @@
-import { IUser } from "types"
-import { FetchOptions } from 'ofetch';
-import { AsyncData } from "nuxt/app"
+import type { IUser } from "@/types"
+import type { AsyncData } from "nuxt/app"
+import type { FetchOptions } from 'ofetch'
 
 export function useUser() {
 
@@ -16,12 +16,7 @@ export function useUser() {
                 throw new Error('User token is missing, log in and try again')
             }
 
-            const res = await useAsyncData<{ data: IUser }, Error | null>('profile', () => $api('/profile', {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${userToken.value}`
-                }
-            }))
+            const res = await useAsyncData<{ data: IUser }, Error | null>('profile', () => $api('/profile', { method: 'GET' }))
 
             watch(() => res.status.value, (newVal) => {
                 if (res.data.value && newVal === 'success') {
@@ -44,13 +39,8 @@ export function useUser() {
 
             setUserUpdatingStatus(true)
 
-            const res = await useAsyncData<{ success: boolean }>('profile-update', () => $api('/profile', { 
+            const res = await useAsyncData<{ success: boolean }>('profile-update', () => $api('/profile', {
                 method: 'PUT',
-                
-                headers: {
-                    Authorization: `Bearer ${userToken.value}`
-                },
-
                 ...options 
             }))
 

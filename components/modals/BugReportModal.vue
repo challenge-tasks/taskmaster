@@ -9,19 +9,20 @@
                 <UTextarea v-model:model-value="report" :rows="5" required placeholder="Опишите проблему которую вы заметили..." autoresize />
             </div>
             <div class="flex justify-end">
-                <UButton @click="sendReport" :disabled="isBugReporting" label="Отправить" size="lg" class="btn rounded-md" />
+                <UButton @click="sendReport" :loading="isBugReporting" :disabled="isBugReporting" label="Отправить" size="lg" class="btn rounded-md" />
             </div>
         </div>
     </LazyUModal>
 </template>
 
 <script setup lang="ts">
+
+const { t } = useI18n()
+const toast = useToast()
 const { sendBugReport } = useBugReport()
 const { setBugReportModalState } = useModalsStore()
 const { isBugReporting } = storeToRefs(useGlobalStore())
 const { isBugReportModalVisible } = storeToRefs(useModalsStore())
-
-const toast = useToast()
 
 const report = ref<string>('')
 
@@ -37,9 +38,9 @@ async function sendReport() {
         return false
     }
 
-    const { data } = await sendBugReport(report.value)
+    const response = await sendBugReport(report.value)
 
-    if (data.value && data.value.success) {
+    if (response.data.value && response.data.value.success) {
 
         toast.add({
             title: 'Ваша заявка отправлена',
@@ -47,11 +48,13 @@ async function sendReport() {
             description: 'Спасибо, что помогли улучшить нашу платформу'
         })
         
-    } else {
+    } 
+    
+    if (response.error.value) {
         toast.add({
-            title: 'Что-то пошло не так',
             closeButton: { variant: 'ghost' },
-            description: 'Возникла ошибка при отправке вашей заяки, пожалуйста свяжитесь с нашим Бэкенд разработчиком @ramatovzulfikor'
+            title: t(`reports.${response.error.value.data.type}`),
+            description: t('reports.too_many_requests_desc')
         })
     }
 
