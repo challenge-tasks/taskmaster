@@ -77,7 +77,7 @@ const tabs: Array<{ label: string, slot: string }> = [
     },
     {
         slot: 'github_url',
-        label: 'Отправить ссылку на Github'
+        label: 'Github репозиторий'
     }
 ]
 
