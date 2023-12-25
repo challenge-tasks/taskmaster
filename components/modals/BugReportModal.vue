@@ -52,6 +52,7 @@ async function sendReport() {
     
     if (response.error.value) {
         toast.add({
+            color: 'red',
             closeButton: { variant: 'ghost' },
             title: t(`reports.${response.error.value.data.type}`),
             description: t('reports.too_many_requests_desc')
