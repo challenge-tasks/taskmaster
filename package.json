@@ -2,17 +2,17 @@
   "name": "nuxt-app",
   "private": true,
   "scripts": {
-    "build": "NODE_OPTIONS='--max-old-space-size=500' nuxt build",
+    "build": "nuxt build",
     "dev": "nuxt dev",
     "restart": "git pull origin master && npm run build && pm2 list",
-    "generate": "NODE_OPTIONS='--max-old-space-size=500' nuxt generate",
+    "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxtjs/i18n": "^8.0.0-rc.3",
-    "@nuxtseo/module": "^2.0.0-beta.45",
+    "@nuxtjs/seo": "^2.0.0-rc.3",
     "@pinia/nuxt": "^0.4.11",
     "@types/node": "^18.16.19",
     "@vueuse/core": "^10.2.1",

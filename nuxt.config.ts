@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://taskmaster.uz',
     name: 'Taskmaster.uz',
-    description: 'Taskmaster - complete tasks and increase your skills',
+    description: 'Taskmaster - выполняйте задания и улучшайте свои навыки',
     defaultLocale: 'ru',
     identity: {
       type: 'Organization'
@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     }
   },
 
-  devtools: { enabled: false },
+  devtools: { enabled: true },
 
   components: [{
     path: '~/components',
@@ -68,10 +68,10 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/ui',
+    '@nuxtjs/seo',
     'nuxt-swiper',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
-    '@nuxtseo/module',
     '@vee-validate/nuxt',
     '@morev/vue-transitions/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs', 'acceptHMRUpdate'] }]

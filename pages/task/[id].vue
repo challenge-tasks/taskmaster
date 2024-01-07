@@ -78,10 +78,9 @@
 import type { ITaskType } from '@/types'
 import { badgeClassesBasedOnDifficultyLevel } from '@/utils'
 
-let task = ref({} as ITaskType)
+defineOgImageComponent('Image')
 
 const { t } = useI18n()
-
 const { params } = useRoute()
 const appConfig = useRuntimeConfig()
 
@@ -92,6 +91,7 @@ const { user } = storeToRefs(useUserStore())
 const { isTaskStarting } = storeToRefs(useTaskStore())
 const { isAuthenticated } = storeToRefs(useAuthStore())
 
+let task = ref({} as ITaskType)
 const isSolutionUploadModalVisible = ref<boolean>(false)
 
 const isTaskDoing = computed(() => {

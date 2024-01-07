@@ -7,7 +7,7 @@
         <span class="task-card__middle">
 
             <span class="mb-2 flex items-center justify-between gap-5">
-                <h4 class="task-card__title">{{ data.name }}</h4>
+                <h4 class="task-card__title truncate">{{ data.name }}</h4>
                 <span :class="badgeClassesBasedOnDifficultyLevel(data.difficulty)">{{ data.difficulty }}</span>
             </span>
 

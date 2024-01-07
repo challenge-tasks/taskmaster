@@ -15,7 +15,7 @@
                         Платформа, где ваши навыки обретают новое измерение. Независимо от
                         вашего уровня опыта, здесь вы найдете задачи на меру вашим амбициям.
                         <br />
-                        Прокачайте свои скиллы, решая задачи разной сложности, и идите к своим целям!
+                        Прокачайте свои навыки, решая задачи разной сложности, и идите к своим целям!
                     </p>
 
                     <UButton v-if="!isAuthenticated" @click="showSignupModal" size="lg" icon="i-octicon-person-add-24"
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="tasks relative">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 relative gap-6 mt-5">
                 <NuxtLink :to="'/task/' + task.slug" v-for="task in limitedTasks" class="tasks__item">
                     <TaskCard :data="task" />
                 </NuxtLink>
@@ -103,6 +103,12 @@
 </template>
 
 <script setup lang="ts">
+
+defineOgImageComponent('Image')
+
+useSeoMeta({
+    description: 'Платформа, где ваши навыки обретают новое измерение. Независимо от вашего уровня опыта, здесь вы найдете задачи на меру вашим амбициям. Прокачайте свои навыки, решая задачи разной сложности, и идите к своим целям!'
+})
 
 const route = useRoute()
 const toast = useToast()

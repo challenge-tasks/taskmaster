@@ -85,6 +85,8 @@
 
 <script setup>
 
+defineOgImageComponent('Image')
+
 useHead({
     title: 'О проекте'
 })

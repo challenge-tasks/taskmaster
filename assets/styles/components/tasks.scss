@@ -3,10 +3,6 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 20px;
-
-    &__item {
-        flex: 0 0 calc(25% - 20px);
-    }
 }
 
 .task-card {
@@ -67,8 +63,8 @@
     }
 
     &__title {
-        font-size: 18px;
-        font-weight: 500;
+        font-size: 16px;
+        font-weight: 600;
         color: #333333;
     }
 
@@ -78,8 +74,9 @@
     }
 
     &__tags {
-        gap: 8px;
+        gap: 4px 8px;
         display: flex;
+        flex-wrap: wrap;
     }
 
     &__tag {

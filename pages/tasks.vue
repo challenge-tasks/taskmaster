@@ -15,8 +15,8 @@
 
             </div>
 
-            <div v-if="tasks.length" class="tasks">
-                <NuxtLink :to="'/task/' + task.slug" v-for="task in tasks" class="tasks__item">
+            <div v-if="tasks.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5">
+                <NuxtLink :to="'/task/' + task.slug" v-for="task in tasks">
                     <TaskCard :data="task" />
                 </NuxtLink>
             </div>
@@ -34,6 +34,8 @@
 </template>
 
 <script setup lang="ts">
+
+defineOgImageComponent('Image')
 
 useHead({ title: 'Все задания' })
 
