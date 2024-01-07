@@ -15,6 +15,7 @@
                             size="lg"
                             type="email"
                             v-bind="field"
+                            :autofocus-delay="10000"
                             icon="i-octicon-mail-24"
                             placeholder="Введите электронную почту"
                             :color="meta.touched && !meta.valid ? 'red' : 'white'"
@@ -98,8 +99,11 @@ async function handleSignInFormSubmit() {
     if (error.value) {
         errors.type = error.value.data.type
     }
-    
 
+    if (data.value) {
+        navigateTo('/profile/' + data.value.data.user.username)
+    }
+    
     setTimeout(() => {
         errors.type = ''
     }, 2500)

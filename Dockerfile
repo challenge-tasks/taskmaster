@@ -1,31 +1,13 @@
 ARG NODE_VERSION=20.9.0
+FROM node:${NODE_VERSION}-alpine as build
+RUN apk update && apk upgrade
 
-FROM node:${NODE_VERSION}-alpine as base
+# set work dir as app
+WORKDIR /app
 
-ARG PORT=3000
+# copy the project package json and package json lock if available 
+COPY package* ./
+RUN  npm install
+COPY . ./
+RUN npx nuxt build
 
-ENV NODE_ENV=production
-
-WORKDIR /src
-
-# Build
-FROM base as build
-
-COPY --link package.json package-lock.json
-
-RUN npm install --production=false
-
-COPY --link . .
-
-RUN npm run build
-
-RUN npm prune
-
-# Run
-FROM base
-
-ENV PORT=$PORT
-
-COPY --from=build /src/.output/ /src/.output
-
-CMD ['node', './output/server/index.mjs']

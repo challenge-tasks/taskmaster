@@ -3,7 +3,7 @@
         <div class="py-10">
             <div class="mx-auto tm-container">
                 <div class="gap-y-5 sm:gap-0 flex flex-col-reverse md:flex-row items-center justify-around">
-                    <div class="md:max-w-xl lg:max-w-2xl xl:max-w-5xl">
+                    <div class="md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
                         <h2 class="mb-3 font-medium text-xl sm:text-2xl lg:text-3xl">В чем заключается <span
                                 class="text-royalBlue-500">идея</span>
                             проекта?</h2>
@@ -22,8 +22,8 @@
                         </p>
                     </div>
 
-                    <div class="max-w-xs md:max-w-sm xl:max-w-md">
-                        <img src="~/assets/images/puzzle-dynamic-premium.png" alt="">
+                    <div class="max-w-xs md:max-w-sm">
+                        <UnLazyImage :placeholder-src="puzzlePreloader" :src-set="puzzleImage" width="385" height="385" alt="Gold puzzle" />
                     </div>
                 </div>
             </div>
@@ -34,11 +34,11 @@
         <div class="bg-slate-50 py-10">
             <div class="mx-auto tm-container">
                 <div class="gap-y-5 sm:gap-0 flex flex-col md:flex-row items-center justify-around">
-                    <div class="max-w-xs md:max-w-sm xl:max-w-md">
-                        <img src="~/assets/images/lab-dynamic-premium.png" alt="">
+                    <div class="max-w-xs md:max-w-sm">
+                        <UnLazyImage :placeholder-src="labPreloader" :src-set="labImage" width="385" height="385" alt="Laboratory image" />
                     </div>
 
-                    <div class="md:max-w-xl lg:max-w-2xl xl:max-w-5xl">
+                    <div class="md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
                         <h2 class="mb-3 font-medium text-xl sm:text-2xl lg:text-3xl">Как все тут <span
                                 class="text-royalBlue-500">работает?</span></h2>
                         <p class="md:text-base lg:text-lg text-slate-600">
@@ -64,7 +64,7 @@
         <div class="py-10">
             <div class="mx-auto tm-container">
                 <div class="gap-y-5 sm:gap-0 flex flex-col-reverse md:flex-row items-center justify-around">
-                    <div class="md:max-w-xl lg:max-w-2xl xl:max-w-5xl">
+                    <div class="md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
                         <h2 class="mb-3 font-medium text-xl sm:text-2xl lg:text-3xl">Что <span
                                 class="text-indigo-600">планируем</span> в будущем?</h2>
                         <p class="tmd:text-base lg:text-lg text-slate-600">
@@ -74,8 +74,8 @@
                         </p>
                     </div>
 
-                    <div class="max-w-xs md:max-w-sm xl:max-w-md">
-                        <img src="~/assets/images/gift-dynamic-premium.png" alt="">
+                    <div class="max-w-xs md:max-w-sm">
+                        <UnLazyImage :placeholder-src="giftPreloader" :src-set="giftImage" width="385" height="385" alt="Gift image" />
                     </div>
                 </div>
             </div>
@@ -84,6 +84,12 @@
 </template>
 
 <script setup>
+import puzzleImage from '@/assets/images/puzzle-dynamic-premium.webp'
+import puzzlePreloader from '@/assets/images/puzzle-preloader.webp'
+import labImage from '@/assets/images/lab-dynamic-premium.webp'
+import labPreloader from '@/assets/images/lab-preloader.webp'
+import giftImage from '@/assets/images/gift-dynamic-premium.webp'
+import giftPreloader from '@/assets/images/gift-preloader.webp'
 
 defineOgImageComponent('Image')
 

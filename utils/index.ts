@@ -1,3 +1,7 @@
+interface Obj {
+    [key: string]: number | string | boolean
+}
+
 export function eraseFilledData(data: Record<string, any>): void {
     if (data.value) {
         data.value = ''
@@ -70,4 +74,14 @@ export function getCookieExpirationDate(days: number): Date {
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
 
     return date
+}
+
+export function findObjectByProperty(array: Obj[], key: string, value: string | number | boolean): any {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return array[i]
+        }
+    }
+
+    return null // if object is not found
 }

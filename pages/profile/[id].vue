@@ -9,13 +9,12 @@
 
                 <div class="w-full sm:w-80 lg:w-auto">
                     <div class="profile-img mx-auto sm:mx-0 mb-4">
-                        <img :src="user.avatar">
+                        <UnLazyImage :placeholder-src="preloader" :src-set="user.avatar" />
                     </div>
 
                     <div class="mb-4 form-field">
                         <span class="form-label">Имя пользователя</span>
-                        <UInput size="lg" type="text" color="white" icon="i-octicon-link-24"
-                            placeholder="Введите имя пользователя" v-model:model-value="user.username" />
+                        <UInput size="lg" type="text" color="white" icon="i-octicon-link-24" placeholder="Введите имя пользователя" v-model:model-value="user.username" />
                     </div>
 
                     <div class="mb-4 form-field">
@@ -45,7 +44,9 @@
                             <span v-show="isTimedOut">Чтобы запросить письмо еще раз нажмите кнопку ниже </span>
                             <span v-show="!isTimedOut">Письмо подтверждения можно запросить повторно через: <span class="text-royalBlue-500">{{ timeRemain }}</span></span>
                         </span>
-                        <LazyUButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" block trailing variant="soft" size="xs">Получить письмо</LazyUButton>
+                        <ClientOnly>
+                            <UButton v-if="isTimedOut" :loading="isEmailRefetching" @click="emailVerifyRequest" block trailing variant="soft" size="xs">Получить письмо</UButton>
+                        </ClientOnly>
                     </div>
 
                 </div>
@@ -54,33 +55,24 @@
                 <div class="w-full">
                     <h2 class="mb-4 font-medium text-2xl text-slate-600">Задачи пользователя</h2>
 
-                    <div class="user-tasks relative" :style="tasksContainerStyle">
+                    <div class="user-tasks relative">
 
                         <ClientOnly>
 
-                            <div v-show="isUserTasksFetching" class="py-7 flex flex-col items-center justify-center"
-                                :class="{ 'absolute z-50 h-full w-full bg-white': hasUserActiveTasks }">
-                                <div class="w-20 h-20">
-                                    <img src="../../assets/images/search.gif" alt="">
-                                </div>
-                                <h4 class="mb-2 text-xl text-slate-600">Достаем ваши задачи...</h4>
-                                <p class="max-w-md text-center text-slate-400">Загружаем ваши задачи, пожалуйста подождите
-                                </p>
+                            <div v-if="isUserTasksFetching" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-3 p-3">
+                                <UserTaskSkeleton v-for="i in 4" />
                             </div>
 
-                            <div v-if="!isUserTasksFetching && !hasUserActiveTasks"
-                                class="py-7 px-3 sm:px-0 flex flex-col items-center justify-center">
+                            <div v-if="!isUserTasksFetching && !hasUserActiveTasks" class="py-7 px-3 sm:px-0 flex flex-col items-center justify-center">
                                 <div class="w-20 h-20">
-                                    <img src="../../assets/images/no-data.gif" alt="">
+                                    <img src="../../assets/images/no-data.gif" alt="No data gif">
                                 </div>
                                 <h4 class="mb-2 text-xl text-slate-600">У вас еще нет задач :(</h4>
-                                <p class="max-w-md text-center text-slate-400">У вас еще нет ни одной задачи на выполнении,
-                                    перейдите на страницу всех задач и возьмите на выполнение задачу...</p>
+                                <p class="max-w-md text-center text-slate-400">У вас еще нет ни одной задачи на выполнении, перейдите на страницу всех задач и возьмите на выполнение задачу...</p>
                             </div>
 
-                            <div v-else class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-3 p-3">
-                                <UserTask :task="task" :key="task.id" v-for="task in userTasks"
-                                    @review-request="onReviewRequest" @solution-upload="onSolutionUpload(task.slug)" />
+                            <div v-if="!isUserTasksFetching && hasUserActiveTasks" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-3 p-3">
+                                <UserTask :task="task" :key="task.id" v-for="task in userTasks" @review-request="onReviewRequest" @solution-upload="onSolutionUpload(task.slug)" />
                             </div>
 
                         </ClientOnly>
@@ -94,16 +86,19 @@
     </section>
 
     <SolutionReviewModal v-model="isSolutionReviewModalVisible" :task-review="taskReviewData" />
-    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="uploadingTaskSlug" @closed="onSolutionUploadModalClose" />
+    <UploadSolutionModal v-model="isSolutionUploadModalVisible" :task-slug="uploadingTaskSlug" @upload-success="handleSuccessfullSolutionUpload" @closed="onSolutionUploadModalClose" />
 </template>
 
 <script setup lang="ts">
 import type { ITaskReview } from '@/types'
+import preloader from '@/assets/images/preloader.svg'
 
 interface IUserData {
     email: string
     username: string
 }
+
+const { t } = useI18n()
 
 const toast = useToast()
 const { updateUser } = useUser()
@@ -127,10 +122,6 @@ const userData = computed<IUserData>(() => {
         email: user.value.email,
         username: user.value.username
     }
-})
-
-const tasksContainerStyle = computed(() => {
-    return isUserTasksFetching.value ? { minHeight: '200px' } : ''
 })
 
 const hasUserActiveTasks = computed<boolean>(() => userTasks.value.length > 0)
@@ -161,11 +152,18 @@ async function emailVerifyRequest() {
         startCountdown(data.value.last_confirmation_notification_sent_at)
     }
 
+
+
     if (error.value) {
+
+        const { type, message } = error.value.data;
+        
+
         toast.add({
-            title: 'Не удалось отправить письмо',
+            color: 'red',
             closeButton: { variant: 'ghost' },
-            description: 'Что-то пошло не так при отправке письма для подтверждения вашего аккаунта, обратитесь в поддержку'
+            title: 'Не удалось отправить письмо',
+            description: t(type, { retry_after: message })
         })
     }
 
@@ -183,6 +181,10 @@ function onSolutionUploadModalClose() {
 function onReviewRequest(payload: ITaskReview) {
     taskReviewData.value = payload
     isSolutionReviewModalVisible.value = true
+}
+
+function handleSuccessfullSolutionUpload() {
+    getUserTasks({ customParams: { username: user.value.username } })
 }
 
 getUserTasks({ customParams: { username: user.value.username } })

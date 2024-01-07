@@ -1,10 +1,11 @@
 export const useModalsStore = defineStore('app-modals', () => {
    
     const { setMenuState } = useGlobalStore()
-    
+
     const isSignupModalShown = ref<boolean>(false)
     const isSigninModalShown = ref<boolean>(false)
     const isRecoveryModalVisible = ref<boolean>(false)
+    const isBugReportModalVisible = ref<boolean>(false)
     const isProviderAuthErrorModalVisible = ref<boolean>(false)
 
     function setSignInModalState(payload: boolean) {
@@ -39,14 +40,24 @@ export const useModalsStore = defineStore('app-modals', () => {
         }
     }
 
+    function setBugReportModalState(payload: boolean) {
+        isBugReportModalVisible.value = payload
+    
+        if (payload) {
+            setMenuState(false)
+        }
+    }
+
     return {
         isSigninModalShown,
         isSignupModalShown,
         isRecoveryModalVisible,
+        isBugReportModalVisible,
         isProviderAuthErrorModalVisible,
         setSignInModalState,
         setSignUpModalState,
         setRecoveryModalState,
+        setBugReportModalState,
         setProviderAuthErrorModalState
     }
 })

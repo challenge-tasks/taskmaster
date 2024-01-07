@@ -1,8 +1,8 @@
 <template>
     <span class="flex flex-col lg:flex-row user-task">
 
-        <span class="lg:mr-3 flex-shrink-0 w-full lg:w-56 max-h-60 sm:max-h-44 md:max-h-36 overflow-hidden">
-            <img :src="taskImage" />
+        <span class="lg:mr-3 flex items-center justify-center flex-shrink-0 w-full lg:w-56 max-h-60 sm:max-h-44 md:max-h-36 overflow-hidden">
+            <UnLazyImage :placeholder-src="preloader" :src-set="taskImage" :alt="task.name" style="min-height: 160px;" />
         </span>
         
         <span class="lg:px-0 px-2 py-2">
@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import { trimText } from '@/utils'
 import type { ITaskType } from '@/types'
+import preloader from '@/assets/images/preloader.svg'
 
 const toast = useToast()
 const config = useRuntimeConfig()
@@ -101,8 +102,6 @@ const isTaskDone = computed(() => {
 const taskImage = computed(() => {
 
     const imgUrl = config.public.baseUrl + '/uploads/resize/' + props.task.image
-
-    console.log(width.value)
 
     if (width.value > 768 && width.value < 992) {
         return imgUrl + '/380x315'

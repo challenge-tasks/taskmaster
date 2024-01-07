@@ -1,7 +1,7 @@
 <template>
     <span class="task-card">
         <span class="task-card__img">
-            <img :src="taskMainImage" :alt="data.description">
+            <UnLazyImage :placeholder-src="placeholderImage" width="340" height="210" :src-set="taskMainImage" :alt="'Image for ' + data.name" />
         </span>
 
         <span class="task-card__middle">
@@ -16,13 +16,14 @@
 
         <span v-if="data.stacks" class="task-card__bottom">
             <span class="task-card__tags">
-                <span v-for="stack in data.stacks" class="task-card__tag">#{{ stack.name }}</span>
+                <span v-for="tag in data.tags" class="task-card__tag">#{{ tag.name }}</span>
             </span>
         </span>
     </span>
 </template>
 
 <script setup lang="ts">
+import placeholderImage from '@/assets/images/preloader.svg'
 import { badgeClassesBasedOnDifficultyLevel, trimText } from '@/utils'
 
 const config = useRuntimeConfig()

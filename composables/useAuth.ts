@@ -1,5 +1,5 @@
-import { AsyncData } from "nuxt/app"
-import { IAuthPayload, IAuthResponse, IUser, ISimpleSuccessResponse, IPasswordRecoveryBody, IBaseErrorResponse } from "types"
+import type { AsyncData } from "nuxt/app"
+import type { IAuthPayload, IAuthResponse, IUser, ISimpleSuccessResponse, IPasswordRecoveryBody, IBaseErrorResponse } from "@/types"
 
 export function useAuth() {
     
@@ -7,7 +7,6 @@ export function useAuth() {
     const config = useRuntimeConfig()
 
     const { setUser, setUserToken } = useUserStore()
-    const { userToken } = storeToRefs(useUserStore())
     const { setSignUpModalState, setSignInModalState } = useModalsStore()
     const { setAuthenticatedState, setAuthorizingState, setRecoveryRequesting, setLoggingOutState, setEmailRefetchingState } = useAuthStore()
 
@@ -124,9 +123,6 @@ export function useAuth() {
 
             const res = await useAsyncData<{ success: boolean, last_confirmation_notification_sent_at: number }, IBaseErrorResponse>('', () => $api('/email-verification/resend', {
                 method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${userToken.value}`
-                }
             }))
 
             return res
@@ -148,16 +144,12 @@ export function useAuth() {
 
             const router = useRouter()
 
-            const res = await useFetch(config.public.apiBaseUrl + '/logout', {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${userToken.value}`
-                },
-                server: false
-            })
+            const res = await useAsyncData('log-out', () => $api('/logout', {
+                method: 'POST'
+            }))
 
             if (res.status.value === 'success') {
-                setUserToken('')
+                setUserToken(null)
                 setUser({} as IUser)
                 setAuthenticatedState(false)
             }

@@ -1,3 +1,13 @@
+@import './variables';
+
+ul {
+    list-style-type: disc;
+
+    li:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
 .logo {
     width: 100px;
     height: 30px;
@@ -100,7 +110,7 @@
         border-radius: 50%;
         transform: translateY(-50%);
         position: absolute;
-        background-color: #4f46e5;
+        background-color: $primary;
         transition: opacity 0.2s linear, filter 0.2s linear;
 
         .icon {
@@ -140,7 +150,7 @@
 }
 
 .bg-primary {
-    background-color: #4f46e5;
+    background-color: $primary;
 }
 
 .v-popper--theme-tooltip {
@@ -149,7 +159,7 @@
     }
 }
 
-.nuxt-loading-indicator {
+.nli {
     top: 76px !important;
 }
 
@@ -264,7 +274,7 @@
         }
     }
 
-    .nuxt-loading-indicator {
+    .nli {
         top: 51px !important;
     }
 }
