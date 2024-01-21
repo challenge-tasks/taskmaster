@@ -11,7 +11,7 @@
                 <span :class="badgeClassesBasedOnDifficultyLevel(data.difficulty)">{{ data.difficulty }}</span>
             </span>
 
-            <p class="task-card__excerpt">{{ trimText(data.summary, 150) }}</p>
+            <p class="task-card__excerpt">{{ trimText(data.summary, 41) }}</p>
         </span>
 
         <span v-if="data.stacks" class="task-card__bottom">
